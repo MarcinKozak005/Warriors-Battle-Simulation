@@ -5,25 +5,29 @@ import java.util.List;
 //update and render all objects
 public class Handler {
 
-    List<GameObject> gameObjectList = new LinkedList<>();
+    List<SimulationObject> simulationObjectList = new LinkedList<>();
 
+    // $ rusz każdym obiektem/ wykonaj akcję na każdym obiekcie
     public void tick(){
-        for(GameObject gameObject: gameObjectList){
-            gameObject.tick();
+        for(SimulationObject simulationObject: simulationObjectList)
+        {
+            simulationObject.tick();
         }
     }
+
+    // $ pokaż każdy obiekt
     public void render(Graphics g){
-        for(GameObject gameObject: gameObjectList){
-            gameObject.render(g);
+        for(SimulationObject simulationObject: simulationObjectList){
+            simulationObject.render(g);
         }
     }
 
-    public void addGameObject(GameObject object){
-        this.gameObjectList.add(object);
+    public void addSimulationObject(SimulationObject object){
+        this.simulationObjectList.add(object);
     }
 
-    public void removeGameObject(GameObject object){
-        this.gameObjectList.remove(object);
+    public void removeSimulationObject(SimulationObject object){
+        this.simulationObjectList.remove(object);
     }
 
 }

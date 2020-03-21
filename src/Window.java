@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Window extends Canvas
 {
-    public Window(int width, int height, String title, Game game)
+    public Window(int width, int height, String title, Simulation simulation)
     {
         JFrame frame = new JFrame(title); // $: frame of our window
 
@@ -14,8 +14,8 @@ public class Window extends Canvas
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // $: close on red X; top right
         frame.setResizable(false); // $ No to resize
         frame.setLocationRelativeTo(null); // $ Window starts in the middle of the Screen
-        frame.add(game);
+        frame.add(simulation);
         frame.setVisible(true);
-        game.start();
+        simulation.start();
     }
 }

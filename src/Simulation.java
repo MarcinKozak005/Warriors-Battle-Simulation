@@ -1,20 +1,28 @@
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
-public class Game extends Canvas implements Runnable
+public class Simulation extends Canvas implements Runnable
 {
     Handler handler;
-    private static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9;
+    private static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    private static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    // $ apka działa na razie(?) na 1 wątku
     private Thread thread;
     private boolean running = false;
 
-    public Game()
+    public Simulation()
     {
-        // $ Window -> My Class
-        new Window(WIDTH, HEIGHT, "Build Game", this);
-        //Handler -> obsluguje wszystkie obiekty
+        // $ Handler -> obsluguje wszystkie obiekty
         handler = new Handler();
-        handler.addGameObject(new Player(100,100,ID.Player));
+        handler.addSimulationObject(new Infantry(100,400, Alliance.Red,handler));
+        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,100,Alliance.Blue,handler));
+        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,300,Alliance.Blue,handler));
+        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,500,Alliance.Blue,handler));
+        // $ Window -> My Class
+        new Window(WIDTH, HEIGHT, "Warriors Simulation", this);
+
+
+
     }
 
     public synchronized void start()
@@ -61,7 +69,7 @@ public class Game extends Canvas implements Runnable
             if(System.currentTimeMillis() - timer > 1000)
             {
                 timer += 1000;
-                System.out.println("FPS: "+ frames);
+                //System.out.println("FPS: "+ frames);
                 frames = 0;
             }
         }
@@ -92,7 +100,7 @@ public class Game extends Canvas implements Runnable
 
     public static void main(String[] args)
     {
-        new Game();
+        new Simulation();
     }
 
 }

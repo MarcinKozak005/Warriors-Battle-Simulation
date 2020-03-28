@@ -6,8 +6,13 @@ public abstract class SimulationObject {
     protected float y;
     protected float velX;
     protected float velY;
+    protected float maxVelocity;
     protected Alliance alliance;
 
+    public SimulationObject(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
     public SimulationObject(float x, float y, Alliance alliance) {
         this.x = x;
         this.y = y;
@@ -17,44 +22,16 @@ public abstract class SimulationObject {
     public abstract void tick();
     public abstract void render(Graphics g);
 
-    // Getters and Setters below
-    public float getX() {
-        return x;
+    protected Point getPosition()
+    {
+        return new Point((int)x,(int)y);
     }
 
-    public void setX(float x) {
-        this.x = x;
+    protected double getDistanceTo(SimulationObject simulationObject)
+    {
+        return this.getPosition().distance(simulationObject.getPosition());
     }
 
-    public float getY() {
-        return y;
-    }
 
-    public void setY(float y) {
-        this.y = y;
-    }
 
-    public Alliance getAlliance() {
-        return alliance;
-    }
-
-    public void setAlliance(Alliance alliance) {
-        this.alliance = alliance;
-    }
-
-    public float getVelX() {
-        return velX;
-    }
-
-    public void setVelX(float velX) {
-        this.velX = velX;
-    }
-
-    public float getVelY() {
-        return velY;
-    }
-
-    public void setVelY(float velY) {
-        this.velY = velY;
-    }
 }

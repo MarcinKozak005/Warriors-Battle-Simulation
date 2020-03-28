@@ -13,11 +13,15 @@ public class Simulation extends Canvas implements Runnable
     public Simulation()
     {
         // $ Handler -> obsluguje wszystkie obiekty
+        // TODO Czy handlera nie zrobić jako Singleton lub coś podobnego? Za duzo przekazywania go ...?
         handler = new Handler();
-        handler.addSimulationObject(new Infantry(100,400, Alliance.Red,handler));
-        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,100,Alliance.Blue,handler));
-        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,300,Alliance.Blue,handler));
-        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,500,Alliance.Blue,handler));
+        Regiment r1 = new Regiment(100,100, Alliance.Blue, handler);
+        Regiment r2 = new Regiment(300,100, Alliance.Red, handler);
+        r1.addArmyUnit(new Infantry(100,100, handler));
+        r2.addArmyUnit(new Infantry(300,200, handler));
+        handler.addSimulationObject(r1);
+        handler.addSimulationObject(r2);
+
         // $ Window -> My Class
         new Window(WIDTH, HEIGHT, "Warriors Simulation", this);
 

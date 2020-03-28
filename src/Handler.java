@@ -5,6 +5,7 @@ import java.util.List;
 //update and render all objects
 public class Handler {
 
+    //może druga lista na wszystkie jednostki -> od shuffle ...?
     List<SimulationObject> simulationObjectList = new LinkedList<>();
 
     // $ rusz każdym obiektem/ wykonaj akcję na każdym obiekcie
@@ -30,4 +31,14 @@ public class Handler {
         this.simulationObjectList.remove(object);
     }
 
+    public Regiment getEnemyRegimentFor(Alliance alliance) throws VictoryException {
+        for(SimulationObject simulationObject: simulationObjectList)
+        {
+            if(simulationObject.alliance != alliance) return (Regiment) simulationObject;
+        }
+        throw new VictoryException();
+    }
 }
+
+class VictoryException extends Exception
+{}

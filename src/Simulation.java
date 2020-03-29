@@ -6,23 +6,29 @@ public class Simulation extends Canvas implements Runnable
     Handler handler;
     private static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-    // $ apka działa na razie(?) na 1 wątku
     private Thread thread;
     private boolean running = false;
 
     public Simulation()
     {
-        // $ Handler -> obsluguje wszystkie obiekty
         handler = new Handler();
-        handler.addSimulationObject(new Infantry(100,400, Alliance.Red,handler));
-        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,100,Alliance.Blue,handler));
-        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,300,Alliance.Blue,handler));
-        handler.addSimulationObject(new Infantry(Simulation.WIDTH-100,500,Alliance.Blue,handler));
-        // $ Window -> My Class
+        // TODO Czy handlera nie zrobić jako Singleton lub coś podobnego? Za duzo przekazywania go ...?
+
+        Regiment r1 = new Regiment(300,300, Alliance.Blue, handler);
+        r1.addArmyUnit(new Infantry(300,290));
+        r1.addArmyUnit(new Infantry(300,300));
+        r1.addArmyUnit(new Infantry(300,310));
+
+
+        Regiment r2 = new Regiment(600,300, Alliance.Red, handler);
+        r2.addArmyUnit(new Infantry(600,275));
+        r2.addArmyUnit(new Infantry(620,325));
+        r2.addArmyUnit(new Infantry(600,325));
+
+        handler.addSimulationObject(r1);
+        handler.addSimulationObject(r2);
+
         new Window(WIDTH, HEIGHT, "Warriors Simulation", this);
-
-
-
     }
 
     public synchronized void start()
@@ -45,7 +51,6 @@ public class Simulation extends Canvas implements Runnable
 
     @Override
     public void run() {
-        // $ Game Loop
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
@@ -74,7 +79,6 @@ public class Simulation extends Canvas implements Runnable
             }
         }
         stop();
-        // $ Game Loop
     }
 
     private void tick(){

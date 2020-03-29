@@ -5,15 +5,15 @@ public class Window extends Canvas
 {
     public Window(int width, int height, String title, Simulation simulation)
     {
-        JFrame frame = new JFrame(title); // $: frame of our window
+        JFrame frame = new JFrame(title);
 
         frame.setPreferredSize(new Dimension(width,height));
         frame.setMaximumSize(new Dimension(width,height));
         frame.setMinimumSize(new Dimension(width, height));
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // $: close on red X; top right
-        frame.setResizable(false); // $ No to resize
-        frame.setLocationRelativeTo(null); // $ Window starts in the middle of the Screen
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.add(simulation);
         frame.setVisible(true);
         simulation.start();

@@ -1,0 +1,21 @@
+Simulation: Handler jako Singleton? Czy jest sens i warto?
+Infantry: Math.random na Random?
+Infantry (chyba): Kolizje (overlaping) między nimi -> zeby się nie nachodzili
+Infantry: Atak wrogów i innych Regimentów?
+Regiment: Decyzja na podstawie obserwacji
+Regiment: Żeby się ruszał wtedy kied wydaje MoveToAttackOrder()
+Handler: Lista na WSZYSTKIE ArmyUnit -> do losowego wykonywania ...?
+Handler: Zwracanie najblliższego pulku wroga a nie pierwszego lepszego
+
+
+
+
+
+
+
+
+
+
+
+
+

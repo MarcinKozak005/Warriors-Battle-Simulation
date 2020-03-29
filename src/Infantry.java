@@ -5,8 +5,8 @@ public class Infantry extends ArmyUnit {
 
     public static final float infantryBlockSize = 10;
 
-    public Infantry(float x, float y, Handler handler) {
-        super(x, y, handler);
+    public Infantry(float x, float y) {
+        super(x, y);
         this.hp = 100;
         this.minDMG = 2;
         this.maxDMG = 10;

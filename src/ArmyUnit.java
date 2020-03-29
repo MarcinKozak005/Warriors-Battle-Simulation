@@ -9,11 +9,9 @@ public abstract class ArmyUnit extends SimulationObject
     protected Regiment myRegiment;
     protected ArmyUnit myEnemy; // przechowywanie wybranego wroga do pozniejszego ataku
     protected UnitAction unitAction; // przechowywanie akcji ktora FAKTYCZNIE podejmnie jednostka
-    protected Handler handler;
 
-    public ArmyUnit(float x, float y, Handler handler) {
+    public ArmyUnit(float x, float y) {
         super(x, y);
-        this.handler = handler;
     }
 
     abstract void attackOrder(Regiment regimentToAttack);

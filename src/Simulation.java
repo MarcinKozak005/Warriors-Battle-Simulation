@@ -17,8 +17,8 @@ public class Simulation extends Canvas implements Runnable
         handler = new Handler();
         Regiment r1 = new Regiment(100,100, Alliance.Blue, handler);
         Regiment r2 = new Regiment(300,100, Alliance.Red, handler);
-        r1.addArmyUnit(new Infantry(100,100, handler));
-        r2.addArmyUnit(new Infantry(300,200, handler));
+        r1.addArmyUnit(new Infantry(100,100));
+        r2.addArmyUnit(new Infantry(300,200));
         handler.addSimulationObject(r1);
         handler.addSimulationObject(r2);
 

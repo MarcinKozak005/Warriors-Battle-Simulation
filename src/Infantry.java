@@ -14,11 +14,17 @@ public class Infantry extends ArmyUnit {
         this.maxVelocity = 1;
     }
 
+
+    /*
+    Action to są już konkretne akcje jednostki
+    Order to polecenia od Regimentu
+     */
     private void attackAction() {
         this.dealDMGToEnemy();
     }
 
     private void dealDMGToEnemy() {
+        // new Random jest chyba lepszy niż Math.random, ale na razie jest tak xD
         float DMGDealt = (float) (minDMG + Math.random() * (maxDMG - minDMG));
         if (myEnemy != null) {
             myEnemy.hp -= DMGDealt;
@@ -26,12 +32,15 @@ public class Infantry extends ArmyUnit {
         }
     }
 
+    // Na razie w sumie prawie takie samo jak regroupAction, ale to się może zmienić potem (chyba) xD
     private void moveAction()
     {
         float diagonalDistance = (float) this.getDistanceTo(myEnemy);
         float distanceX = this.x - myEnemy.x;
         float distanceY = this.y - myEnemy.y;
 
+        // Generalnie to chodzi o to żeby w dobrym kierunku nie szybciej niż maxVelocity
+        // To -1 jest od tego że pkt (0,0) to jest lewy góry róg. I jakby trzeba to uwzględnić. Pitagoras, skalowanie i trygonometria xD
         this.velX = (-1)*distanceX*this.maxVelocity/diagonalDistance;
         this.velY = (-1)*distanceY*this.maxVelocity/diagonalDistance;
 
@@ -39,6 +48,7 @@ public class Infantry extends ArmyUnit {
         y+=velY;
     }
 
+    // Na razie w sumie prawie takie samo jak moveAction, ale to się może zmienić potem (chyba) xD
     private void regroupAction()
     {
         float diagonalDistance = (float) this.getDistanceTo(myRegiment);
@@ -53,16 +63,17 @@ public class Infantry extends ArmyUnit {
     }
 
     @Override
+    // Zachowanie jak otrzyma rozkaz ataku
     void attackOrder(Regiment regimentToAttack) {
         ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
 
-        if (enemy == null) this.unitAction = null;
-        else if(this.getDistanceTo(enemy) < this.attackRange)
+        if (enemy == null) this.unitAction = null; // Brak wrogów ...? -> postoi w miejscu
+        else if(this.getDistanceTo(enemy) < this.attackRange) // Jak wróg blisko to atakuj
         {
             this.myEnemy = enemy;
             this.unitAction = UnitAction.ATTACK;
         }
-        else{
+        else{ // jak nie, to idz w stronę najbiższego wroga -> Jak bedzie blisko to wejdzie powyższy if
             this.myEnemy = enemy;
             this.unitAction = UnitAction.MOVE_TO_ENEMY;
         }
@@ -77,17 +88,17 @@ public class Infantry extends ArmyUnit {
 
         ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
 
-        if (enemy == null) this.unitAction = null;
-        else if(this.getDistanceTo(enemy) < this.attackRange)
+        if (enemy == null) this.unitAction = null; // brak wrogow -> postoi w miejscu
+        else if(this.getDistanceTo(enemy) < this.attackRange) // jak blisko to atak
         {
             this.myEnemy = enemy;
             this.unitAction = UnitAction.ATTACK;
         }
-        else if(this.getDistanceTo(this.myRegiment) >= Regiment.regimentCenterRadius ) // poza centrum
+        else if(this.getDistanceTo(this.myRegiment) >= Regiment.regimentCenterRadius ) // poza centrum -> idz w stronę centrum
         {
-            this.unitAction = UnitAction.REGROUP; // na razie regroup działa do tego samego miejsca
+            this.unitAction = UnitAction.REGROUP;
         }
-        else {
+        else { // jak nie ma wroga, a jesteś w centrum, to idz do wroga
             this.myEnemy = enemy;
             this.unitAction = UnitAction.MOVE_TO_ENEMY;
         }
@@ -97,18 +108,18 @@ public class Infantry extends ArmyUnit {
     void regroupOrder(){
         ArmyUnit enemy = this.findNearestEnemyIn(this.myRegiment.enemyRegiment);
 
-        if (enemy == null) this.unitAction = null;
-        else if(this.getDistanceTo(enemy) < this.attackRange)
+        if (enemy == null) this.unitAction = null; // brak wrogów -> stoi w miejscu
+        else if(this.getDistanceTo(enemy) < this.attackRange) // jest obok wróg -> walcz
         {
             this.myEnemy = enemy;
             this.unitAction = UnitAction.ATTACK;
         }
-        else if(this.getDistanceTo(this.myRegiment) <= Regiment.regimentRegroupRadius ) // w centrum
+        else if(this.getDistanceTo(this.myRegiment) <= Regiment.regimentRegroupRadius ) // Jesteś w strefie przegrupowania -> szukaj/idz do wroga
         {
             this.myEnemy = enemy;
             this.unitAction = UnitAction.MOVE_TO_ENEMY;
         }
-        else {
+        else { // jesteś poza strefą -> przegrupuj się
             this.unitAction = UnitAction.REGROUP;
         }
     }
@@ -116,28 +127,13 @@ public class Infantry extends ArmyUnit {
     @Override
     public void tick()
     {
-        if (this.hp <= 0)
+        if (this.hp <= 0) // śmierć
             myRegiment.removeArmyUnit(this);
-        else {
+        else { // wykonaj akcję.
             if (this.unitAction == UnitAction.ATTACK) this.attackAction();
             else if (this.unitAction == UnitAction.MOVE_TO_ENEMY) this.moveAction();
             else if (this.unitAction == UnitAction.REGROUP) this.regroupAction();
         }
-
-        // Not overlaping
-//        float distanceToEnemy = Math.abs(this.x- myEnemy.x);
-//        if(distanceToEnemy<10)
-//        {
-//            if (this.x<myEnemy.x) {
-//                this.x -= (10-distanceToEnemy) / 2;
-//                myEnemy.x += (10-distanceToEnemy) / 2;
-//            }
-//            else{
-//                this.x += (10-distanceToEnemy) / 2;
-//                myEnemy.x -= (10-distanceToEnemy) / 2;
-//            }
-//        }
-        // Not overlaping
     }
 
     @Override

@@ -6,13 +6,14 @@ public class Simulation extends Canvas implements Runnable
     Handler handler;
     private static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-    // $ apka działa na razie(?) na 1 wątku
+    // Apka działa na razie(?) na 1 wątku
     private Thread thread;
+    // Czy wątek chodzi
     private boolean running = false;
 
     public Simulation()
     {
-        // $ Handler -> obsluguje wszystkie obiekty
+        // Handler -> obsluguje wszystkie obiekty
         // TODO Czy handlera nie zrobić jako Singleton lub coś podobnego? Za duzo przekazywania go ...?
         handler = new Handler();
         Regiment r1 = new Regiment(100,100, Alliance.Blue, handler);
@@ -22,13 +23,11 @@ public class Simulation extends Canvas implements Runnable
         handler.addSimulationObject(r1);
         handler.addSimulationObject(r2);
 
-        // $ Window -> My Class
+        // Window to nasza klasa
         new Window(WIDTH, HEIGHT, "Warriors Simulation", this);
-
-
-
     }
 
+    // To Ci na razie nie powiem xD
     public synchronized void start()
     {
         thread = new Thread(this);
@@ -49,7 +48,7 @@ public class Simulation extends Canvas implements Runnable
 
     @Override
     public void run() {
-        // $ Game Loop
+        // Game Loop -> tego nie wytłumacze zbytnio xD
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
@@ -78,14 +77,16 @@ public class Simulation extends Canvas implements Runnable
             }
         }
         stop();
-        // $ Game Loop
+        // End Game Loop
     }
 
+    // Co ma się dziać w "takcie zegarowym" symulacji
     private void tick(){
         handler.tick();
     }
 
     private void render(){
+        // Te buffer strategy to też średnio wiem co to xD (z tutoriala)
         BufferStrategy bs = this.getBufferStrategy();
         if(bs==null){
             this.createBufferStrategy(3);
@@ -93,9 +94,11 @@ public class Simulation extends Canvas implements Runnable
         }
         Graphics g = bs.getDrawGraphics();
 
+        //Rysowanie tła
         g.setColor(Color.black);
         g.fillRect(0,0, WIDTH, HEIGHT);
 
+        //Renderowanie całej reszty
         handler.render(g);
 
         g.dispose();

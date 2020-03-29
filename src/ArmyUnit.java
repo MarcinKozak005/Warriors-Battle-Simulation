@@ -3,7 +3,7 @@ import java.util.Optional;
 public abstract class ArmyUnit extends SimulationObject
 {
     protected float hp;
-    protected float minDMG;
+    protected float minDMG; //comment
     protected float maxDMG;
     protected float attackRange; // zasięg "rąk"
     protected Regiment myRegiment;

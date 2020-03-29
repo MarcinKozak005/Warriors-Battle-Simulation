@@ -2,23 +2,22 @@ import java.util.Optional;
 
 public abstract class ArmyUnit extends SimulationObject
 {
-    protected float hp; //  no HP xD
+    protected float hp;
     protected float minDMG;
     protected float maxDMG;
-    protected float attackRange; // zasięg ataku
-    protected Regiment myRegiment; // do którego Regiment (Pulku) należe
-    protected ArmyUnit myEnemy; // przechowywanie wybranego wroga do pozniejszego ataku
-    protected UnitAction unitAction; // przechowywanie akcji ktora FAKTYCZNIE podejmnie jednostka
+    protected float attackRange;
+    protected Regiment myRegiment;
+    protected ArmyUnit myEnemy;
+    protected UnitAction unitAction;
 
     public ArmyUnit(float x, float y) {
         super(x, y);
     }
 
-    abstract void attackOrder(Regiment regimentToAttack); // Rozkaz Ataku od Regimentu
-    abstract void moveToAttackOrder(Regiment regimentToAttack); // Rozkaz RuchuZAtakiem od Regimentu
-    abstract void regroupOrder(); // Rozkaz Przegrupowania od Regimentu
+    abstract void attackOrder(Regiment regimentToAttack);
+    abstract void moveToAttackOrder(Regiment regimentToAttack);
+    abstract void regroupOrder();
 
-    // Znajdz mi najbliższego wroga z enemyRegiment'u
     protected ArmyUnit findNearestEnemyIn(Regiment enemyRegiment){
         ArmyUnit myEnemy = null;
         Optional<ArmyUnit> myEnemyOptional = enemyRegiment.getFirstArmyUnit();

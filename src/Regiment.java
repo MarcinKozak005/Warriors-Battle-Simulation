@@ -1,18 +1,18 @@
 import java.awt.*;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class Regiment extends SimulationObject
 {
-    // Lista jednostek w Regimencie
     List<ArmyUnit> armyUnitList = new LinkedList<>();
-    Regiment enemyRegiment; // Wrogi Pułk
-    Handler handler; // handler obsluguje wszystkie obiekty (na razie w sumie wszystkie Regimenty)
-    static final float regimentCenterRadius = 100; // W tym obszarze od pulku mają być przy ruchu
-    static final float regimentRegroupRadius = 200; // Jak mają sie przegrupować, to mają się zbliżyć do Regimentu na taką odległośc
-    static final float regimentBorderRadius = 300; // Obiekty odległe o więcej niż to, to obiekty dalekie. Jak jest ich dużo to trzeba się przegrupować (patrz 1 linię wyżej)
-
+    List<ArmyUnit> toRemove = new LinkedList<>();
+    Regiment enemyRegiment;
+    Handler handler;
+    static final float regimentCenterRadius = 100;
+    static final float regimentRegroupRadius = 200;
+    static final float regimentBorderRadius = 300;
 
     public Regiment(float x, float y, Alliance alliance, Handler handler) {
         super(x, y, alliance);
@@ -26,12 +26,6 @@ public class Regiment extends SimulationObject
         armyUnitList.add(armyUnit);
     }
 
-    public void removeArmyUnit(ArmyUnit armyUnit){
-        armyUnitList.remove(armyUnit);
-    }
-
-    // Patrzebne w jednym momencie xD Ctrl+ LPP
-    // Optional<ArmyUnit> ma albo w sobie referencję ArmyUnit, albo null (w Haskellu było coś podobnego, ale nie pamiętam jak się nazywało xD)
     public Optional<ArmyUnit> getFirstArmyUnit()
     {
         try{
@@ -55,14 +49,27 @@ public class Regiment extends SimulationObject
         }
 
         //Tu będzie podejmowanie decyzji przez Regiment na podstawie "obserwacji"
-        // Na razie mamy wykonywanie tego samego dla wszystkich xD Tu możesz zmienić moveToAttackOrder na inne Ordery i powinno w miarę działać xD
-        for (ArmyUnit armyUnit: armyUnitList) armyUnit.moveToAttackOrder(enemyRegiment);
-        // Wykonaj akcję na każdym Army unit
+        for (ArmyUnit armyUnit: armyUnitList) armyUnit.attackOrder(enemyRegiment);
         // Po drodze List.shuffle żeby w losowej kolejności może ... ?
+
+        /*
+        Zmiana, bo wywalało ConcurrentModificationException
+        https://javastart.pl/baza-wiedzy/wyjatki/concurrentmodificationexception
+        https://www.baeldung.com/java-concurrentmodificationexception
+        */
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.tick();
+        this.removeDeadUnits();
     }
 
-    // Potrzebne do rysowania tych naszych zakresów (ana górze tej klasy te static'y)
+    public void safeToRemove(ArmyUnit armyUnit) {
+        toRemove.add(armyUnit);
+    }
+
+    private void removeDeadUnits() {
+        armyUnitList.removeAll(toRemove);
+        toRemove.clear();
+    }
+
     public void drawCircle(Graphics g, Color c, float radius)
     {
         g.setColor(c);
@@ -74,11 +81,12 @@ public class Regiment extends SimulationObject
         g.setColor(Color.YELLOW);
         g.fillRect((int)x,(int)y,7,7);
 
-        // Nasze zakresy
         drawCircle(g,Color.GREEN,regimentCenterRadius);
         drawCircle(g,Color.YELLOW,regimentRegroupRadius);
         drawCircle(g,Color.RED,regimentBorderRadius);
 
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.render(g);
     }
+
+
 }

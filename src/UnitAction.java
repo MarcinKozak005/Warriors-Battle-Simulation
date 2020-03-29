@@ -1,5 +1,5 @@
 public enum UnitAction {
     ATTACK(),
-    MOVE(),
+    MOVE_TO_ENEMY(),
     REGROUP()
 }

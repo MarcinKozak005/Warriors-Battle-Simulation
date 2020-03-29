@@ -31,7 +31,4 @@ public abstract class SimulationObject {
     {
         return this.getPosition().distance(simulationObject.getPosition());
     }
-
-
-
 }

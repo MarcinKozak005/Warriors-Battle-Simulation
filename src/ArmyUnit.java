@@ -1,10 +1,10 @@
-import java.awt.*;
+import java.util.Optional;
 
 public abstract class ArmyUnit extends SimulationObject
 {
     protected float hp;
-    protected float maxDMG;
     protected float minDMG;
+    protected float maxDMG;
     protected float attackRange; // zasięg "rąk"
     protected Regiment myRegiment;
     protected ArmyUnit myEnemy; // przechowywanie wybranego wroga do pozniejszego ataku
@@ -16,22 +16,23 @@ public abstract class ArmyUnit extends SimulationObject
         this.handler = handler;
     }
 
-    abstract void attackOrder(Regiment regiment);
-    abstract void moveOrder(Point point);
-    abstract void regroupOrder(Point point);
+    abstract void attackOrder(Regiment regimentToAttack);
+    abstract void moveToAttackOrder(Regiment regimentToAttack);
+    abstract void regroupOrder();
 
-    protected ArmyUnit findNearestEnemy(Regiment enemyRegiment)
-    {
+    protected ArmyUnit findNearestEnemyIn(Regiment enemyRegiment){
         ArmyUnit myEnemy = null;
-        // TODO Co gdy Regiment jest pusty ...? Czy może sie tak zdarzyć ?
-        double minimalDistance = this.getDistanceTo(enemyRegiment.unitList.get(0));
-        for(ArmyUnit armyUnit: enemyRegiment.unitList){
-            if(this.getDistanceTo(armyUnit) <= minimalDistance)
-            {
-                myEnemy = armyUnit;
+        Optional<ArmyUnit> myEnemyOptional = enemyRegiment.getFirstArmyUnit();
+
+        if(myEnemyOptional.isPresent())
+        {
+            myEnemy = myEnemyOptional.get();
+            double minimalDistance = this.getDistanceTo(myEnemy);
+            for(ArmyUnit armyUnit: enemyRegiment.armyUnitList){
+                if(this.getDistanceTo(armyUnit) <= minimalDistance)
+                    myEnemy = armyUnit;
             }
         }
         return myEnemy;
     }
-
 }

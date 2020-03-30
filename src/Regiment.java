@@ -1,12 +1,10 @@
 import java.awt.*;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 
 public class Regiment extends SimulationObject
 {
-    List<ArmyUnit> armyUnitList = new LinkedList<>();
+    LinkedList<ArmyUnit> armyUnitList = new LinkedList<>();
     List<ArmyUnit> toRemove = new LinkedList<>();
     Regiment enemyRegiment;
     Handler handler;
@@ -65,6 +63,33 @@ public class Regiment extends SimulationObject
         toRemove.add(armyUnit);
     }
 
+    /**
+     * Helper function to test functionalities easier. Not working as smoothly as desired.
+     * Adds units to the regiment passed as the argument in number specified in number.
+     * Possibilities of further modifications include allowing to pass class of units to add as an argument(only adds Infantry units for now).
+     * @param number Number of units to populate the regiment with
+     */
+    public void populateRegimentWithUnits(int number) {
+        Random random = new Random();
+        for (int i = 0; i < number; i++) {
+            this.addArmyUnit(new Infantry(this.x + (-25 + random.nextInt(10)*5), this.y + (-10 + random.nextInt(4))*5));
+            System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+        }
+    }
+
+    /**
+     * Adds side*side number of units to the regiment in position that forms a square formation.
+     * @param side Number of units at the side of the square
+     */
+    public void formationSquare(int side) {
+        for (int i = 20 * side; i > 0; i -= 20) {
+            for (int j = 20 * side; j > 0; j -= 20) {
+                this.addArmyUnit(new Infantry(this.x - 100 + i, this.y - 100 + j));
+                System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+            }
+        }
+    }
+
     private void removeDeadUnits() {
         armyUnitList.removeAll(toRemove);
         toRemove.clear();
@@ -79,7 +104,8 @@ public class Regiment extends SimulationObject
     @Override
     public void render(Graphics g){
         g.setColor(Color.YELLOW);
-        g.fillRect((int)x,(int)y,7,7);
+        //g.fillRect((int) ((x - 7)/2),(int) ((y -7)/2),7,7);
+        g.fillRect((int) (x - 7/2),(int) (y -7/2),7,7);
 
         drawCircle(g,Color.GREEN,regimentCenterRadius);
         drawCircle(g,Color.YELLOW,regimentRegroupRadius);

@@ -35,8 +35,31 @@ public class Infantry extends ArmyUnit {
         this.velX = (-1)*distanceX*this.maxVelocity/diagonalDistance;
         this.velY = (-1)*distanceY*this.maxVelocity/diagonalDistance;
 
-        x+=velX;
-        y+=velY;
+        float newX = x + velX;
+        float newY = y + velY;
+
+        // check if the new position will overlap another unit's position
+        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < 10)).count();
+
+        // check if the new position will overlap any of the enemy unit's position
+        // not working efficiently because army units sometimes eventually get stuck not being able to reach their desired enemies
+        boolean enemyMatches = myEnemy.myRegiment.armyUnitList.stream().anyMatch(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < 5));
+
+        if (matches <= 1) { //(matches <= 1 && !enemyMatches)
+            // if the new position won't overlap another unit's position it's safe to assume it
+            // not quite sure why are we comparing matches to 1, if we compare it to 0 as one could expect units won't move, and the more overlaps we allow the messier it gets
+            x = newX;
+            y = newY;
+        }
+        /* else {
+            // tried to change unit we're focused on, sometimes it works, sometimes units will get stuck anyway
+            this.attackOrder(myEnemy.myRegiment);
+        } */
+        // TODO for now the unit won't move as not to walk into any other unit
+        // possible solutions:
+        // * change the unit's myEnemy
+        // * get the unit to move along a curve to the targeted enemy instead of the straight line
+        // * get the unit to get as close as possible instead of not moving at all
     }
 
     private void regroupAction()
@@ -129,6 +152,7 @@ public class Infantry extends ArmyUnit {
     public void render(Graphics g) {
         if(this.alliance.equals(Alliance.Blue)) g.setColor(Color.BLUE);
         else g.setColor(Color.RED);
-        g.fillRect((int)x,(int)y,(int)infantryBlockSize,(int)infantryBlockSize);
+        //g.fillRect((int)((x - infantryBlockSize)/2),(int) ((y - infantryBlockSize)/2),(int)infantryBlockSize,(int)infantryBlockSize);
+        g.fillRect((int)(x - infantryBlockSize/2),(int) (y - infantryBlockSize/2),(int)infantryBlockSize,(int)infantryBlockSize);
     }
 }

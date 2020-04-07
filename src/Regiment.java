@@ -6,18 +6,22 @@ public class Regiment extends SimulationObject
 {
 
     public static final float regimentBlockSize = 10;
+    // Jak blisko musi być wrogi Regiment, by z move() przejśc na atak()
+    public static final float regimentInRangeDistance = 100;
+    static final float regimentCenterRadius = 100;
+    static final float regimentRegroupRadius = 150;
+    static final float regimentBorderRadius = 200;
+
 
     List<ArmyUnit> armyUnitList = new LinkedList<>();
     List<ArmyUnit> toRemove = new LinkedList<>();
     Regiment enemyRegiment;
     Handler handler;
-    static final float regimentCenterRadius = 100;
-    static final float regimentRegroupRadius = 200;
-    static final float regimentBorderRadius = 300;
 
     public Regiment(float x, float y, Alliance alliance, Handler handler) {
         super(x, y, alliance);
         this.handler = handler;
+        this.maxVelocity = Float.MAX_VALUE;
     }
 
     public void addArmyUnit(ArmyUnit armyUnit)
@@ -38,23 +42,51 @@ public class Regiment extends SimulationObject
 
     @Override
     public void tick() {
-        if (this.enemyRegiment == null)
+        if (this.enemyRegiment == null || !handler.simulationObjectList.contains(this.enemyRegiment))
         {
             try {
-                this.enemyRegiment = handler.getEnemyRegimentFor(this.alliance);
+                this.enemyRegiment = handler.getNearestEnemyFor(this);
             }
             catch (CantFindEnemyRegiment e)
             {
                 e.printStackTrace();
+                // Victory - Na pewno nie jest to najbardziej elegancki sposób xD
+                throw new RuntimeException();
             }
         }
 
-        //Tu będzie podejmowanie decyzji przez Regiment na podstawie "obserwacji"
-        for (ArmyUnit armyUnit: armyUnitList) armyUnit.attackOrder(enemyRegiment);
-        // Po drodze List.shuffle żeby w losowej kolejności może ... ?
+        // Decyzja Regimentu
+        if (meanDistanceToRegiment() >= regimentBorderRadius){ // Są poza Regimentem
+            for (ArmyUnit armyUnit: armyUnitList) armyUnit.regroupOrder();
+        }
+        else if(this.getDistanceTo(this.enemyRegiment) > regimentInRangeDistance){
+            for (ArmyUnit armyUnit: armyUnitList) armyUnit.moveToAttackOrder(enemyRegiment);
+
+            // Z jaka predkoscią bedzie poruszał się Regiment
+            this.maxVelocity = Float.MAX_VALUE;
+            for (ArmyUnit armyUnit: armyUnitList)
+                if(armyUnit.maxVelocity<this.maxVelocity) this.maxVelocity = armyUnit.maxVelocity;
+
+            setDirectionTo(enemyRegiment);
+            this.x += velX;
+            this.y += velY;
+        }
+        else if (this.getDistanceTo(this.enemyRegiment) <= regimentInRangeDistance){
+            for (ArmyUnit armyUnit: armyUnitList) armyUnit.attackOrder(enemyRegiment);
+        }
 
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.tick();
+
         this.removeDeadUnits();
+        if(this.armyUnitList.size() == 0) this.handler.safeToRemove(this);
+    }
+
+    public double meanDistanceToRegiment()
+    {
+        double sum = 0;
+        for (ArmyUnit armyUnit: armyUnitList) sum+=armyUnit.getDistanceTo(this);
+
+        return sum/armyUnitList.size();
     }
 
     public void safeToRemove(ArmyUnit armyUnit) {

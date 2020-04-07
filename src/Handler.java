@@ -4,14 +4,16 @@ import java.util.List;
 
 public class Handler {
 
-    //może druga lista na wszystkie jednostki -> od shuffle ...?
     List<SimulationObject> simulationObjectList = new LinkedList<>();
+    List<Regiment> toRemove = new LinkedList<>();
+
 
     public void tick(){
         for(SimulationObject simulationObject: simulationObjectList)
         {
             simulationObject.tick();
         }
+        simulationObjectList.removeAll(toRemove);
     }
 
     public void render(Graphics g){
@@ -24,19 +26,21 @@ public class Handler {
         this.simulationObjectList.add(object);
     }
 
-    public void removeSimulationObject(SimulationObject object){
-        this.simulationObjectList.remove(object);
+    public Regiment getNearestEnemyFor(Regiment regiment) throws CantFindEnemyRegiment {
+        double actualMinimum = Double.MAX_VALUE;
+        Regiment enemyRegiment = null;
+
+        for(SimulationObject object: simulationObjectList)
+        {
+            if(object.alliance != regiment.alliance && regiment.getDistanceTo(object)<actualMinimum)
+                enemyRegiment = (Regiment) object;
+        }
+
+        if( enemyRegiment == null) throw new CantFindEnemyRegiment();
+        return enemyRegiment;
     }
 
-    // Zwraca Pierwszy lepszy wrogi pulk
-    public Regiment getEnemyRegimentFor(Alliance alliance) throws CantFindEnemyRegiment {
-        for(SimulationObject simulationObject: simulationObjectList)
-        {
-            if(simulationObject.alliance != alliance) return (Regiment) simulationObject;
-        }
-        throw new CantFindEnemyRegiment();
+    public void safeToRemove(Regiment regiment){
+        toRemove.add(regiment);
     }
 }
-
-class CantFindEnemyRegiment extends Exception
-{}

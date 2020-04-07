@@ -1,0 +1,1 @@
+class CantFindEnemyRegiment extends Exception {}

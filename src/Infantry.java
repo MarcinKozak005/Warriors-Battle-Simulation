@@ -9,7 +9,8 @@ public class Infantry extends ArmyUnit {
         this.hp = 100;
         this.minDMG = 2;
         this.maxDMG = 10;
-        this.attackRange = infantryBlockSize;
+        // Taki zasięg rąk- mam nadzije że dzięki temu nie będą się tak blokowały.
+        this.attackRange = infantryBlockSize+infantryBlockSize/2;
         this.maxVelocity = 1;
     }
 
@@ -28,22 +29,14 @@ public class Infantry extends ArmyUnit {
 
     private void moveAction()
     {
-        float diagonalDistance = (float) this.getDistanceTo(myEnemy);
-        float distanceX = this.x - myEnemy.x;
-        float distanceY = this.y - myEnemy.y;
-
-        this.velX = (-1)*distanceX*this.maxVelocity/diagonalDistance;
-        this.velY = (-1)*distanceY*this.maxVelocity/diagonalDistance;
+        setDirectionTo(myEnemy);
 
         float newX = x + velX;
         float newY = y + velY;
 
         long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < Infantry.infantryBlockSize)).count();
 
-        // not working efficiently because army units sometimes eventually get stuck not being able to reach their desired enemies
-        boolean enemyMatches = myEnemy.myRegiment.armyUnitList.stream().anyMatch(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < 5));
-
-        if (matches <= 1) { //(matches <= 1 && !enemyMatches)
+        if (matches <= 1) {
             // not quite sure why are we comparing matches to 1, if we compare it to 0 as one could expect units won't move, and the more overlaps we allow the messier it gets
             x = newX;
             y = newY;
@@ -53,24 +46,22 @@ public class Infantry extends ArmyUnit {
             this.attackOrder(myEnemy.myRegiment);
         } */
 
-        // TODO for now the unit won't move as not to walk into any other unit
-        // possible solutions:
-        // * change the unit's myEnemy
-        // * get the unit to move along a curve to the targeted enemy instead of the straight line
-        // * get the unit to get as close as possible instead of not moving at all
     }
 
     private void regroupAction()
     {
-        float diagonalDistance = (float) this.getDistanceTo(myRegiment);
-        float distanceX = this.x - myRegiment.x;
-        float distanceY = this.y - myRegiment.y;
+        // Praktycznie identyczne jak Infantry.moveAction()
+        setDirectionTo(myRegiment);
 
-        this.velX = (-1)*distanceX*this.maxVelocity/diagonalDistance;
-        this.velY = (-1)*distanceY*this.maxVelocity/diagonalDistance;
+        float newX = x + velX;
+        float newY = y + velY;
 
-        x+=velX;
-        y+=velY;
+        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < Infantry.infantryBlockSize)).count();
+
+        if (matches <= 1) {
+            x = newX;
+            y = newY;
+        }
     }
 
     @Override
@@ -90,7 +81,7 @@ public class Infantry extends ArmyUnit {
     }
 
     @Override
-    void moveToAttackOrder(Regiment regimentToAttack) // idz zaatakować [kogo?]
+    void moveToAttackOrder(Regiment regimentToAttack)
     {
         /* Na razie szukamy tylko w WrogimRegimencieNo1 (to nie jest żadna nazwa zmiennej),
         potem można zrobić też żeby atakował wroga koło siebie, nawet jeśli ten wróg nie jest z WrogiegoRegimentuNo1

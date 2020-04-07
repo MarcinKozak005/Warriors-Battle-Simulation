@@ -18,7 +18,7 @@ public abstract class ArmyUnit extends SimulationObject
     abstract void moveToAttackOrder(Regiment regimentToAttack);
     abstract void regroupOrder();
 
-    protected ArmyUnit findNearestEnemyIn(Regiment enemyRegiment){
+    protected final ArmyUnit findNearestEnemyIn(Regiment enemyRegiment){
         ArmyUnit myEnemy = null;
         Optional<ArmyUnit> myEnemyOptional = enemyRegiment.getFirstArmyUnit();
 

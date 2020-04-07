@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.AbstractMap;
+import java.util.Map;
 
 public abstract class SimulationObject {
 
@@ -30,5 +32,15 @@ public abstract class SimulationObject {
     protected double getDistanceTo(SimulationObject simulationObject)
     {
         return this.getPosition().distance(simulationObject.getPosition());
+    }
+
+    protected void setDirectionTo(SimulationObject simulationObject)
+    {
+        float diagonalDistance = (float) this.getDistanceTo(simulationObject);
+        float distanceX = this.x - simulationObject.x;
+        float distanceY = this.y - simulationObject.y;
+
+        this.velX = (-1)*distanceX*this.maxVelocity/diagonalDistance;
+        this.velY = (-1)*distanceY*this.maxVelocity/diagonalDistance;
     }
 }

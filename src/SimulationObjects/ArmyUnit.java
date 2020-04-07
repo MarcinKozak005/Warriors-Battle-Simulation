@@ -1,3 +1,7 @@
+package SimulationObjects;
+
+import Enums.UnitAction;
+
 import java.util.Optional;
 
 public abstract class ArmyUnit extends SimulationObject

@@ -1,11 +1,17 @@
+package Simulation;
+
+import Exceptions.CantFindEnemyRegiment;
+import SimulationObjects.Regiment;
+import SimulationObjects.SimulationObject;
+
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Handler {
 
-    List<SimulationObject> simulationObjectList = new LinkedList<>();
-    List<Regiment> toRemove = new LinkedList<>();
+    public List<SimulationObject> simulationObjectList = new LinkedList<>();
+    public List<Regiment> toRemove = new LinkedList<>();
 
 
     public void tick(){

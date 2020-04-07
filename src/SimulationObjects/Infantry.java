@@ -1,3 +1,8 @@
+package SimulationObjects;
+
+import Enums.Alliance;
+import Enums.UnitAction;
+
 import java.awt.*;
 
 public class Infantry extends ArmyUnit {
@@ -50,7 +55,7 @@ public class Infantry extends ArmyUnit {
 
     private void regroupAction()
     {
-        // Praktycznie identyczne jak Infantry.moveAction()
+        // Praktycznie identyczne jak SimulationObjects.Infantry.moveAction()
         setDirectionTo(myRegiment);
 
         float newX = x + velX;

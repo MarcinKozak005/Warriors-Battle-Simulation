@@ -1,3 +1,9 @@
+package SimulationObjects;
+
+import Enums.Alliance;
+import Exceptions.CantFindEnemyRegiment;
+import Simulation.Handler;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -6,7 +12,7 @@ public class Regiment extends SimulationObject
 {
 
     public static final float regimentBlockSize = 10;
-    // Jak blisko musi być wrogi Regiment, by z move() przejśc na atak()
+    // Jak blisko musi być wrogi SimulationObjects.Regiment, by z move() przejśc na atak()
     public static final float regimentInRangeDistance = 100;
     static final float regimentCenterRadius = 100;
     static final float regimentRegroupRadius = 150;
@@ -62,7 +68,7 @@ public class Regiment extends SimulationObject
         else if(this.getDistanceTo(this.enemyRegiment) > regimentInRangeDistance){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.moveToAttackOrder(enemyRegiment);
 
-            // Z jaka predkoscią bedzie poruszał się Regiment
+            // Z jaka predkoscią bedzie poruszał się SimulationObjects.Regiment
             this.maxVelocity = Float.MAX_VALUE;
             for (ArmyUnit armyUnit: armyUnitList)
                 if(armyUnit.maxVelocity<this.maxVelocity) this.maxVelocity = armyUnit.maxVelocity;
@@ -96,14 +102,14 @@ public class Regiment extends SimulationObject
     /**
      * Helper function to test functionalities easier. Not working as smoothly as desired.
      * Adds units to the regiment passed as the argument in number specified in number.
-     * Possibilities of further modifications include allowing to pass class of units to add as an argument(only adds Infantry units for now).
+     * Possibilities of further modifications include allowing to pass class of units to add as an argument(only adds SimulationObjects.Infantry units for now).
      * @param number Number of units to populate the regiment with
      */
     public void populateRegimentWithUnits(int number) {
         Random random = new Random();
         for (int i = 0; i < number; i++) {
             this.addArmyUnit(new Infantry(this.x + (-25 + random.nextInt(10)*5), this.y + (-10 + random.nextInt(4))*5));
-            //System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+            //System.out.println("SimulationObjects.Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
         }
     }
 
@@ -115,7 +121,7 @@ public class Regiment extends SimulationObject
         for (int i = 20 * side; i > 0; i -= 20) {
             for (int j = 20 * side; j > 0; j -= 20) {
                 this.addArmyUnit(new Infantry(this.x - 100 + i, this.y - 100 + j));
-                //System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+                //System.out.println("SimulationObjects.Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
             }
         }
     }

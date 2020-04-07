@@ -3,7 +3,7 @@
 1. SimulationObjects.Infantry: Math.random na Random w dealDMGToEnemy()
 1. SimulationObjects.Infantry: Atak wrogów i innych Regimentów?
 1. SimulationObjects.Regiment: RozHardcodowanie SimulationObjects.Regiment.formationSquare()
-1.Nowa Klasa: Dodanie klasy Spawner, która będzie tworzyła jednostki w Regimencie? Takie wyniesienie metody tworzących żołnierzy do nowej klasy
+1. Nowa Klasa: Dodanie klasy Spawner, która będzie tworzyła jednostki w Regimencie? Takie wyniesienie metody tworzących żołnierzy do nowej klasy
 1. Ogólne: Wyskalowanie wszystkich wartości np:
     - radiusy Regimentu
     - siła ataku SimulationObjects.Infantry

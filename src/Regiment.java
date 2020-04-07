@@ -1,11 +1,12 @@
 import java.awt.*;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 
 public class Regiment extends SimulationObject
 {
+
+    public static final float regimentBlockSize = 10;
+
     List<ArmyUnit> armyUnitList = new LinkedList<>();
     List<ArmyUnit> toRemove = new LinkedList<>();
     Regiment enemyRegiment;
@@ -52,17 +53,39 @@ public class Regiment extends SimulationObject
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.attackOrder(enemyRegiment);
         // Po drodze List.shuffle żeby w losowej kolejności może ... ?
 
-        /*
-        Zmiana, bo wywalało ConcurrentModificationException
-        https://javastart.pl/baza-wiedzy/wyjatki/concurrentmodificationexception
-        https://www.baeldung.com/java-concurrentmodificationexception
-        */
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.tick();
         this.removeDeadUnits();
     }
 
     public void safeToRemove(ArmyUnit armyUnit) {
         toRemove.add(armyUnit);
+    }
+
+    /**
+     * Helper function to test functionalities easier. Not working as smoothly as desired.
+     * Adds units to the regiment passed as the argument in number specified in number.
+     * Possibilities of further modifications include allowing to pass class of units to add as an argument(only adds Infantry units for now).
+     * @param number Number of units to populate the regiment with
+     */
+    public void populateRegimentWithUnits(int number) {
+        Random random = new Random();
+        for (int i = 0; i < number; i++) {
+            this.addArmyUnit(new Infantry(this.x + (-25 + random.nextInt(10)*5), this.y + (-10 + random.nextInt(4))*5));
+            //System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+        }
+    }
+
+    /**
+     * Adds side*side number of units to the regiment in position that forms a square formation.
+     * @param side Number of units at the side of the square
+     */
+    public void formationSquare(int side) {
+        for (int i = 20 * side; i > 0; i -= 20) {
+            for (int j = 20 * side; j > 0; j -= 20) {
+                this.addArmyUnit(new Infantry(this.x - 100 + i, this.y - 100 + j));
+                //System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+            }
+        }
     }
 
     private void removeDeadUnits() {
@@ -79,7 +102,7 @@ public class Regiment extends SimulationObject
     @Override
     public void render(Graphics g){
         g.setColor(Color.YELLOW);
-        g.fillRect((int)x,(int)y,7,7);
+        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
 
         drawCircle(g,Color.GREEN,regimentCenterRadius);
         drawCircle(g,Color.YELLOW,regimentRegroupRadius);

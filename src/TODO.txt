@@ -1,6 +1,7 @@
 Simulation: Handler jako Singleton? Czy jest sens i warto?
 Infantry: Math.random na Random?
 Infantry (chyba): Kolizje (overlaping) między nimi -> zeby się nie nachodzili
+	* naprawione w obrębie jednego pułku, ale wrogowie nadal nachodzą na siebie, załatwienie tego w taki sam sposób zatyka czasem symulację
 Infantry: Atak wrogów i innych Regimentów?
 Regiment: Decyzja na podstawie obserwacji
 Regiment: Żeby się ruszał wtedy kied wydaje MoveToAttackOrder()

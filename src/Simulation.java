@@ -15,15 +15,19 @@ public class Simulation extends Canvas implements Runnable
         // TODO Czy handlera nie zrobić jako Singleton lub coś podobnego? Za duzo przekazywania go ...?
 
         Regiment r1 = new Regiment(300,300, Alliance.Blue, handler);
-        r1.addArmyUnit(new Infantry(300,290));
+        /*r1.addArmyUnit(new Infantry(300,290));
         r1.addArmyUnit(new Infantry(300,300));
-        r1.addArmyUnit(new Infantry(300,310));
+        r1.addArmyUnit(new Infantry(300,310));*/
+        //r1.populateRegimentWithUnits(25);
+        r1.formationSquare(10);
 
 
         Regiment r2 = new Regiment(600,300, Alliance.Red, handler);
-        r2.addArmyUnit(new Infantry(600,275));
+        /*r2.addArmyUnit(new Infantry(600,275));
         r2.addArmyUnit(new Infantry(620,325));
-        r2.addArmyUnit(new Infantry(600,325));
+        r2.addArmyUnit(new Infantry(600,325));*/
+        //r2.populateRegimentWithUnits(25);
+        r2.formationSquare(10);
 
         handler.addSimulationObject(r1);
         handler.addSimulationObject(r2);

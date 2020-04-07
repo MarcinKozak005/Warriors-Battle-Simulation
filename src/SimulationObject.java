@@ -2,7 +2,7 @@ import java.awt.*;
 
 public abstract class SimulationObject {
 
-    protected float x;
+    protected float x; //cooridinates of the center of the Object
     protected float y;
     protected float velX;
     protected float velY;

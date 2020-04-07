@@ -53,11 +53,6 @@ public class Regiment extends SimulationObject
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.attackOrder(enemyRegiment);
         // Po drodze List.shuffle żeby w losowej kolejności może ... ?
 
-        /*
-        Zmiana, bo wywalało ConcurrentModificationException
-        https://javastart.pl/baza-wiedzy/wyjatki/concurrentmodificationexception
-        https://www.baeldung.com/java-concurrentmodificationexception
-        */
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.tick();
         this.removeDeadUnits();
     }
@@ -107,7 +102,6 @@ public class Regiment extends SimulationObject
     @Override
     public void render(Graphics g){
         g.setColor(Color.YELLOW);
-        //g.fillRect((int) ((x - 7)/2),(int) ((y -7)/2),7,7);
         g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
 
         drawCircle(g,Color.GREEN,regimentCenterRadius);

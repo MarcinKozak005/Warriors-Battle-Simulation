@@ -18,7 +18,7 @@ public class Simulation extends Canvas implements Runnable
         /*r1.addArmyUnit(new Infantry(300,290));
         r1.addArmyUnit(new Infantry(300,300));
         r1.addArmyUnit(new Infantry(300,310));*/
-        //r1.populateRegimentWithUnits(3);
+        //r1.populateRegimentWithUnits(25);
         r1.formationSquare(10);
 
 

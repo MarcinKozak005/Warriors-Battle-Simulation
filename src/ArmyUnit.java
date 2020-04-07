@@ -27,8 +27,10 @@ public abstract class ArmyUnit extends SimulationObject
             myEnemy = myEnemyOptional.get();
             double minimalDistance = this.getDistanceTo(myEnemy);
             for(ArmyUnit armyUnit: enemyRegiment.armyUnitList){
-                if(this.getDistanceTo(armyUnit) <= minimalDistance)
+                if(this.getDistanceTo(armyUnit) <= minimalDistance) {
+                    minimalDistance = this.getDistanceTo(armyUnit);
                     myEnemy = armyUnit;
+                }
             }
         }
         return myEnemy;

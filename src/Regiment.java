@@ -4,7 +4,10 @@ import java.util.List;
 
 public class Regiment extends SimulationObject
 {
-    LinkedList<ArmyUnit> armyUnitList = new LinkedList<>();
+
+    public static final float regimentBlockSize = 10;
+
+    List<ArmyUnit> armyUnitList = new LinkedList<>();
     List<ArmyUnit> toRemove = new LinkedList<>();
     Regiment enemyRegiment;
     Handler handler;
@@ -73,7 +76,7 @@ public class Regiment extends SimulationObject
         Random random = new Random();
         for (int i = 0; i < number; i++) {
             this.addArmyUnit(new Infantry(this.x + (-25 + random.nextInt(10)*5), this.y + (-10 + random.nextInt(4))*5));
-            System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+            //System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
         }
     }
 
@@ -85,7 +88,7 @@ public class Regiment extends SimulationObject
         for (int i = 20 * side; i > 0; i -= 20) {
             for (int j = 20 * side; j > 0; j -= 20) {
                 this.addArmyUnit(new Infantry(this.x - 100 + i, this.y - 100 + j));
-                System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+                //System.out.println("Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
             }
         }
     }
@@ -105,7 +108,7 @@ public class Regiment extends SimulationObject
     public void render(Graphics g){
         g.setColor(Color.YELLOW);
         //g.fillRect((int) ((x - 7)/2),(int) ((y -7)/2),7,7);
-        g.fillRect((int) (x - 7/2),(int) (y -7/2),7,7);
+        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
 
         drawCircle(g,Color.GREEN,regimentCenterRadius);
         drawCircle(g,Color.YELLOW,regimentRegroupRadius);

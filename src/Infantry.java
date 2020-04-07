@@ -22,7 +22,7 @@ public class Infantry extends ArmyUnit {
         float DMGDealt = (float) (minDMG + Math.random() * (maxDMG - minDMG));
         if (myEnemy != null) {
             myEnemy.hp -= DMGDealt;
-            System.out.println(this + " dealt: "+ DMGDealt+" to: "+ myEnemy);
+            //System.out.println(this + " dealt: "+ DMGDealt+" to: "+ myEnemy);
         }
     }
 
@@ -39,7 +39,7 @@ public class Infantry extends ArmyUnit {
         float newY = y + velY;
 
         // check if the new position will overlap another unit's position
-        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < 10)).count();
+        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < Infantry.infantryBlockSize)).count();
 
         // check if the new position will overlap any of the enemy unit's position
         // not working efficiently because army units sometimes eventually get stuck not being able to reach their desired enemies

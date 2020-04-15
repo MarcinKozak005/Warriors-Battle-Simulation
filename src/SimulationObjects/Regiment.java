@@ -62,7 +62,7 @@ public class Regiment extends SimulationObject
         }
 
         // Decyzja Regimentu
-        if (meanDistanceToRegiment() >= regimentBorderRadius){ // Są poza Regimentem
+        if (meanDistanceToRegiment() >= regimentBorderRadius){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.regroupOrder();
         }
         else if(this.getDistanceTo(this.enemyRegiment) > regimentInRangeDistance){

@@ -20,31 +20,41 @@ public class Simulation extends Canvas implements Runnable
         // TODO Czy handlera nie zrobić jako Singleton lub coś podobnego? Za duzo przekazywania go ...?
 
         Regiment r1 = new Regiment(300,300, Alliance.Blue, handler);
-        //r1.addArmyUnit(new SimulationObjects.Infantry(100,300));
-        //r1.addArmyUnit(new SimulationObjects.Infantry(200,700));
-        //r1.addArmyUnit(new SimulationObjects.Infantry(300,800));
+//        r1.addArmyUnit(new SimulationObjects.Infantry(100,300));
+//        r1.addArmyUnit(new SimulationObjects.Infantry(300,300));
+//        r1.addArmyUnit(new SimulationObjects.Infantry(300,310));
+//        r1.addArmyUnit(new SimulationObjects.Infantry(310,300));
+//        r1.addArmyUnit(new SimulationObjects.Infantry(310,310));
+//        r1.addArmyUnit(new SimulationObjects.Infantry(200,700));
+//        r1.addArmyUnit(new SimulationObjects.Infantry(600,200));
         //r1.populateRegimentWithUnits(25);
-        r1.formationSquare(3); // 20 70 100 100
+        r1.formationSquare(6); // 20 70 100 100
 
 
-        Regiment r2 = new Regiment(600,150, Alliance.Red, handler);
+        Regiment r2 = new Regiment(500,500, Alliance.Red, handler);
+//        r2.addArmyUnit(new SimulationObjects.Infantry(WIDTH-300,310));
+//        r2.addArmyUnit(new SimulationObjects.Infantry(WIDTH-300,300));
+//        r2.addArmyUnit(new SimulationObjects.Infantry(WIDTH-310,310));
+//        r2.addArmyUnit(new SimulationObjects.Infantry(WIDTH-310,300));
+//        r2.addArmyUnit(new SimulationObjects.Infantry(WIDTH-320,310));
+//        r2.addArmyUnit(new SimulationObjects.Infantry(WIDTH-320,300));
+//        r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
+//        r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));
+//        r2.addArmyUnit(new SimulationObjects.Infantry(1640,700));
+//        r2.populateRegimentWithUnits(25);
+        r2.formationSquare(3);
+
+        Regiment r3 = new Regiment(300,700, Enums.Alliance.Red, handler);
         //r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
         //r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));
         //r2.addArmyUnit(new SimulationObjects.Infantry(1640,700));
         //r2.populateRegimentWithUnits(25);
-        r2.formationSquare(2);
-
-        //SimulationObjects.Regiment r3 = new SimulationObjects.Regiment(600,450, Enums.Alliance.Red, handler);
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1640,700));
-        //r2.populateRegimentWithUnits(25);
-        //r3.formationSquare(5);
+        r3.formationSquare(3);
 
 
         handler.addSimulationObject(r1);
         handler.addSimulationObject(r2);
-        //handler.addSimulationObject(r3);
+        handler.addSimulationObject(r3);
 
         new Window(WIDTH, HEIGHT, "Warriors Simulation.Simulation", this);
     }

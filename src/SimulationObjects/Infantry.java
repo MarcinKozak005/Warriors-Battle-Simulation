@@ -20,6 +20,7 @@ public class Infantry extends ArmyUnit {
         // Taki zasięg rąk- mam nadzije że dzięki temu nie będą się tak blokowały.
         this.attackRange = infantryBlockSize+infantryBlockSize/2;
         this.maxVelocity = 1;
+        this.safeArea = this.attackRange;
     }
 
     private void attackAction() {
@@ -90,8 +91,14 @@ public class Infantry extends ArmyUnit {
     @Override
     void attackOrder(Regiment regimentToAttack) {
         ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
-        if (enemy == null) this.unitAction = null;
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if (enemy == null) this.unitAction = null;
         else if(this.getDistanceTo(enemy) < this.attackRange)
         {
             this.myEnemy = enemy;
@@ -111,8 +118,14 @@ public class Infantry extends ArmyUnit {
         (tylko np No2) */
 
         ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
-        if (enemy == null) this.unitAction = null;
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if (enemy == null) this.unitAction = null;
         else if(this.getDistanceTo(enemy) < this.attackRange)
         {
             this.myEnemy = enemy;
@@ -131,8 +144,14 @@ public class Infantry extends ArmyUnit {
     @Override
     void regroupOrder(){
         ArmyUnit enemy = this.findNearestEnemyIn(this.myRegiment.enemyRegiment);
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
-        if (enemy == null) this.unitAction = null;
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if (enemy == null) this.unitAction = null;
         else if(this.getDistanceTo(enemy) < this.attackRange)
         {
             this.myEnemy = enemy;

@@ -2,6 +2,7 @@ package SimulationObjects;
 
 import Enums.UnitAction;
 
+import java.awt.*;
 import java.util.Optional;
 
 public abstract class ArmyUnit extends SimulationObject
@@ -15,6 +16,7 @@ public abstract class ArmyUnit extends SimulationObject
     protected Regiment myRegiment;
     protected ArmyUnit myEnemy;
     protected UnitAction unitAction;
+    protected float safeArea; // jeżeli wróg jest w tym obszarze, to atakuj go niezależnie w jakim Regimencie jest.
 
     public ArmyUnit(float x, float y) {
         super(x, y);
@@ -40,5 +42,35 @@ public abstract class ArmyUnit extends SimulationObject
             }
         }
         return myEnemy;
+    }
+
+    protected final ArmyUnit getEnemyInSafeArea()
+    {
+        double minDistance = safeArea + 10; // równie dobrze może być +20 lub +50. Chodzi żeby było coś dużego.
+        Point topLeft = new Point( (int)(this.x-safeArea), (int)(this.y-safeArea) );
+        Point bottomRight = new Point( (int)(this.x+safeArea), (int)(this.y+safeArea) );
+        ArmyUnit enemy = null;
+
+        for(SimulationObject simulationObject: myRegiment.handler.simulationObjectList)
+        {
+            Regiment regiment = (Regiment) simulationObject;
+            if(!regiment.alliance.equals(this.alliance) && regiment!=this.myRegiment.enemyRegiment)
+            {
+                for(ArmyUnit armyUnit: regiment.armyUnitList)
+                {
+                    if(armyUnit.inMySafeArea(topLeft,bottomRight) && armyUnit.getDistanceTo(this) <= minDistance)
+                    {
+                        minDistance = armyUnit.getDistanceTo(this);
+                        enemy = armyUnit;
+                    }
+                }
+            }
+        }
+        return enemy;
+    }
+
+    protected final boolean inMySafeArea(Point topLeft, Point bottomRight)
+    {
+        return this.x > topLeft.x && this.x < bottomRight.x && this.y > topLeft.y && this.y < bottomRight.y;
     }
 }

@@ -1,6 +1,5 @@
 ## TODO
 1. Simulation.Simulation: Simulation.Handler jako Singleton? Czy jest sens i warto?
-1. SimulationObjects.Infantry: Atak wrogów i innych Regimentów?
 1. Nowa Klasa: Dodanie klasy Spawner, która będzie tworzyła jednostki w Regimencie? Takie wyniesienie metody tworzących żołnierzy do nowej klasy
 1. Ogólne: GetMinimal? - zauważyłem że często liczymy jakieś minimum ze wszystkich obiektów- może funkcja do tego ...?
 1. SimulationObjects.Infantry: Jak zaklinowany, to zmiana focus'a?
@@ -51,7 +50,6 @@
 	- naprawione w obrębie jednego pułku, ale wrogowie nadal nachodzą na siebie, załatwienie tego w taki sam sposób zatyka czasem symulację
 	SOLVED: Na razie nie powinni na siebie nachodzić- jak są blisko to się atakują (czyli są nieruchomo). Więc nie powinno raczej dojść do sytuacji, że na siebie "wejdą"	
 	
-
 2. SimulationObjects.Regiment: Decyzja na podstawie obserwacji
     SOLVED: Dodano
 3. SimulationObjects.Regiment: Żeby się ruszał wtedy kied wydaje MoveToAttackOrder()
@@ -63,5 +61,7 @@
 6. SimulationObjects.Infantry: funkcja do ruchu (jest zduplikowany kod ... ?)
     SOLVED: Dodano funkcję w SimulationObjects.SimulationObject.setDirectionTo(SimulationObjects.SimulationObject)
 1. Ogólne: Rozmieszczenie plików do package's
+    SOLVED: Zrobione
+1. SimulationObjects.Infantry: Atak wrogów i innych Regimentów?
     SOLVED: Zrobione
 

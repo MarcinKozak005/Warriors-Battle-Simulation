@@ -17,7 +17,6 @@ public class Infantry extends ArmyUnit {
         this.maxDMG = 25;
         this.meanDMG = 12;
         this.stdDMG = 6;
-        // Taki zasięg rąk- mam nadzije że dzięki temu nie będą się tak blokowały.
         this.attackRange = infantryBlockSize+infantryBlockSize/2;
         this.maxVelocity = 1;
         this.safeArea = this.attackRange;
@@ -28,10 +27,6 @@ public class Infantry extends ArmyUnit {
     }
 
     private void dealDMGToEnemy() {
-        // new Random jest chyba lepszy niż Math.random, ale na razie jest tak xD
-        //float DMGDealt = (float) (minDMG + Math.random() * (maxDMG - minDMG));
-        //Random rand = new Random().setSeed();
-
         // dealt damage calculated as a random number from normal distribution (mean = meanDMG, std = stdDMG),
         // damage has to be greater or equal minDMG and can't exceed maxDMG
         float DMGDealt = Math.min(Math.max((float) new Random().nextGaussian()*stdDMG + meanDMG, minDMG), maxDMG);
@@ -113,10 +108,6 @@ public class Infantry extends ArmyUnit {
     @Override
     void moveToAttackOrder(Regiment regimentToAttack)
     {
-        /* Na razie szukamy tylko w WrogimRegimencieNo1 (to nie jest żadna nazwa zmiennej),
-        potem można zrobić też żeby atakował wroga koło siebie, nawet jeśli ten wróg nie jest z WrogiegoRegimentuNo1
-        (tylko np No2) */
-
         ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 

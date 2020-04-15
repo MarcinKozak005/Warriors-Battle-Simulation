@@ -39,8 +39,10 @@ public class Handler {
 
         for(SimulationObject object: simulationObjectList)
         {
-            if(object.alliance != regiment.alliance && regiment.getDistanceTo(object)<actualMinimum)
+            if(object.alliance != regiment.alliance && regiment.getDistanceTo(object)<actualMinimum){
                 enemyRegiment = (Regiment) object;
+                actualMinimum = regiment.getDistanceTo(object);
+            }
         }
 
         if( enemyRegiment == null) throw new CantFindEnemyRegiment();

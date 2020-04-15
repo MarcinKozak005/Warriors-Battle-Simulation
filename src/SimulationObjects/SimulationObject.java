@@ -45,4 +45,23 @@ public abstract class SimulationObject {
         this.velX = (-1)*distanceX*this.maxVelocity/diagonalDistance;
         this.velY = (-1)*distanceY*this.maxVelocity/diagonalDistance;
     }
+
+    public void setAlternativeDirectionTo(SimulationObject simulationObject) {
+        // tylko szkielet, w dodatku koncepcyjnie błędny
+
+        float diagonalDistance = (float) this.getDistanceTo(simulationObject);
+        float distanceX = this.x - simulationObject.x;
+        float distanceY = this.y - simulationObject.y;
+
+        //if distanceX is small () change velX
+        if (distanceX < 15) {
+            //this.velX = (float) (-1)*distanceX*this.maxVelocity/diagonalDistance;
+            this.velX = maxVelocity;
+        }
+        // if distanceY is small change velY
+        if (distanceY < 15) {
+            //this.velY = (float) (-1)*distanceY*this.maxVelocity/diagonalDistance;
+            this.velY = maxVelocity;
+        }
+    }
 }

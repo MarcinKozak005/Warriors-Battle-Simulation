@@ -24,16 +24,16 @@ public class Simulation extends Canvas implements Runnable
         //r1.addArmyUnit(new SimulationObjects.Infantry(200,700));
         //r1.addArmyUnit(new SimulationObjects.Infantry(300,800));
         //r1.populateRegimentWithUnits(25);
-        r1.formationSquare(3); // 20 70 100 100
+        r1.formationSquare(10, false);
 
-
-        Regiment r2 = new Regiment(600,150, Alliance.Red, handler);
+        Regiment r2 = new Regiment(900,300, Alliance.Red, handler);
         //r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
         //r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));
         //r2.addArmyUnit(new SimulationObjects.Infantry(1640,700));
         //r2.populateRegimentWithUnits(25);
-        r2.formationSquare(2);
+        r2.formationSquare(10, true );
 
+        //Regiment r3 = new Regiment(900, 900, Alliance.Blue, handler);
         //SimulationObjects.Regiment r3 = new SimulationObjects.Regiment(600,450, Enums.Alliance.Red, handler);
         //r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
         //r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));

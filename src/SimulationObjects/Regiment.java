@@ -14,9 +14,9 @@ public class Regiment extends SimulationObject
     public static final float regimentBlockSize = 10;
     // Jak blisko musi być wrogi SimulationObjects.Regiment, by z move() przejśc na atak()
     public static final float regimentInRangeDistance = 100;
-    static final float regimentCenterRadius = 100;
-    static final float regimentRegroupRadius = 150;
-    static final float regimentBorderRadius = 200;
+    static final float regimentCenterRadius = 150;
+    static final float regimentRegroupRadius = 200;
+    static final float regimentBorderRadius = 300;
 
 
     List<ArmyUnit> armyUnitList = new LinkedList<>();
@@ -114,14 +114,29 @@ public class Regiment extends SimulationObject
     }
 
     /**
-     * Adds side*side number of units to the regiment in position that forms a square formation.
+     * Adds side*side number of units to the regiment in position that forms a square formation with evenly
+     * or densely distributed units depending on the value of evenlyDistributed.
      * @param side Number of units at the side of the square
+     * @param evenlyDistributed Flag defining units distribution.
+     *                          If true distribution of units in regiment field is even (sparse distribution if side is small).
+     *                          If false distance between units is fixed and equal to unit's size.
      */
-    public void formationSquare(int side) {
-        for (int i = 20 * side; i > 0; i -= 20) {
-            for (int j = 20 * side; j > 0; j -= 20) {
-                this.addArmyUnit(new Infantry(this.x - 100 + i, this.y - 100 + j));
-                //System.out.println("SimulationObjects.Regiment " + this + "'s unit position: (" + armyUnitList.getLast().getPosition() + ")");
+    public void formationSquare(int side, boolean evenlyDistributed) {
+        float baseX = 0;
+        float baseY = 0;
+        float step = 0;
+        if (evenlyDistributed) {
+            baseX = this.x - regimentCenterRadius / (float) Math.sqrt(2);
+            baseY = this.y - regimentCenterRadius / (float) Math.sqrt(2);
+            step = 2 * regimentCenterRadius / (float) (Math.sqrt(2) * (side - 1));
+        } else {
+            baseX = this.x - side*Infantry.infantryBlockSize;
+            baseY = this.y - side*Infantry.infantryBlockSize;
+            step = 2*Infantry.infantryBlockSize;
+        }
+        for (int i = 0; i < side; i++) {
+            for (int j = 0; j < side; j++) {
+                this.addArmyUnit(new Infantry(baseX + i*step, baseY + j*step));
             }
         }
     }

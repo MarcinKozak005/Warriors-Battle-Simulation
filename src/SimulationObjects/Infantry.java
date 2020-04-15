@@ -4,16 +4,19 @@ import Enums.Alliance;
 import Enums.UnitAction;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Infantry extends ArmyUnit {
 
-    public static final float infantryBlockSize = 10;
+    public static final float infantryBlockSize = 5;
 
     public Infantry(float x, float y) {
         super(x, y);
         this.hp = 100;
-        this.minDMG = 2;
-        this.maxDMG = 10;
+        this.minDMG = 0;
+        this.maxDMG = 25;
+        this.meanDMG = 12;
+        this.stdDMG = 6;
         // Taki zasięg rąk- mam nadzije że dzięki temu nie będą się tak blokowały.
         this.attackRange = infantryBlockSize+infantryBlockSize/2;
         this.maxVelocity = 1;
@@ -25,13 +28,23 @@ public class Infantry extends ArmyUnit {
 
     private void dealDMGToEnemy() {
         // new Random jest chyba lepszy niż Math.random, ale na razie jest tak xD
-        float DMGDealt = (float) (minDMG + Math.random() * (maxDMG - minDMG));
+        //float DMGDealt = (float) (minDMG + Math.random() * (maxDMG - minDMG));
+        //Random rand = new Random().setSeed();
+
+        // dealt damage calculated as a random number from normal distribution (mean = meanDMG, std = stdDMG),
+        // damage has to be greater or equal minDMG and can't exceed maxDMG
+        float DMGDealt = Math.min(Math.max((float) new Random().nextGaussian()*stdDMG + meanDMG, minDMG), maxDMG);
         if (myEnemy != null) {
             myEnemy.hp -= DMGDealt;
             //System.out.println(this + " dealt: "+ DMGDealt+" to: "+ myEnemy);
         }
     }
 
+    private boolean willOverlapWithAnother(float newX, float newY) {
+        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < Infantry.infantryBlockSize)).count();
+        return (matches > 1);
+
+    }
     private void moveAction()
     {
         setDirectionTo(myEnemy);
@@ -39,18 +52,23 @@ public class Infantry extends ArmyUnit {
         float newX = x + velX;
         float newY = y + velY;
 
-        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < Infantry.infantryBlockSize)).count();
-
-        if (matches <= 1) {
-            // not quite sure why are we comparing matches to 1, if we compare it to 0 as one could expect units won't move, and the more overlaps we allow the messier it gets
+        if (!willOverlapWithAnother(newX, newY)) {
             x = newX;
             y = newY;
         }
-        /* else {
-            // tried to change unit we're focused on, sometimes it works, sometimes units will get stuck anyway
-            this.attackOrder(myEnemy.myRegiment);
+        /* doesn't work properly because setCurvedDirectionTo(myEnemy) is only a suggestion yet
+        else {
+            // approach the enemy moving along a curve
+            setCurvedDirectionTo(myEnemy);
+            newX = x + velX;
+            newY = y + velY;
+            if (!willOverlapWithAnother(newX, newY)) {
+            x += velX;
+            y += velY;
+            } else {
+                this.attackOrder(myEnemy.myRegiment);
+            }
         } */
-
     }
 
     private void regroupAction()

@@ -9,6 +9,8 @@ public abstract class ArmyUnit extends SimulationObject
     protected float hp;
     protected float minDMG;
     protected float maxDMG;
+    protected float meanDMG;
+    protected float stdDMG;
     protected float attackRange;
     protected Regiment myRegiment;
     protected ArmyUnit myEnemy;

@@ -33,6 +33,7 @@ public abstract class ArmyUnit extends SimulationObject
     }
 
     protected boolean setAlternativeDirectionTo(SimulationObject simulationObject) {
+        // TODO nie musi nic zwracać
         // wyznacz prostą łączącą dwa obiekty
         float diagonalDistance = (float) this.getDistanceTo(simulationObject);
         float distanceX = this.x - simulationObject.x;
@@ -44,6 +45,22 @@ public abstract class ArmyUnit extends SimulationObject
 //        if (Math.abs(this.x - simulationObject.x) < 20 || Math.abs(this.y - simulationObject.y) < 20) {
 //            return false;
 //        }
+        if (Math.abs(this.y - simulationObject.y) < 40) {
+            // idź pod kątem 45 stopni
+            newDistanceX = distanceX/2;
+            newDistanceY = newDistanceX;
+            if (willOverlapWithAnother(this.x+newDistanceX, this.y+newDistanceY)){
+                newDistanceY = (-1)*newDistanceY;
+            }
+        }
+        if (Math.abs(this.x - simulationObject.x) < 40) {
+            // idź pod kątem 45 stopni
+            newDistanceY = distanceY/2;
+            newDistanceX = newDistanceY;
+            if (willOverlapWithAnother(this.x+newDistanceX, this.y+newDistanceY)){
+                newDistanceX = (-1)*newDistanceX;
+            }
+        }
         if (simulationObject.x - this.x > 0) {
             a = distanceY-distanceX;
             b = (float) (Math.pow(distanceY, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceX * (-1);
@@ -57,17 +74,7 @@ public abstract class ArmyUnit extends SimulationObject
         }
         this.velX = (-1)*(newDistanceX)*this.maxVelocity/diagonalDistance;
         this.velY = (-1)*(newDistanceY)*this.maxVelocity/diagonalDistance;
-        // sprawdź czy kąt 45 stopni styknie (tak - zmień velY i velX i zwróć true)
-        //float a = distanceY - distanceX;
-        //float b = (float) (Math.pow(distanceY, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/4))/distanceX * (-1);
-        //float newvelX
-        //this.velX = (-1)*(distanceX+a)*this.maxVelocity/diagonalDistance;
-        //float newvelY
-        //this.velY = (-1)*(distanceY-b)*this.maxVelocity/diagonalDistance;
-        // sprawdź czy kąt - 45 stopni styknie
-        // sprawdż czy kąt 60 stopni styknie
-        // sprawdź czy kąt -60 stopni styknie
-        // optional: 90 i -90
+
         return true;
     }
 

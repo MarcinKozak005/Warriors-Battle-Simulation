@@ -47,28 +47,19 @@ public class Infantry extends ArmyUnit {
             x = newX;
             y = newY;
         }
-        //doesn't work properly because setCurvedDirectionTo(myEnemy) is only a suggestion yet
         else {
             setAlternativeDirectionTo(myEnemy);
             newX = x + velX;
             newY = y + velY;
-            if (!willOverlapWithAnother(newX, newY)) {
+            // second and third conditions are patching the bug with soldiers appearing VERY far away from their regiment
+            if (!willOverlapWithAnother(newX, newY)&& Math.abs(this.x - newX) < 45 && Math.abs(this.y - newY) < 45) {
                 x = newX;
                 y = newY;
+            } else {
+                // not sure about usage of this one maybe myEnemy = this.findNearestEnemyIn(myEnemy.myRegiment); would be a better fix
+                myEnemy = getEnemyInSafeArea();
             }
         }
-//        else {
-//            // approach the enemy moving along a curve
-//            setAlternativeDirectionTo(myEnemy);
-//            newX = x + velX;
-//            newY = y + velY;
-//            if (!willOverlapWithAnother(newX, newY)) {
-//            x += velX;
-//            y += velY;
-//            } else {
-//                this.attackOrder(myEnemy.myRegiment);
-//            }
-//        }
     }
 
     private void regroupAction()

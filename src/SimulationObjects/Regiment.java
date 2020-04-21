@@ -55,7 +55,8 @@ public class Regiment extends SimulationObject
             }
             catch (CantFindEnemyRegiment e)
             {
-                e.printStackTrace();
+                System.out.println("-------- " + this.alliance.toString().toUpperCase() + "'S VICTORY --------");
+                //e.printStackTrace();
                 // Victory - Na pewno nie jest to najbardziej elegancki sposób xD
                 throw new RuntimeException();
             }

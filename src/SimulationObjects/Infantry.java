@@ -36,11 +36,6 @@ public class Infantry extends ArmyUnit {
         }
     }
 
-    private boolean willOverlapWithAnother(float newX, float newY) {
-        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < Infantry.infantryBlockSize)).count();
-        return (matches > 1);
-
-    }
     private void moveAction()
     {
         setDirectionTo(myEnemy);
@@ -52,19 +47,28 @@ public class Infantry extends ArmyUnit {
             x = newX;
             y = newY;
         }
-        /* doesn't work properly because setCurvedDirectionTo(myEnemy) is only a suggestion yet
+        //doesn't work properly because setCurvedDirectionTo(myEnemy) is only a suggestion yet
         else {
-            // approach the enemy moving along a curve
-            setCurvedDirectionTo(myEnemy);
+            setAlternativeDirectionTo(myEnemy);
             newX = x + velX;
             newY = y + velY;
             if (!willOverlapWithAnother(newX, newY)) {
-            x += velX;
-            y += velY;
-            } else {
-                this.attackOrder(myEnemy.myRegiment);
+                x = newX;
+                y = newY;
             }
-        } */
+        }
+//        else {
+//            // approach the enemy moving along a curve
+//            setAlternativeDirectionTo(myEnemy);
+//            newX = x + velX;
+//            newY = y + velY;
+//            if (!willOverlapWithAnother(newX, newY)) {
+//            x += velX;
+//            y += velY;
+//            } else {
+//                this.attackOrder(myEnemy.myRegiment);
+//            }
+//        }
     }
 
     private void regroupAction()

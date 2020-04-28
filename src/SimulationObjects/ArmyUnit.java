@@ -4,6 +4,7 @@ import Enums.UnitAction;
 
 import java.awt.*;
 import java.util.Optional;
+import java.util.Random;
 
 public abstract class ArmyUnit extends SimulationObject
 {
@@ -40,34 +41,39 @@ public abstract class ArmyUnit extends SimulationObject
         float distanceY = this.y - simulationObject.y;
 
         float a, b, newDistanceX, newDistanceY;
-        // sprawdź przypadek
-        // TODO przypadki graniczne
-//        if (Math.abs(this.x - simulationObject.x) < 20 || Math.abs(this.y - simulationObject.y) < 20) {
-//            return false;
+        float r = new Random().nextFloat();
+
+//        if (Math.abs(this.y - simulationObject.y) < 40) {
+//            // idź pod kątem 45 stopni
+//            newDistanceX = distanceX/2;
+//            newDistanceY = newDistanceX;
+//            if (willOverlapWithAnother(this.x+newDistanceX, this.y+newDistanceY)){
+//                newDistanceY = (-1)*newDistanceY;
+//            }
+//            this.velX = (-1)*(newDistanceX)*this.maxVelocity/diagonalDistance;
+//            this.velY = (-1)*(newDistanceY)*this.maxVelocity/diagonalDistance;
+//
+//            return true;
 //        }
-        if (Math.abs(this.y - simulationObject.y) < 40) {
-            // idź pod kątem 45 stopni
-            newDistanceX = distanceX/2;
-            newDistanceY = newDistanceX;
-            if (willOverlapWithAnother(this.x+newDistanceX, this.y+newDistanceY)){
-                newDistanceY = (-1)*newDistanceY;
-            }
-        }
-        if (Math.abs(this.x - simulationObject.x) < 40) {
-            // idź pod kątem 45 stopni
-            newDistanceY = distanceY/2;
-            newDistanceX = newDistanceY;
-            if (willOverlapWithAnother(this.x+newDistanceX, this.y+newDistanceY)){
-                newDistanceX = (-1)*newDistanceX;
-            }
-        }
-        if (simulationObject.x - this.x > 0) {
-            a = distanceY-distanceX;
+//        if (Math.abs(this.x - simulationObject.x) < 40) {
+//            // idź pod kątem 45 stopni
+//            newDistanceY = distanceY/2;
+//            newDistanceX = newDistanceY;
+//            if (willOverlapWithAnother(this.x+newDistanceX, this.y+newDistanceY)){
+//                newDistanceX = (-1)*newDistanceX;
+//            }
+//            this.velX = (-1)*(newDistanceX)*this.maxVelocity/diagonalDistance;
+//            this.velY = (-1)*(newDistanceY)*this.maxVelocity/diagonalDistance;
+//
+//            return true;
+//        }
+        if (r > 0.5) { //(simulationObject.x - this.x > 0) {
+            //a = distanceY-distanceX;
             b = (float) (Math.pow(distanceY, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceX * (-1);
             newDistanceX = distanceY;
             newDistanceY = distanceY - b;
         } else {
-            b = distanceX-distanceY;
+            //b = distanceX-distanceY;
             a = (float) (Math.pow(distanceX, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceY * (-1);
             newDistanceX = distanceX - a;
             newDistanceY = distanceX;

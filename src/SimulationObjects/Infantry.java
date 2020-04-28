@@ -52,7 +52,7 @@ public class Infantry extends ArmyUnit {
             newX = x + velX;
             newY = y + velY;
             // second and third conditions are patching the bug with soldiers appearing VERY far away from their regiment
-            if (!willOverlapWithAnother(newX, newY)&& Math.abs(this.x - newX) < 45 && Math.abs(this.y - newY) < 45) {
+            if (!willOverlapWithAnother(newX, newY)&& Math.abs(this.x - newX) < 20 && Math.abs(this.y - newY) < 20) {
                 x = newX;
                 y = newY;
             } else {

@@ -1,6 +1,7 @@
 package Simulation;
 
 import Enums.Alliance;
+import SimulationObjects.Infantry;
 import SimulationObjects.Regiment;
 
 import java.awt.*;
@@ -17,24 +18,17 @@ public class Simulation extends Canvas implements Runnable
     public Simulation()
     {
         handler = new Handler();
-        // TODO Czy handlera nie zrobić jako Singleton lub coś podobnego? Za duzo przekazywania go ...?
 
         Regiment r1 = new Regiment(300,300, Alliance.Blue, handler);
-        //r1.addArmyUnit(new SimulationObjects.Infantry(100,300));
-        //r1.addArmyUnit(new SimulationObjects.Infantry(200,700));
-        //r1.addArmyUnit(new SimulationObjects.Infantry(300,800));
-        //r1.populateRegimentWithUnits(25);
-        r1.formationSquare(20, true);
+        r1.formationSquare(20, false);
+//        r1.addArmyUnit(new Infantry(300,300));
 
-        Regiment r2 = new Regiment(600,300, Alliance.Red, handler);
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1640,700));
-        //r2.populateRegimentWithUnits(25);
-        r2.formationSquare(20, true );
+        Regiment r2 = new Regiment(600,600, Alliance.Red, handler);
+        r2.formationSquare(20, false );
+//        r2.addArmyUnit(new Infantry(600,300));
 
-        Regiment r3 = new Regiment(600, 600 , Alliance.Red, handler);
-//        SimulationObjects.Regiment r3 = new SimulationObjects.Regiment(600,450, Enums.Alliance.Red, handler);
+        //Regiment r3 = new Regiment(600, 600 , Alliance.Red, handler);
+        //SimulationObjects.Regiment r3 = new SimulationObjects.Regiment(600,450, Enums.Alliance.Red, handler);
         //r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
         //r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));
         //r2.addArmyUnit(new SimulationObjects.Infantry(1640,700));
@@ -44,7 +38,7 @@ public class Simulation extends Canvas implements Runnable
 
         handler.addSimulationObject(r1);
         handler.addSimulationObject(r2);
-        handler.addSimulationObject(r3);
+        //handler.addSimulationObject(r3);
 
         new Window(WIDTH, HEIGHT, "Warriors Simulation.Simulation", this);
     }
@@ -70,7 +64,7 @@ public class Simulation extends Canvas implements Runnable
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        double amountOfTicks = 60.0;
+        double amountOfTicks = 60;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         long timer = System.currentTimeMillis();

@@ -17,7 +17,7 @@ public abstract class ArmyUnit extends SimulationObject
     protected Regiment myRegiment;
     protected ArmyUnit myEnemy;
     protected UnitAction unitAction;
-    protected float safeArea; // jeżeli wróg jest w tym obszarze, to atakuj go niezależnie w jakim Regimencie jest.
+    protected float safeArea; // attack enemy in this area regardless of the enemy's regiment
 
     public ArmyUnit(float x, float y) {
         super(x, y);
@@ -27,61 +27,31 @@ public abstract class ArmyUnit extends SimulationObject
     abstract void moveToAttackOrder(Regiment regimentToAttack);
     abstract void regroupOrder();
 
-    protected boolean willOverlapWithAnother(float newX, float newY) {
-        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < Infantry.infantryBlockSize)).count();
+    protected boolean willOverlapWithAnother(float newX, float newY, float blockSize) {
+        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < blockSize)).count();
         return (matches > 1);
-
     }
 
-    protected boolean setAlternativeDirectionTo(SimulationObject simulationObject) {
-        // TODO nie musi nic zwracać
-        // wyznacz prostą łączącą dwa obiekty
+    protected void setAlternativeDirectionTo(SimulationObject simulationObject) {
         float diagonalDistance = (float) this.getDistanceTo(simulationObject);
         float distanceX = this.x - simulationObject.x;
         float distanceY = this.y - simulationObject.y;
 
         float a, b, newDistanceX, newDistanceY;
-        float r = new Random().nextFloat();
 
-//        if (Math.abs(this.y - simulationObject.y) < 40) {
-//            // idź pod kątem 45 stopni
-//            newDistanceX = distanceX/2;
-//            newDistanceY = newDistanceX;
-//            if (willOverlapWithAnother(this.x+newDistanceX, this.y+newDistanceY)){
-//                newDistanceY = (-1)*newDistanceY;
-//            }
-//            this.velX = (-1)*(newDistanceX)*this.maxVelocity/diagonalDistance;
-//            this.velY = (-1)*(newDistanceY)*this.maxVelocity/diagonalDistance;
-//
-//            return true;
-//        }
-//        if (Math.abs(this.x - simulationObject.x) < 40) {
-//            // idź pod kątem 45 stopni
-//            newDistanceY = distanceY/2;
-//            newDistanceX = newDistanceY;
-//            if (willOverlapWithAnother(this.x+newDistanceX, this.y+newDistanceY)){
-//                newDistanceX = (-1)*newDistanceX;
-//            }
-//            this.velX = (-1)*(newDistanceX)*this.maxVelocity/diagonalDistance;
-//            this.velY = (-1)*(newDistanceY)*this.maxVelocity/diagonalDistance;
-//
-//            return true;
-//        }
-        if (r > 0.5) { //(simulationObject.x - this.x > 0) {
-            //a = distanceY-distanceX;
+        if (new Random().nextBoolean()) {
             b = (float) (Math.pow(distanceY, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceX * (-1);
             newDistanceX = distanceY;
-            newDistanceY = distanceY - b;
+            newDistanceY = distanceY - (Double.isNaN(b)?0:b);
         } else {
-            //b = distanceX-distanceY;
             a = (float) (Math.pow(distanceX, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceY * (-1);
-            newDistanceX = distanceX - a;
+            newDistanceX = distanceX - (Double.isNaN(a)?0:a);
             newDistanceY = distanceX;
         }
-        this.velX = (-1)*(newDistanceX)*this.maxVelocity/diagonalDistance;
-        this.velY = (-1)*(newDistanceY)*this.maxVelocity/diagonalDistance;
 
-        return true;
+        float sumOfAbs = Math.abs(newDistanceX) + Math.abs(newDistanceY);
+        this.velX = (-1) * newDistanceX * this.maxVelocity / sumOfAbs;
+        this.velY = (-1) * newDistanceY * this.maxVelocity / sumOfAbs;
     }
 
     protected final ArmyUnit findNearestEnemyIn(Regiment enemyRegiment){
@@ -105,7 +75,7 @@ public abstract class ArmyUnit extends SimulationObject
 
     protected final ArmyUnit getEnemyInSafeArea()
     {
-        double minDistance = safeArea + 10; // równie dobrze może być +20 lub +50. Chodzi żeby było coś dużego.
+        double minDistance = safeArea + 10; // 10 has no meaning here- it hast to be 'big' number
         Point topLeft = new Point( (int)(this.x-safeArea), (int)(this.y-safeArea) );
         Point bottomRight = new Point( (int)(this.x+safeArea), (int)(this.y+safeArea) );
         ArmyUnit enemy = null;

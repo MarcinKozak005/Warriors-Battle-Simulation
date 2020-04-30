@@ -27,44 +27,34 @@ public class Infantry extends ArmyUnit {
     }
 
     private void dealDMGToEnemy() {
-        // dealt damage calculated as a random number from normal distribution (mean = meanDMG, std = stdDMG),
-        // damage has to be greater or equal minDMG and can't exceed maxDMG
         float DMGDealt = Math.min(Math.max((float) new Random().nextGaussian()*stdDMG + meanDMG, minDMG), maxDMG);
-        if (myEnemy != null) {
-            myEnemy.hp -= DMGDealt;
-            //System.out.println(this + " dealt: "+ DMGDealt+" to: "+ myEnemy);
-        }
+        if (myEnemy != null) myEnemy.hp -= DMGDealt;
     }
 
     private void moveAction()
     {
         setDirectionTo(myEnemy);
-
         float newX = x + velX;
         float newY = y + velY;
 
-        if (!willOverlapWithAnother(newX, newY)) {
+        if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
             x = newX;
             y = newY;
         }
         else {
             setAlternativeDirectionTo(myEnemy);
+
             newX = x + velX;
             newY = y + velY;
-            // second and third conditions are patching the bug with soldiers appearing VERY far away from their regiment
-            if (!willOverlapWithAnother(newX, newY)&& Math.abs(this.x - newX) < 20 && Math.abs(this.y - newY) < 20) {
+            if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
                 x = newX;
                 y = newY;
-            } else {
-                // not sure about usage of this one maybe myEnemy = this.findNearestEnemyIn(myEnemy.myRegiment); would be a better fix
-                myEnemy = getEnemyInSafeArea();
             }
         }
     }
 
     private void regroupAction()
     {
-        // Praktycznie identyczne jak SimulationObjects.Infantry.moveAction()
         setDirectionTo(myRegiment);
 
         float newX = x + velX;

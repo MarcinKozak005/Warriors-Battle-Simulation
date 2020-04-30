@@ -38,11 +38,12 @@ public abstract class SimulationObject {
 
     public void setDirectionTo(SimulationObject simulationObject)
     {
-        float diagonalDistance = (float) this.getDistanceTo(simulationObject);
         float distanceX = this.x - simulationObject.x;
         float distanceY = this.y - simulationObject.y;
 
-        this.velX = (-1)*distanceX*this.maxVelocity/diagonalDistance;
-        this.velY = (-1)*distanceY*this.maxVelocity/diagonalDistance;
+        float sumOfAbs = Math.abs(distanceX) + Math.abs(distanceY);
+        this.velX = (-1) * distanceX * this.maxVelocity / sumOfAbs;
+        this.velY = (-1) * distanceY * this.maxVelocity / sumOfAbs;
     }
+
 }

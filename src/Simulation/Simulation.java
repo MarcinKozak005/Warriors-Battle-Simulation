@@ -1,7 +1,7 @@
 package Simulation;
 
 import Enums.Alliance;
-import SimulationObjects.Infantry;
+import Exceptions.VictoryException;
 import SimulationObjects.Regiment;
 
 import java.awt.*;
@@ -20,11 +20,18 @@ public class Simulation extends Canvas implements Runnable
         handler = new Handler();
 
         Regiment r1 = new Regiment(300,300, Alliance.Blue, handler);
-        r1.formationSquare(20, false);
+        r1.formationSquare(10, false);
+//        r1.addArmyUnit(new Infantry(300,300));
+        Regiment r2 = new Regiment(300,600, Alliance.Red, handler);
+        r2.formationSquare(5, false);
 //        r1.addArmyUnit(new Infantry(300,300));
 
-        Regiment r2 = new Regiment(600,600, Alliance.Red, handler);
-        r2.formationSquare(20, false );
+
+        Regiment r3 = new Regiment(600,300, Alliance.Blue, handler);
+        r3.formationSquare(20, false );
+//        r2.addArmyUnit(new Infantry(600,300));
+        Regiment r4 = new Regiment(600,600, Alliance.Red, handler);
+        r4.formationSquare(22, false );
 //        r2.addArmyUnit(new Infantry(600,300));
 
         //Regiment r3 = new Regiment(600, 600 , Alliance.Red, handler);
@@ -38,7 +45,8 @@ public class Simulation extends Canvas implements Runnable
 
         handler.addSimulationObject(r1);
         handler.addSimulationObject(r2);
-        //handler.addSimulationObject(r3);
+        handler.addSimulationObject(r3);
+        handler.addSimulationObject(r4);
 
         new Window(WIDTH, HEIGHT, "Warriors Simulation.Simulation", this);
     }

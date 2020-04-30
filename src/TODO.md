@@ -2,24 +2,6 @@
 1. Simulation.Simulation: Simulation.Handler jako Singleton? Czy jest sens i warto?
 1. Nowa Klasa: Dodanie klasy Spawner, która będzie tworzyła jednostki w Regimencie? Takie wyniesienie metody tworzących żołnierzy do nowej klasy
 1. Ogólne: GetMinimal? - zauważyłem że często liczymy jakieś minimum ze wszystkich obiektów- może funkcja do tego ...?
-1. SimulationObjects.Infantry: Jak zaklinowany, to zmiana focus'a?
-
-    **Materiały**:
-    
-    - Z SimulationObjects.Infantry
-```java
-/* else {
-    // tried to change unit we're focused on, sometimes it works, sometimes units will get stuck anyway
-    this.attackOrder(myEnemy.myRegiment);
-} */
-
-// TODO for now the unit won't move as not to walk into any other unit
-// possible solutions:
-// * change the unit's myEnemy
-// * get the unit to move along a curve to the targeted enemy instead of the straight line
-// * get the unit to get as close as possible instead of not moving at all
-```
-
 
 
 
@@ -64,4 +46,6 @@
     SOLVED: Zrobione
 1. SimulationObjects.Infantry: Atak wrogów i innych Regimentów?
     SOLVED: Zrobione
+1. SimulationObjects.Infantry: Jak zaklinowany, to zmiana focus'a?
+    SOLVED: O rajuśku 
 

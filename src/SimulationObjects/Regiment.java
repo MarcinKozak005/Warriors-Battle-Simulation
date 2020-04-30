@@ -2,6 +2,8 @@ package SimulationObjects;
 
 import Enums.Alliance;
 import Exceptions.CantFindEnemyRegiment;
+import Exceptions.CantFindFriendlyRegiment;
+import Exceptions.VictoryException;
 import Simulation.Handler;
 
 import java.awt.*;
@@ -10,16 +12,16 @@ import java.util.List;
 
 public class Regiment extends SimulationObject
 {
-
+    public int initialRegimentSize = 0;
     public static final float regimentBlockSize = 10;
-    // Jak blisko musi być wrogi SimulationObjects.Regiment, by z move() przejśc na atak()
+    // How far an enemy Regiment has to be, to change from move() to attack()
     public static final float regimentInRangeDistance = 100;
     static final float regimentCenterRadius = 150;
     static final float regimentRegroupRadius = 200;
     static final float regimentBorderRadius = 300;
 
 
-    List<ArmyUnit> armyUnitList = new LinkedList<>();
+    public List<ArmyUnit> armyUnitList = new LinkedList<>();
     List<ArmyUnit> toRemove = new LinkedList<>();
     Regiment enemyRegiment;
     Handler handler;
@@ -32,6 +34,7 @@ public class Regiment extends SimulationObject
 
     public void addArmyUnit(ArmyUnit armyUnit)
     {
+        initialRegimentSize++;
         armyUnit.myRegiment = this;
         armyUnit.alliance = this.alliance;
         armyUnitList.add(armyUnit);
@@ -56,20 +59,29 @@ public class Regiment extends SimulationObject
             catch (CantFindEnemyRegiment e)
             {
                 System.out.println("-------- " + this.alliance.toString().toUpperCase() + "'S VICTORY --------");
-                //e.printStackTrace();
-                // Victory - Na pewno nie jest to najbardziej elegancki sposób xD
-                throw new RuntimeException();
+                throw new VictoryException();
             }
         }
 
-        // Decyzja Regimentu
+        // Regiment's decision
+        if (armyUnitList.size()< 0.5* initialRegimentSize)
+        {
+            try {
+                Regiment nearestFriendlyRegiment = handler.getNearestFriendFor(this);
+                for(ArmyUnit armyUnit: this.armyUnitList)
+                    nearestFriendlyRegiment.addArmyUnit(armyUnit);
+
+                handler.safeToRemove(this);
+            } catch (CantFindFriendlyRegiment ignored) {}
+        }
+
         if (meanDistanceToRegiment() >= regimentBorderRadius){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.regroupOrder();
         }
         else if(this.getDistanceTo(this.enemyRegiment) > regimentInRangeDistance){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.moveToAttackOrder(enemyRegiment);
 
-            // Z jaka predkoscią bedzie poruszał się SimulationObjects.Regiment
+            // Regiment's velocity
             this.maxVelocity = Float.MAX_VALUE;
             for (ArmyUnit armyUnit: armyUnitList)
                 if(armyUnit.maxVelocity<this.maxVelocity) this.maxVelocity = armyUnit.maxVelocity;

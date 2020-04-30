@@ -1,6 +1,7 @@
 package Simulation;
 
 import Exceptions.CantFindEnemyRegiment;
+import Exceptions.CantFindFriendlyRegiment;
 import SimulationObjects.Regiment;
 import SimulationObjects.SimulationObject;
 
@@ -46,6 +47,25 @@ public class Handler {
 
         if( enemyRegiment == null) throw new CantFindEnemyRegiment();
         return enemyRegiment;
+    }
+
+    public Regiment getNearestFriendFor(Regiment regiment) throws CantFindFriendlyRegiment {
+        double actualMinimum = Double.MAX_VALUE;
+        Regiment friendlyRegiment = null;
+
+        for(SimulationObject object: simulationObjectList)
+        {
+            if(object.alliance == regiment.alliance && regiment.getDistanceTo(object)<actualMinimum && regiment!=object){
+                Regiment tmp = (Regiment) object;
+                if(regiment.armyUnitList.size()< tmp.armyUnitList.size()) {
+                    friendlyRegiment = (Regiment) object;
+                    actualMinimum = regiment.getDistanceTo(object);
+                }
+            }
+        }
+
+        if( friendlyRegiment == null) throw new CantFindFriendlyRegiment();
+        return friendlyRegiment;
     }
 
     public void safeToRemove(Regiment regiment){

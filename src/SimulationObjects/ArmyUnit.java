@@ -49,9 +49,9 @@ public abstract class ArmyUnit extends SimulationObject
             newDistanceY = distanceX;
         }
 
-        float sumOfAbs = Math.abs(newDistanceX) + Math.abs(newDistanceY);
-        this.velX = (-1) * newDistanceX * this.maxVelocity / sumOfAbs;
-        this.velY = (-1) * newDistanceY * this.maxVelocity / sumOfAbs;
+        float newDiagonalDistance = (float) Math.sqrt(Math.pow(newDistanceX,2)+Math.pow(newDistanceY,2));
+        this.velX = (-1) * newDistanceX * this.maxVelocity / newDiagonalDistance;
+        this.velY = (-1) * newDistanceY * this.maxVelocity / newDiagonalDistance;
     }
 
     protected final ArmyUnit findNearestEnemyIn(Regiment enemyRegiment){

@@ -1,6 +1,7 @@
 package SimulationObjects;
 
 import Enums.Alliance;
+import Simulation.Simulation;
 
 import java.awt.*;
 
@@ -44,5 +45,33 @@ public abstract class SimulationObject {
 
         this.velX = (-1) * distanceX * this.maxVelocity / diagonalDistance;
         this.velY = (-1) * distanceY * this.maxVelocity / diagonalDistance;
+    }
+
+    public boolean notInTheBattlefield()
+    {
+        if(0 <= this.x && this.x <= Simulation.SCREEN_WIDTH &&
+            0 <= this.y && this.y <= Simulation.SCREEN_HEIGHT)
+            return false;
+        return true;
+    }
+
+    public void setDirectionToNearestEdge()
+    {
+        float directionX;
+        float directionY;
+        if(Math.abs(0-this.x)<Math.abs(Simulation.SCREEN_WIDTH-this.x))
+            directionX = -1;
+        else
+            directionX = 1;
+
+        if(Math.abs(0-this.y)<Math.abs(Simulation.SCREEN_HEIGHT-this.y))
+            directionY = -1;
+        else
+            directionY = 1;
+
+        if(Math.abs(directionX)<Math.abs(directionY))
+            {this.velY = 0; this.velX = directionX*maxVelocity;}
+        else
+            {this.velX = 0; this.velY = directionY*maxVelocity;}
     }
 }

@@ -22,6 +22,7 @@ public class Regiment extends SimulationObject
 
 
     public String regimentName;
+    public boolean inRetreat;
     public List<ArmyUnit> armyUnitList = new LinkedList<>();
     List<ArmyUnit> toRemove = new LinkedList<>();
     Regiment enemyRegiment;
@@ -31,6 +32,7 @@ public class Regiment extends SimulationObject
         super(x, y, alliance);
         this.handler = handler;
         this.regimentName = regimentName;
+        this.inRetreat = false;
         this.maxVelocity = Float.MAX_VALUE;
     }
 
@@ -66,7 +68,7 @@ public class Regiment extends SimulationObject
         }
 
         // Regiment's decision
-        if (armyUnitList.size()< 0.5* initialRegimentSize)
+        if (armyUnitList.size()< 0.4* initialRegimentSize)
         {
             try {
                 Regiment nearestFriendlyRegiment = handler.getNearestFriendFor(this);
@@ -74,10 +76,20 @@ public class Regiment extends SimulationObject
                     nearestFriendlyRegiment.addArmyUnit(armyUnit);
 
                 handler.safeToRemove(this);
-            } catch (CantFindFriendlyRegiment ignored) {}
+            } catch (CantFindFriendlyRegiment e){
+                if(this.armyUnitList.size()<0.1*initialRegimentSize)
+                {
+                    this.inRetreat = true;
+                    for(ArmyUnit armyUnit: this.armyUnitList)
+                        armyUnit.retreatOrder(this.enemyRegiment);
+                }
+            }
         }
-
-        if (meanDistanceToRegiment() >= regimentBorderRadius){
+        else if (this.enemyRegiment.inRetreat){
+            for (ArmyUnit armyUnit: this.armyUnitList)
+                armyUnit.attackOrder(this.enemyRegiment);
+        }
+        else if (meanDistanceToRegiment() >= regimentBorderRadius){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.regroupOrder();
         }
         else if(this.getDistanceTo(this.enemyRegiment) > regimentInRangeDistance){

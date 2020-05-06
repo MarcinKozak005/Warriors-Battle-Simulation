@@ -26,10 +26,29 @@ public abstract class ArmyUnit extends SimulationObject
     abstract void attackOrder(Regiment regimentToAttack);
     abstract void moveToAttackOrder(Regiment regimentToAttack);
     abstract void regroupOrder();
+    abstract void retreatOrder(Regiment enemyRegiment);
 
     protected boolean willOverlapWithAnother(float newX, float newY, float blockSize) {
         long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < blockSize)).count();
         return (matches > 1);
+    }
+
+    public void moveWithoutCollisions(float newX, float newY, boolean retreat)
+    {
+        if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
+            x = newX;
+            y = newY;
+        }
+        else {
+            setAlternativeDirectionTo(myEnemy);
+
+            newX = x + velX*(retreat?-1:1);
+            newY = y + velY*(retreat?-1:1);
+            if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
+                x = newX;
+                y = newY;
+            }
+        }
     }
 
     protected void setAlternativeDirectionTo(SimulationObject simulationObject) {

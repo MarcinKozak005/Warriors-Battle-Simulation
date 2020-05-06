@@ -9,8 +9,8 @@ import java.awt.image.BufferStrategy;
 public class Simulation extends Canvas implements Runnable
 {
     Handler handler;
-    private static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-    private static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    public static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    public static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     private Thread thread;
     private boolean running = false;
 
@@ -18,18 +18,18 @@ public class Simulation extends Canvas implements Runnable
     {
         handler = new Handler();
 
-        Regiment r1 = new Regiment(300,300, Alliance.Blue,"Right", handler);
+        Regiment r1 = new Regiment(300,300, Alliance.Red,"Right", handler);
         r1.formationSquare(10, false);
 //        r1.addArmyUnit(new Infantry(300,300));
-        Regiment r2 = new Regiment(300,600, Alliance.Red, "Left", handler);
-        r2.formationSquare(5, false);
+//        Regiment r2 = new Regiment(300,600, Alliance.Red, "Left", handler);
+//        r2.formationSquare(5, false);
 //        r1.addArmyUnit(new Infantry(300,300));
 
 
-        Regiment r3 = new Regiment(600,300, Alliance.Blue, "Main", handler);
+        Regiment r3 = new Regiment(600,300, Alliance.Red, "Main", handler);
         r3.formationSquare(20, false );
 //        r2.addArmyUnit(new Infantry(600,300));
-        Regiment r4 = new Regiment(600,600, Alliance.Red, "Main", handler);
+        Regiment r4 = new Regiment(600,600, Alliance.Blue, "Main", handler);
         r4.formationSquare(22, false );
 //        r2.addArmyUnit(new Infantry(600,300));
 
@@ -43,11 +43,11 @@ public class Simulation extends Canvas implements Runnable
 
 
         handler.addRegiment(r1);
-        handler.addRegiment(r2);
+//        handler.addRegiment(r2);
         handler.addRegiment(r3);
         handler.addRegiment(r4);
 
-        new Window(WIDTH, HEIGHT, "Warriors Simulation.Simulation", this);
+        new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Warriors Simulation.Simulation", this);
     }
 
     public synchronized void start()
@@ -113,7 +113,7 @@ public class Simulation extends Canvas implements Runnable
         Graphics g = bs.getDrawGraphics();
 
         g.setColor(Color.black);
-        g.fillRect(0,0, WIDTH, HEIGHT);
+        g.fillRect(0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         handler.render(g);
 

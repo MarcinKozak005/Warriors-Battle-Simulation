@@ -36,21 +36,7 @@ public class Infantry extends ArmyUnit {
         setDirectionTo(myEnemy);
         float newX = x + velX;
         float newY = y + velY;
-
-        if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
-            x = newX;
-            y = newY;
-        }
-        else {
-            setAlternativeDirectionTo(myEnemy);
-
-            newX = x + velX;
-            newY = y + velY;
-            if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
-                x = newX;
-                y = newY;
-            }
-        }
+        moveWithoutCollisions(newX,newY,false);
     }
 
     private void regroupAction()
@@ -60,11 +46,26 @@ public class Infantry extends ArmyUnit {
         float newX = x + velX;
         float newY = y + velY;
 
-        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < Infantry.infantryBlockSize)).count();
-
-        if (matches <= 1) {
+        if (!willOverlapWithAnother(newX,newY,Infantry.infantryBlockSize)) {
             x = newX;
             y = newY;
+        }
+    }
+
+    private void retreatAction()
+    {
+        if(getDistanceTo(myEnemy)<4*safeArea) {
+            setDirectionTo(myEnemy);
+            float newX = x + (-1) * velX;
+            float newY = y + (-1) * velY;
+            moveWithoutCollisions(newX,newY,true);
+        }
+        else
+        {
+            setDirectionToNearestEdge();
+            float newX = x + velX;
+            float newY = y + velY;
+            moveWithoutCollisions(newX,newY,false);
         }
     }
 
@@ -144,14 +145,31 @@ public class Infantry extends ArmyUnit {
     }
 
     @Override
+    void retreatOrder(Regiment enemyRegiment) {
+        ArmyUnit enemy = this.findNearestEnemyIn(enemyRegiment);
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
+
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.RETREAT;
+        }
+    }
+
+    @Override
     public void tick()
     {
-        if (this.hp <= 0)
+        if (this.hp <= 0 || this.notInTheBattlefield())
             myRegiment.safeToRemove(this);
         else {
             if (this.unitAction == UnitAction.ATTACK) this.attackAction();
             else if (this.unitAction == UnitAction.MOVE_TO_ENEMY) this.moveAction();
             else if (this.unitAction == UnitAction.REGROUP) this.regroupAction();
+            else if (this.unitAction == UnitAction.RETREAT) this.retreatAction();
         }
     }
 

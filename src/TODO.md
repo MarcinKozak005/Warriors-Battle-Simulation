@@ -6,7 +6,12 @@
 1. Mam dziwne wrażenie że jak są 3 pulki i dwa sojuszcznicze łączą się w jeden to jest coś dziwnego i nagle jedne jednostki dostają jakby boosta i zabijają dużo wrogów nie ginąc ...?
 Nie wiem z wykresu nie do końca to widać chyba ... Na podaję kod Simulation do ewentualnego odtworzenia
 ```java
- Regiment r1 = new Regiment(300,300, Alliance.Red,"Right", handler);
+class Test{ // Opakowane w klasę żeby IntelliJ się nie czepiał
+    public Simulation()
+    {
+        handler = new Handler();
+
+        Regiment r1 = new Regiment(300,300, Alliance.Red,"Right", handler);
         r1.formationSquare(10, false);
 //        r1.addArmyUnit(new Infantry(300,300));
 //        Regiment r2 = new Regiment(300,600, Alliance.Red, "Left", handler);
@@ -34,6 +39,10 @@ Nie wiem z wykresu nie do końca to widać chyba ... Na podaję kod Simulation d
 //        handler.addRegiment(r2);
         handler.addRegiment(r3);
         handler.addRegiment(r4);
+
+        new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Warriors Simulation.Simulation", this);
+    }
+}
 ```
 
 

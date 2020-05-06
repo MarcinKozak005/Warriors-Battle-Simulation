@@ -2,8 +2,10 @@ package Simulation;
 
 import Exceptions.CantFindEnemyRegiment;
 import Exceptions.CantFindFriendlyRegiment;
+import Exceptions.VictoryException;
 import SimulationObjects.Regiment;
 import SimulationObjects.SimulationObject;
+import Statistics.DataCollector;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -13,14 +15,21 @@ public class Handler {
 
     public List<SimulationObject> simulationObjectList = new LinkedList<>();
     public List<Regiment> toRemove = new LinkedList<>();
-
+    public DataCollector dataCollector = new DataCollector();
 
     public void tick(){
-        for(SimulationObject simulationObject: simulationObjectList)
+        try {
+            for (SimulationObject simulationObject : simulationObjectList)
+            {
+                dataCollector.registerState((Regiment) simulationObject);
+                simulationObject.tick();
+            }
+            simulationObjectList.removeAll(toRemove);
+        }catch (VictoryException v)
         {
-            simulationObject.tick();
+            dataCollector.exportDataToCSV();
+            throw new VictoryException();
         }
-        simulationObjectList.removeAll(toRemove);
     }
 
     public void render(Graphics g){
@@ -29,8 +38,9 @@ public class Handler {
         }
     }
 
-    public void addSimulationObject(SimulationObject object){
+    public void addRegiment(Regiment object){
         this.simulationObjectList.add(object);
+        this.dataCollector.add(object);
     }
 
     public Regiment getNearestEnemyFor(Regiment regiment) throws CantFindEnemyRegiment {

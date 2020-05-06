@@ -21,14 +21,16 @@ public class Regiment extends SimulationObject
     static final float regimentBorderRadius = 300;
 
 
+    public String regimentName;
     public List<ArmyUnit> armyUnitList = new LinkedList<>();
     List<ArmyUnit> toRemove = new LinkedList<>();
     Regiment enemyRegiment;
     Handler handler;
 
-    public Regiment(float x, float y, Alliance alliance, Handler handler) {
+    public Regiment(float x, float y, Alliance alliance, String regimentName, Handler handler) {
         super(x, y, alliance);
         this.handler = handler;
+        this.regimentName = regimentName;
         this.maxVelocity = Float.MAX_VALUE;
     }
 
@@ -135,9 +137,9 @@ public class Regiment extends SimulationObject
      *                          If false distance between units is fixed and equal to unit's size.
      */
     public void formationSquare(int side, boolean evenlyDistributed) {
-        float baseX = 0;
-        float baseY = 0;
-        float step = 0;
+        float baseX;
+        float baseY;
+        float step;
         if (evenlyDistributed) {
             baseX = this.x - regimentCenterRadius / (float) Math.sqrt(2);
             baseY = this.y - regimentCenterRadius / (float) Math.sqrt(2);
@@ -177,5 +179,10 @@ public class Regiment extends SimulationObject
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.render(g);
     }
 
-
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(alliance).append(" ").append(regimentName);
+        return stringBuilder.toString();
+    }
 }

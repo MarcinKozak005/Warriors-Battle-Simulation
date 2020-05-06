@@ -2,7 +2,7 @@
 1. Simulation.Simulation: Simulation.Handler jako Singleton? Czy jest sens i warto?
 1. Nowa Klasa: Dodanie klasy Spawner, która będzie tworzyła jednostki w Regimencie? Takie wyniesienie metody tworzących żołnierzy do nowej klasy
 1. Ogólne: GetMinimal? - zauważyłem że często liczymy jakieś minimum ze wszystkich obiektów- może funkcja do tego ...?
-
+1. Castowania na Regiment w Handlerze mi się nie podobają ... (dużo zmian?)
 
 
 ## POMYSŁY:

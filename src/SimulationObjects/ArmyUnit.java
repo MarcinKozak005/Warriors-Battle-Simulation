@@ -27,20 +27,22 @@ public abstract class ArmyUnit extends SimulationObject
     abstract void moveToAttackOrder(Regiment regimentToAttack);
     abstract void regroupOrder();
     abstract void retreatOrder(Regiment enemyRegiment);
+    abstract void chaseOrder(Regiment enemyRegiment);
+
 
     protected boolean willOverlapWithAnother(float newX, float newY, float blockSize) {
         long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < blockSize)).count();
         return (matches > 1);
     }
 
-    public void moveWithoutCollisions(float newX, float newY, boolean retreat)
+    public void moveWithoutCollisions(float newX, float newY, SimulationObject simulationObject, boolean retreat)
     {
         if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
             x = newX;
             y = newY;
         }
         else {
-            setAlternativeDirectionTo(myEnemy);
+            setAlternativeDirectionTo(simulationObject);
 
             newX = x + velX*(retreat?-1:1);
             newY = y + velY*(retreat?-1:1);
@@ -120,5 +122,32 @@ public abstract class ArmyUnit extends SimulationObject
     protected final boolean inMySafeArea(Point topLeft, Point bottomRight)
     {
         return this.x > topLeft.x && this.x < bottomRight.x && this.y > topLeft.y && this.y < bottomRight.y;
+    }
+
+    protected void checkAndSetChased(ArmyUnit enemy) {
+        ArmyUnit furthestAttacking = null;
+        double furthestAttackingDistance = 0;
+        int counter = 0;
+
+        for(ArmyUnit armyUnit: myRegiment.armyUnitList)
+        {
+            if(armyUnit.myEnemy == enemy){
+                counter++;
+                if(armyUnit.getDistanceTo(enemy)>=furthestAttackingDistance){
+                    furthestAttacking = armyUnit;
+                    furthestAttackingDistance = armyUnit.getDistanceTo(enemy);
+                }
+            }
+        }
+        if(counter<5){
+            this.myEnemy = enemy;
+        }
+        else if(this.getDistanceTo(enemy) < furthestAttackingDistance && furthestAttacking != null){
+            furthestAttacking.myEnemy = null;
+            furthestAttacking.unitAction = null;
+            this.myEnemy = enemy;
+        }else {
+            this.myEnemy = null;
+        }
     }
 }

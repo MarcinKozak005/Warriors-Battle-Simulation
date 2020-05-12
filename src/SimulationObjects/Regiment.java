@@ -28,6 +28,9 @@ public class Regiment extends SimulationObject
     Regiment enemyRegiment;
     Handler handler;
 
+    public Regiment(){
+        super();
+    }
     public Regiment(float x, float y, Alliance alliance, String regimentName, Handler handler) {
         super(x, y, alliance);
         this.handler = handler;
@@ -87,7 +90,7 @@ public class Regiment extends SimulationObject
         }
         else if (this.enemyRegiment.inRetreat){
             for (ArmyUnit armyUnit: this.armyUnitList)
-                armyUnit.attackOrder(this.enemyRegiment);
+                armyUnit.chaseOrder(this.enemyRegiment);
         }
         else if (meanDistanceToRegiment() >= regimentBorderRadius){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.regroupOrder();
@@ -125,6 +128,8 @@ public class Regiment extends SimulationObject
     public void safeToRemove(ArmyUnit armyUnit) {
         toRemove.add(armyUnit);
     }
+
+
 
     /**
      * Helper function to test functionalities easier. Not working as smoothly as desired.

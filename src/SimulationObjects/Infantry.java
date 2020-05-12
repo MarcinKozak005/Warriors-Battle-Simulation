@@ -4,7 +4,7 @@ import Enums.Alliance;
 import Enums.UnitAction;
 
 import java.awt.*;
-import java.util.Random;
+import java.util.*;
 
 public class Infantry extends ArmyUnit {
 
@@ -36,7 +36,7 @@ public class Infantry extends ArmyUnit {
         setDirectionTo(myEnemy);
         float newX = x + velX;
         float newY = y + velY;
-        moveWithoutCollisions(newX,newY,false);
+        moveWithoutCollisions(newX,newY,myEnemy,false);
     }
 
     private void regroupAction()
@@ -46,10 +46,11 @@ public class Infantry extends ArmyUnit {
         float newX = x + velX;
         float newY = y + velY;
 
-        if (!willOverlapWithAnother(newX,newY,Infantry.infantryBlockSize)) {
-            x = newX;
-            y = newY;
-        }
+        moveWithoutCollisions(newX,newY,myRegiment,false);
+//        if (!willOverlapWithAnother(newX,newY,Infantry.infantryBlockSize)) {
+//            x = newX;
+//            y = newY;
+//        }
     }
 
     private void retreatAction()
@@ -58,14 +59,14 @@ public class Infantry extends ArmyUnit {
             setDirectionTo(myEnemy);
             float newX = x + (-1) * velX;
             float newY = y + (-1) * velY;
-            moveWithoutCollisions(newX,newY,true);
+            moveWithoutCollisions(newX,newY,myEnemy,true);
         }
         else
         {
             setDirectionToNearestEdge();
             float newX = x + velX;
             float newY = y + velY;
-            moveWithoutCollisions(newX,newY,false);
+            moveWithoutCollisions(newX,newY,myEnemy,false);
         }
     }
 
@@ -146,6 +147,8 @@ public class Infantry extends ArmyUnit {
 
     @Override
     void retreatOrder(Regiment enemyRegiment) {
+        // TODO velocity changer
+        this.maxVelocity = 0.7f;
         ArmyUnit enemy = this.findNearestEnemyIn(enemyRegiment);
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
@@ -161,13 +164,48 @@ public class Infantry extends ArmyUnit {
     }
 
     @Override
+    void chaseOrder(Regiment enemyRegiment) {
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
+
+        Regiment tmpRegiment = new Regiment();
+        tmpRegiment.armyUnitList = new LinkedList<>(enemyRegiment.armyUnitList);
+
+        ArmyUnit chasedEnemy;
+
+        this.myEnemy = null;
+        while (!tmpRegiment.armyUnitList.isEmpty()){
+            chasedEnemy = this.findNearestEnemyIn(tmpRegiment);
+            this.checkAndSetChased(chasedEnemy);
+
+            if(this.myEnemy == null)
+                tmpRegiment.armyUnitList.remove(chasedEnemy);
+            else break;
+        }
+
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if (myEnemy == null) this.unitAction = UnitAction.REGROUP;//this.unitAction = null;
+        else if(this.getDistanceTo(myEnemy) < this.attackRange)
+        {
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else{
+            this.unitAction = UnitAction.MOVE_TO_ENEMY;
+        }
+    }
+
+    @Override
     public void tick()
     {
         if (this.hp <= 0 || this.notInTheBattlefield())
             myRegiment.safeToRemove(this);
         else {
             if (this.unitAction == UnitAction.ATTACK) this.attackAction();
-            else if (this.unitAction == UnitAction.MOVE_TO_ENEMY) this.moveAction();
+            else if (this.unitAction == UnitAction.MOVE_TO_ENEMY)
+                this.moveAction();
             else if (this.unitAction == UnitAction.REGROUP) this.regroupAction();
             else if (this.unitAction == UnitAction.RETREAT) this.retreatAction();
         }

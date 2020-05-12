@@ -14,6 +14,7 @@ public abstract class SimulationObject {
     public float maxVelocity;
     public Alliance alliance;
 
+    public SimulationObject(){}
     public SimulationObject(float x, float y) {
         this.x = x;
         this.y = y;
@@ -50,7 +51,7 @@ public abstract class SimulationObject {
     public boolean notInTheBattlefield()
     {
         if(0 <= this.x && this.x <= Simulation.SCREEN_WIDTH &&
-            0 <= this.y && this.y <= Simulation.SCREEN_HEIGHT)
+            0 <= this.y && this.y <= Simulation.SCREEN_HEIGHT-30)
             return false;
         return true;
     }

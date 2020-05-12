@@ -5,6 +5,10 @@
 1. Cos z tym Simulation Height nie działa chyba do końca - przy ucieczce uciekają trochę za ekran na dole imo :/
 1. Mam dziwne wrażenie że jak są 3 pulki i dwa sojuszcznicze łączą się w jeden to jest coś dziwnego i nagle jedne jednostki dostają jakby boosta i zabijają dużo wrogów nie ginąc ...?
 Nie wiem z wykresu nie do końca to widać chyba ... Na podaję kod Simulation do ewentualnego odtworzenia
+1. Move without Collision na Regimentach OOoooooo ?????
+1. Przejżeć logikę chase czasami szuka a nie musi- time complexity
+1. Get Actual Velocity
+
 ```java
 class Test{ // Opakowane w klasę żeby IntelliJ się nie czepiał
     public Simulation()

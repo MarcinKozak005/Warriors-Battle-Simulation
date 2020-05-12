@@ -3,39 +3,163 @@ package SimulationObjects;
 import Enums.UnitAction;
 
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Random;
 
 public abstract class ArmyUnit extends SimulationObject
 {
-    protected float hp;
-    protected float minDMG;
-    protected float maxDMG;
-    protected float meanDMG;
-    protected float stdDMG;
-    protected float attackRange;
+    protected double hp;
+    protected double minDMG;
+    protected double maxDMG;
+    protected double meanDMG;
+    protected double stdDMG;
+    protected double attackRange;
     protected Regiment myRegiment;
     protected ArmyUnit myEnemy;
     protected UnitAction unitAction;
-    protected float safeArea; // attack enemy in this area regardless of the enemy's regiment
+    protected double safeArea; // attack enemy in this area regardless of the enemy's regiment
 
-    public ArmyUnit(float x, float y) {
+    public ArmyUnit(double x, double y) {
         super(x, y);
     }
 
-    abstract void attackOrder(Regiment regimentToAttack);
-    abstract void moveToAttackOrder(Regiment regimentToAttack);
-    abstract void regroupOrder();
-    abstract void retreatOrder(Regiment enemyRegiment);
-    abstract void chaseOrder(Regiment enemyRegiment);
+    protected abstract void attackAction();
+    protected abstract void moveAction();
+    protected abstract void regroupAction();
+    protected abstract void retreatAction();
 
+    protected final void dealDMGToEnemy() {
+        double DMGDealt = Math.min(Math.max(new Random().nextGaussian()*stdDMG + meanDMG, minDMG), maxDMG);
+        if (myEnemy != null) myEnemy.hp -= DMGDealt;
+    }
 
-    protected boolean willOverlapWithAnother(float newX, float newY, float blockSize) {
+    public void attackOrder(Regiment regimentToAttack) {
+        ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
+
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if (enemy == null) this.unitAction = null;
+        else if(this.getDistanceTo(enemy) < this.attackRange)
+        {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else{
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.MOVE_TO_ENEMY;
+        }
+    }
+
+    public void moveToAttackOrder(Regiment regimentToAttack) {
+        ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
+
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if (enemy == null) this.unitAction = null;
+        else if(this.getDistanceTo(enemy) < this.attackRange)
+        {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if(this.getDistanceTo(this.myRegiment) >= Regiment.regimentCenterRadius )
+        {
+            this.unitAction = UnitAction.REGROUP;
+        }
+        else {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.MOVE_TO_ENEMY;
+        }
+    }
+
+    public void regroupOrder(){
+        ArmyUnit enemy = this.findNearestEnemyIn(this.myRegiment.enemyRegiment);
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
+
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if (enemy == null) this.unitAction = null;
+        else if(this.getDistanceTo(enemy) < this.attackRange)
+        {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if(this.getDistanceTo(this.myRegiment) <= Regiment.regimentRegroupRadius )
+        {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.MOVE_TO_ENEMY;
+        }
+        else {
+            this.unitAction = UnitAction.REGROUP;
+        }
+    }
+
+    public void retreatOrder(Regiment enemyRegiment) {
+        this.setVelocityModifier(0.7);
+        ArmyUnit enemy = this.findNearestEnemyIn(enemyRegiment);
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
+
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.RETREAT;
+        }
+    }
+
+    public void chaseOrder(Regiment enemyRegiment) {
+        ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
+
+        Regiment tmpRegiment = new Regiment();
+        tmpRegiment.armyUnitList = new LinkedList<>(enemyRegiment.armyUnitList);
+
+        ArmyUnit chasedEnemy;
+
+        this.myEnemy = null;
+        while (!tmpRegiment.armyUnitList.isEmpty()){
+            chasedEnemy = this.findNearestEnemyIn(tmpRegiment);
+            this.checkAndSetChased(chasedEnemy);
+
+            if(this.myEnemy == null)
+                tmpRegiment.armyUnitList.remove(chasedEnemy);
+            else break;
+        }
+
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else if (myEnemy == null) this.unitAction = UnitAction.REGROUP;
+        else if(this.getDistanceTo(myEnemy) < this.attackRange)
+        {
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else{
+            this.unitAction = UnitAction.MOVE_TO_ENEMY;
+        }
+    }
+
+    protected final boolean willOverlapWithAnother(double newX, double newY, double blockSize) {
         long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < blockSize)).count();
         return (matches > 1);
     }
 
-    public void moveWithoutCollisions(float newX, float newY, SimulationObject simulationObject, boolean retreat)
+    protected final void moveWithoutCollisions(double newX, double newY, SimulationObject simulationObject, boolean retreat)
     {
         if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
             x = newX;
@@ -43,7 +167,6 @@ public abstract class ArmyUnit extends SimulationObject
         }
         else {
             setAlternativeDirectionTo(simulationObject);
-
             newX = x + velX*(retreat?-1:1);
             newY = y + velY*(retreat?-1:1);
             if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
@@ -53,26 +176,26 @@ public abstract class ArmyUnit extends SimulationObject
         }
     }
 
-    protected void setAlternativeDirectionTo(SimulationObject simulationObject) {
-        float diagonalDistance = (float) this.getDistanceTo(simulationObject);
-        float distanceX = this.x - simulationObject.x;
-        float distanceY = this.y - simulationObject.y;
+    protected final void setAlternativeDirectionTo(SimulationObject simulationObject) {
+        double diagonalDistance = this.getDistanceTo(simulationObject);
+        double distanceX = this.x - simulationObject.x;
+        double distanceY = this.y - simulationObject.y;
 
-        float a, b, newDistanceX, newDistanceY;
+        double a, b, newDistanceX, newDistanceY;
 
         if (new Random().nextBoolean()) {
-            b = (float) (Math.pow(distanceY, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceX * (-1);
+            b = (Math.pow(distanceY, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceX * (-1);
             newDistanceX = distanceY;
             newDistanceY = distanceY - (Double.isNaN(b)?0:b);
         } else {
-            a = (float) (Math.pow(distanceX, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceY * (-1);
+            a = (Math.pow(distanceX, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceY * (-1);
             newDistanceX = distanceX - (Double.isNaN(a)?0:a);
             newDistanceY = distanceX;
         }
 
-        float newDiagonalDistance = (float) Math.sqrt(Math.pow(newDistanceX,2)+Math.pow(newDistanceY,2));
-        this.velX = (-1) * newDistanceX * this.maxVelocity / newDiagonalDistance;
-        this.velY = (-1) * newDistanceY * this.maxVelocity / newDiagonalDistance;
+        double newDiagonalDistance = Math.sqrt(Math.pow(newDistanceX,2)+Math.pow(newDistanceY,2));
+        this.velX = (-1) * newDistanceX * (this.getVelocity()) / newDiagonalDistance;
+        this.velY = (-1) * newDistanceY * (this.getVelocity()) / newDiagonalDistance;
     }
 
     protected final ArmyUnit findNearestEnemyIn(Regiment enemyRegiment){
@@ -124,7 +247,7 @@ public abstract class ArmyUnit extends SimulationObject
         return this.x > topLeft.x && this.x < bottomRight.x && this.y > topLeft.y && this.y < bottomRight.y;
     }
 
-    protected void checkAndSetChased(ArmyUnit enemy) {
+    protected final void checkAndSetChased(ArmyUnit enemy) {
         ArmyUnit furthestAttacking = null;
         double furthestAttackingDistance = 0;
         int counter = 0;

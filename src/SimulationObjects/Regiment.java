@@ -7,18 +7,20 @@ import Exceptions.VictoryException;
 import Simulation.Handler;
 
 import java.awt.*;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 public class Regiment extends SimulationObject
 {
     public int initialRegimentSize = 0;
-    public static final float regimentBlockSize = 10;
+    public static final double regimentBlockSize = 10;
     // How far an enemy Regiment has to be, to change from move() to attack()
-    public static final float regimentInRangeDistance = 100;
-    static final float regimentCenterRadius = 150;
-    static final float regimentRegroupRadius = 200;
-    static final float regimentBorderRadius = 300;
+    public static final double regimentInRangeDistance = 100;
+    static final double regimentCenterRadius = 150;
+    static final double regimentRegroupRadius = 200;
+    static final double regimentBorderRadius = 300;
 
 
     public String regimentName;
@@ -31,12 +33,12 @@ public class Regiment extends SimulationObject
     public Regiment(){
         super();
     }
-    public Regiment(float x, float y, Alliance alliance, String regimentName, Handler handler) {
+    public Regiment(double x, double y, Alliance alliance, String regimentName, Handler handler) {
         super(x, y, alliance);
         this.handler = handler;
         this.regimentName = regimentName;
         this.inRetreat = false;
-        this.maxVelocity = Float.MAX_VALUE;
+        this.maxVelocity = Double.MAX_VALUE;
     }
 
     public void addArmyUnit(ArmyUnit armyUnit)
@@ -99,9 +101,12 @@ public class Regiment extends SimulationObject
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.moveToAttackOrder(enemyRegiment);
 
             // Regiment's velocity
-            this.maxVelocity = Float.MAX_VALUE;
+            this.maxVelocity = Double.MAX_VALUE;
             for (ArmyUnit armyUnit: armyUnitList)
-                if(armyUnit.maxVelocity<this.maxVelocity) this.maxVelocity = armyUnit.maxVelocity;
+                if(armyUnit.getVelocity()<this.getVelocity()) {
+                    this.maxVelocity = armyUnit.maxVelocity;
+                    this.setVelocityModifier(armyUnit.getVelocityModifier());
+                }
 
             setDirectionTo(enemyRegiment);
             this.x += velX;
@@ -154,13 +159,13 @@ public class Regiment extends SimulationObject
      *                          If false distance between units is fixed and equal to unit's size.
      */
     public void formationSquare(int side, boolean evenlyDistributed) {
-        float baseX;
-        float baseY;
-        float step;
+        double baseX;
+        double baseY;
+        double step;
         if (evenlyDistributed) {
-            baseX = this.x - regimentCenterRadius / (float) Math.sqrt(2);
-            baseY = this.y - regimentCenterRadius / (float) Math.sqrt(2);
-            step = 2 * regimentCenterRadius / (float) (Math.sqrt(2) * (side - 1));
+            baseX = this.x - regimentCenterRadius / Math.sqrt(2);
+            baseY = this.y - regimentCenterRadius / Math.sqrt(2);
+            step = 2 * regimentCenterRadius / (Math.sqrt(2) * (side - 1));
         } else {
             baseX = this.x - side*Infantry.infantryBlockSize;
             baseY = this.y - side*Infantry.infantryBlockSize;
@@ -178,7 +183,7 @@ public class Regiment extends SimulationObject
         toRemove.clear();
     }
 
-    public void drawCircle(Graphics g, Color c, float radius)
+    public void drawCircle(Graphics g, Color c, double radius)
     {
         g.setColor(c);
         g.drawOval((int)(x-radius),(int)(y-radius),(int)radius*2,(int)radius*2);

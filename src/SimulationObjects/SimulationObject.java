@@ -7,19 +7,20 @@ import java.awt.*;
 
 public abstract class SimulationObject {
 
-    public float x; //cooridinates of the center of the Object
-    public float y;
-    public float velX;
-    public float velY;
-    public float maxVelocity;
+    public double x; //cooridinates of the center of the Object
+    public double y;
+    public double velX;
+    public double velY;
+    public double maxVelocity;
+    private double velocityModifier = 1;
     public Alliance alliance;
 
     public SimulationObject(){}
-    public SimulationObject(float x, float y) {
+    public SimulationObject(double x, double y) {
         this.x = x;
         this.y = y;
     }
-    public SimulationObject(float x, float y, Alliance alliance) {
+    public SimulationObject(double x, double y, Alliance alliance) {
         this.x = x;
         this.y = y;
         this.alliance = alliance;
@@ -40,12 +41,12 @@ public abstract class SimulationObject {
 
     public void setDirectionTo(SimulationObject simulationObject)
     {
-        float diagonalDistance = (float) this.getDistanceTo(simulationObject);
-        float distanceX = this.x - simulationObject.x;
-        float distanceY = this.y - simulationObject.y;
+        double diagonalDistance = this.getDistanceTo(simulationObject);
+        double distanceX = this.x - simulationObject.x;
+        double distanceY = this.y - simulationObject.y;
 
-        this.velX = (-1) * distanceX * this.maxVelocity / diagonalDistance;
-        this.velY = (-1) * distanceY * this.maxVelocity / diagonalDistance;
+        this.velX = (-1) * distanceX * this.getVelocity() / diagonalDistance;
+        this.velY = (-1) * distanceY * this.getVelocity() / diagonalDistance;
     }
 
     public boolean notInTheBattlefield()
@@ -58,8 +59,9 @@ public abstract class SimulationObject {
 
     public void setDirectionToNearestEdge()
     {
-        float directionX;
-        float directionY;
+        double directionX;
+        double directionY;
+
         if(Math.abs(0-this.x)<Math.abs(Simulation.SCREEN_WIDTH-this.x))
             directionX = -1;
         else
@@ -71,8 +73,19 @@ public abstract class SimulationObject {
             directionY = 1;
 
         if(Math.abs(directionX)<Math.abs(directionY))
-            {this.velY = 0; this.velX = directionX*maxVelocity;}
+            {this.velY = 0; this.velX = directionX*getVelocity();}
         else
-            {this.velX = 0; this.velY = directionY*maxVelocity;}
+            {this.velX = 0; this.velY = directionY*getVelocity();}
     }
+
+    public void setVelocityModifier(double modifier)
+    {
+        this.velocityModifier = (modifier*maxVelocity<=0) ? 0.0 : modifier*maxVelocity;
+    }
+
+    public double getVelocityModifier() {
+        return velocityModifier;
+    }
+
+    public double getVelocity(){return maxVelocity*velocityModifier;}
 }

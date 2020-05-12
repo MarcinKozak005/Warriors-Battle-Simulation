@@ -35,15 +35,17 @@ public abstract class ArmyUnit extends SimulationObject
     }
 
     public void attackOrder(Regiment regimentToAttack) {
-        ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
         if(enemyInSafeArea!=null)
         {
             this.myEnemy = enemyInSafeArea;
             this.unitAction = UnitAction.ATTACK;
+            return;
         }
-        else if (enemy == null) this.unitAction = null;
+
+        ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
+        if (enemy == null) this.unitAction = null;
         else if(this.getDistanceTo(enemy) < this.attackRange)
         {
             this.myEnemy = enemy;
@@ -56,15 +58,17 @@ public abstract class ArmyUnit extends SimulationObject
     }
 
     public void moveToAttackOrder(Regiment regimentToAttack) {
-        ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
         if(enemyInSafeArea!=null)
         {
             this.myEnemy = enemyInSafeArea;
             this.unitAction = UnitAction.ATTACK;
+            return;
         }
-        else if (enemy == null) this.unitAction = null;
+
+        ArmyUnit enemy = this.findNearestEnemyIn(regimentToAttack);
+        if (enemy == null) this.unitAction = null;
         else if(this.getDistanceTo(enemy) < this.attackRange)
         {
             this.myEnemy = enemy;
@@ -81,15 +85,17 @@ public abstract class ArmyUnit extends SimulationObject
     }
 
     public void regroupOrder(){
-        ArmyUnit enemy = this.findNearestEnemyIn(this.myRegiment.enemyRegiment);
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
         if(enemyInSafeArea!=null)
         {
             this.myEnemy = enemyInSafeArea;
             this.unitAction = UnitAction.ATTACK;
+            return;
         }
-        else if (enemy == null) this.unitAction = null;
+
+        ArmyUnit enemy = this.findNearestEnemyIn(this.myRegiment.enemyRegiment);
+        if (enemy == null) this.unitAction = null;
         else if(this.getDistanceTo(enemy) < this.attackRange)
         {
             this.myEnemy = enemy;
@@ -107,26 +113,31 @@ public abstract class ArmyUnit extends SimulationObject
 
     public void retreatOrder(Regiment enemyRegiment) {
         this.setVelocityModifier(0.7);
-        ArmyUnit enemy = this.findNearestEnemyIn(enemyRegiment);
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
         if(enemyInSafeArea!=null)
         {
             this.myEnemy = enemyInSafeArea;
             this.unitAction = UnitAction.ATTACK;
+            return;
         }
-        else {
-            this.myEnemy = enemy;
-            this.unitAction = UnitAction.RETREAT;
-        }
+
+        this.myEnemy = this.findNearestEnemyIn(enemyRegiment);
+        this.unitAction = UnitAction.RETREAT;
     }
 
     public void chaseOrder(Regiment enemyRegiment) {
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
+        if(enemyInSafeArea!=null)
+        {
+            this.myEnemy = enemyInSafeArea;
+            this.unitAction = UnitAction.ATTACK;
+            return;
+        }
+
         Regiment tmpRegiment = new Regiment();
         tmpRegiment.armyUnitList = new LinkedList<>(enemyRegiment.armyUnitList);
-
         ArmyUnit chasedEnemy;
 
         this.myEnemy = null;
@@ -139,12 +150,7 @@ public abstract class ArmyUnit extends SimulationObject
             else break;
         }
 
-        if(enemyInSafeArea!=null)
-        {
-            this.myEnemy = enemyInSafeArea;
-            this.unitAction = UnitAction.ATTACK;
-        }
-        else if (myEnemy == null) this.unitAction = UnitAction.REGROUP;
+        if (myEnemy == null) this.unitAction = UnitAction.REGROUP;
         else if(this.getDistanceTo(myEnemy) < this.attackRange)
         {
             this.unitAction = UnitAction.ATTACK;

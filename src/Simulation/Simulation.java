@@ -1,10 +1,12 @@
 package Simulation;
 
 import Enums.Alliance;
+import Exceptions.VictoryException;
 import SimulationObjects.Regiment;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.InvalidClassException;
 
 public class Simulation extends Canvas implements Runnable
 {
@@ -83,7 +85,8 @@ public class Simulation extends Canvas implements Runnable
             lastTime = now;
             while(delta >=1)
             {
-                tick();
+                try { tick(); }
+                catch (VictoryException e){ stop(); }
                 delta--;
             }
             if(running)
@@ -93,7 +96,7 @@ public class Simulation extends Canvas implements Runnable
             if(System.currentTimeMillis() - timer > 1000)
             {
                 timer += 1000;
-                //System.out.println("FPS: "+ frames);
+                System.out.println("FPS: "+ frames);
                 frames = 0;
             }
         }

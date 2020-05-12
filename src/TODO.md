@@ -1,13 +1,10 @@
 ## TODO
-1. Simulation.Simulation: Simulation.Handler jako Singleton? Czy jest sens i warto?
-1. Victory rzucane
-1. Ogólne: GetMinimal? - zauważyłem że często liczymy jakieś minimum ze wszystkich obiektów- może funkcja do tego ...?
 1. Castowania na Regiment w Handlerze mi się nie podobają ... (dużo zmian?)
-1. Cos z tym Simulation Height nie działa chyba do końca - przy ucieczce uciekają trochę za ekran na dole imo :/
 1. Mam dziwne wrażenie że jak są 3 pulki i dwa sojuszcznicze łączą się w jeden to jest coś dziwnego i nagle jedne jednostki dostają jakby boosta i zabijają dużo wrogów nie ginąc ...?
 Nie wiem z wykresu nie do końca to widać chyba ... Na podaję kod Simulation do ewentualnego odtworzenia
 1. Move without Collision na Regimentach OOoooooo ?????
-
+1. LOW PRIORITY: Simulation.Simulation: Simulation.Handler jako Singleton? Czy jest sens i warto?
+1. LOW PRIORITY: Ogólne: GetMinimal? - zauważyłem że często liczymy jakieś minimum ze wszystkich obiektów- może funkcja do tego ...?
 
 ```java
 class Test{ // Opakowane w klasę żeby IntelliJ się nie czepiał
@@ -69,6 +66,8 @@ class Test{ // Opakowane w klasę żeby IntelliJ się nie czepiał
     HALF-SOLVED: prawdopodobnie potrzebne będą następne przeskalowania, dlatego zostawiam to tutaj
 1. Nowa Klasa: Dodanie klasy Spawner, która będzie tworzyła jednostki w Regimencie? Takie wyniesienie metody tworzących żołnierzy do nowej klasy
     HALF_SOLVED: Nie ma czegoś takiego, ale są metody spawnujące w Regiment
+1. Cos z tym Simulation Height nie działa chyba do końca - przy ucieczce uciekają trochę za ekran na dole imo :/
+    HALF_SOLVED: Jest odejmowana zahardcodowana wartość przy sprawdzaniu czy wyszedł poza krawędź. Myślę, że ma to związek z tym jak Swing/Awt liczą rozmmiar okna... Z tym paskiem chyba i to może być problem
 
 ## SOLVED:
 
@@ -98,5 +97,7 @@ class Test{ // Opakowane w klasę żeby IntelliJ się nie czepiał
 1. Get Actual Velocity
     SOLVED: Zrobione
 1. Przejżeć logikę chase czasami szuka a nie musi- time complexity
+    SOLVED: Zrobione
+1. Victory rzucane
     SOLVED: Zrobione
     

@@ -9,7 +9,7 @@ import java.util.Random;
 
 public abstract class ArmyUnit extends SimulationObject
 {
-    protected double hp;
+    public double hp;
     protected double minDMG;
     protected double maxDMG;
     protected double meanDMG;

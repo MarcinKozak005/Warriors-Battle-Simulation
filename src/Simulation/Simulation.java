@@ -6,7 +6,6 @@ import SimulationObjects.Regiment;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.InvalidClassException;
 
 public class Simulation extends Canvas implements Runnable
 {

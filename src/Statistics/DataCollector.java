@@ -60,8 +60,15 @@ public class DataCollector {
             PrintWriter printWriter = new PrintWriter(filePath, StandardCharsets.UTF_8);
             printWriter.write(stringBuffer.toString());
             printWriter.close();
+
+            LineChart chart = new LineChart(filePath, "Statystyki");
+            chart.createChart();
+            chart.saveChart();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 }

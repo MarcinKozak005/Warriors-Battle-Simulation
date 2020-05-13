@@ -92,3 +92,6 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/intellij
 .idea/vcs.xml
+*.csv
+
+*.jpeg

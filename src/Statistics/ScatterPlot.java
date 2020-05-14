@@ -72,7 +72,8 @@ public class ScatterPlot {
     private void saveChart() {
         if (chart == null)
             return;
-        String fileName = new Date().toString().replaceAll(" ","_").replaceAll(":","-")+".jpeg";
+        String properNameExtension = "("+chartTitle.replaceAll("\\W", "")+")";
+        String fileName = new Date().toString().replaceAll(" ","_").replaceAll(":","-")+properNameExtension+".jpeg";
         File file = new File(fileName);
         try {
             ChartUtils.saveChartAsJPEG(file,this.chart,800,500);

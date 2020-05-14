@@ -19,32 +19,26 @@ public class Simulation extends Canvas implements Runnable
     {
         handler = new Handler();
 
-        Regiment r1 = new Regiment(300,300, Alliance.Red,"Right", handler);
+        Regiment r1 = new Regiment(300,300, Alliance.Red,"Secondary", handler);
         r1.formationSquare(10, false);
-//        r1.addArmyUnit(new Infantry(300,300));
-//        Regiment r2 = new Regiment(300,600, Alliance.Red, "Left", handler);
-//        r2.formationSquare(5, false);
-//        r1.addArmyUnit(new Infantry(300,300));
-
-
-        Regiment r3 = new Regiment(600,300, Alliance.Red, "Main", handler);
+        Regiment r3 = new Regiment(600,300, Alliance.Red, "Primary", handler);
         r3.formationSquare(20, false );
-//        r2.addArmyUnit(new Infantry(600,300));
-        Regiment r4 = new Regiment(600,600, Alliance.Blue, "Main", handler);
-        r4.formationSquare(22, false );
-//        r2.addArmyUnit(new Infantry(600,300));
 
-        //Regiment r3 = new Regiment(600, 600 , Alliance.Red, handler);
-        //SimulationObjects.Regiment r3 = new SimulationObjects.Regiment(600,450, Enums.Alliance.Red, handler);
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1640,700));
-        //r2.populateRegimentWithUnits(25);
-        //r3.formationSquare(5,false);
+        Regiment r4 = new Regiment(600,600, Alliance.Blue, "Primary", handler);
+        r4.formationSquare(22, false );
+
+
+        // Side Attacking +-
+        /*Regiment r1 = new Regiment(500,500, Alliance.Red,"Main", handler);
+        r1.formationSquare(20, false);
+
+        Regiment r3 = new Regiment(500,300, Alliance.Blue, "Main", handler);
+        r3.formationSquare(17, false );
+        Regiment r4 = new Regiment(700,500, Alliance.Blue, "Left", handler);
+        r4.formationSquare(10, false );*/
 
 
         handler.addRegiment(r1);
-//        handler.addRegiment(r2);
         handler.addRegiment(r3);
         handler.addRegiment(r4);
 

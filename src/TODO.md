@@ -3,14 +3,13 @@
 1. Move without Collision na Regimentach OOoooooo ?????
 1. HP Zchodzi poniżej 0 w wykresie czasami
 1. Error jak regiment sie spawnował poza zasięgiem ... ?
+1. Fix double Retreat (czasami obydwa zaczynają się cofać jak jeden w trakcie odwrotu wybije drugiego ...)
+1. Małe blokowania przy gonieniu i wchodzenie w środek regimentu?
 1. LOW PRIORITY: Simulation.Simulation: Simulation.Handler jako Singleton? Czy jest sens i warto?
 1. LOW PRIORITY: Ogólne: GetMinimal? - zauważyłem że często liczymy jakieś minimum ze wszystkich obiektów- może funkcja do tego ...?
 
 
 ## POMYSŁY:
-1. Jednostki w pułku poruszają się z np: 80% szybkości, ale w ataku już 100% ?
-
-
 
 
 ## HALF-SOLVED:
@@ -65,4 +64,6 @@
 1. Mam dziwne wrażenie że jak są 3 pulki i dwa sojuszcznicze łączą się w jeden to jest coś dziwnego i nagle jedne jednostki dostają jakby boosta i zabijają dużo wrogów nie ginąc ...?
 Nie wiem z wykresu nie do końca to widać chyba ... Na podaję kod Simulation do ewentualnego odtworzenia
     SOLVED: Związane z tym powyżej
+1. Jednostki w pułku poruszają się z np: 80% szybkości, ale w ataku już 100% ?
+    SOLVED: velocityModificator
     

@@ -9,7 +9,7 @@ import java.util.Random;
 
 public abstract class ArmyUnit extends SimulationObject
 {
-    protected double hp;
+    public double hp;
     protected double minDMG;
     protected double maxDMG;
     protected double meanDMG;
@@ -30,7 +30,7 @@ public abstract class ArmyUnit extends SimulationObject
     protected abstract void retreatAction();
 
     protected final void dealDMGToEnemy() {
-        double DMGDealt = Math.min(Math.max(new Random().nextGaussian()*stdDMG + meanDMG, minDMG), maxDMG);
+        double DMGDealt = Math.min(Math.max(new Random().nextGaussian() * stdDMG + meanDMG, minDMG), maxDMG);
         if (myEnemy != null) myEnemy.hp -= DMGDealt;
     }
 
@@ -122,8 +122,17 @@ public abstract class ArmyUnit extends SimulationObject
             return;
         }
 
-        this.myEnemy = this.findNearestEnemyIn(enemyRegiment);
-        this.unitAction = UnitAction.RETREAT;
+        ArmyUnit enemy = this.findNearestEnemyIn(enemyRegiment);
+        if (enemy == null) this.unitAction = null;
+        else if(this.getDistanceTo(enemy) < this.attackRange)
+        {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.ATTACK;
+        }
+        else {
+            this.myEnemy = enemy;
+            this.unitAction = UnitAction.RETREAT;
+        }
     }
 
     public void chaseOrder(Regiment enemyRegiment) {

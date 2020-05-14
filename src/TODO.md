@@ -1,50 +1,10 @@
 ## TODO
 1. Castowania na Regiment w Handlerze mi się nie podobają ... (dużo zmian?)
-1. Mam dziwne wrażenie że jak są 3 pulki i dwa sojuszcznicze łączą się w jeden to jest coś dziwnego i nagle jedne jednostki dostają jakby boosta i zabijają dużo wrogów nie ginąc ...?
-Nie wiem z wykresu nie do końca to widać chyba ... Na podaję kod Simulation do ewentualnego odtworzenia
 1. Move without Collision na Regimentach OOoooooo ?????
+1. HP Zchodzi poniżej 0 w wykresie czasami
+1. Error jak regiment sie spawnował poza zasięgiem ... ?
 1. LOW PRIORITY: Simulation.Simulation: Simulation.Handler jako Singleton? Czy jest sens i warto?
 1. LOW PRIORITY: Ogólne: GetMinimal? - zauważyłem że często liczymy jakieś minimum ze wszystkich obiektów- może funkcja do tego ...?
-
-```java
-class Test{ // Opakowane w klasę żeby IntelliJ się nie czepiał
-    public Simulation()
-    {
-        handler = new Handler();
-
-        Regiment r1 = new Regiment(300,300, Alliance.Red,"Right", handler);
-        r1.formationSquare(10, false);
-//        r1.addArmyUnit(new Infantry(300,300));
-//        Regiment r2 = new Regiment(300,600, Alliance.Red, "Left", handler);
-//        r2.formationSquare(5, false);
-//        r1.addArmyUnit(new Infantry(300,300));
-
-
-        Regiment r3 = new Regiment(600,300, Alliance.Red, "Main", handler);
-        r3.formationSquare(20, false );
-//        r2.addArmyUnit(new Infantry(600,300));
-        Regiment r4 = new Regiment(600,600, Alliance.Blue, "Main", handler);
-        r4.formationSquare(22, false );
-//        r2.addArmyUnit(new Infantry(600,300));
-
-        //Regiment r3 = new Regiment(600, 600 , Alliance.Red, handler);
-        //SimulationObjects.Regiment r3 = new SimulationObjects.Regiment(600,450, Enums.Alliance.Red, handler);
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1600,700));
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1620,700));
-        //r2.addArmyUnit(new SimulationObjects.Infantry(1640,700));
-        //r2.populateRegimentWithUnits(25);
-        //r3.formationSquare(5,false);
-
-
-        handler.addRegiment(r1);
-//        handler.addRegiment(r2);
-        handler.addRegiment(r3);
-        handler.addRegiment(r4);
-
-        new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Warriors Simulation.Simulation", this);
-    }
-}
-```
 
 
 ## POMYSŁY:
@@ -100,4 +60,9 @@ class Test{ // Opakowane w klasę żeby IntelliJ się nie czepiał
     SOLVED: Zrobione
 1. Victory rzucane
     SOLVED: Zrobione
+1. To że jest ten mega kill
+    SOLVED: Zrobione
+1. Mam dziwne wrażenie że jak są 3 pulki i dwa sojuszcznicze łączą się w jeden to jest coś dziwnego i nagle jedne jednostki dostają jakby boosta i zabijają dużo wrogów nie ginąc ...?
+Nie wiem z wykresu nie do końca to widać chyba ... Na podaję kod Simulation do ewentualnego odtworzenia
+    SOLVED: Związane z tym powyżej
     

@@ -15,6 +15,7 @@ import java.util.Random;
 public class Regiment extends SimulationObject
 {
     public int initialRegimentSize = 0;
+    List<Regiment> bestKillers = new LinkedList<>();
     public static final double regimentBlockSize = 10;
     // How far an enemy Regiment has to be, to change from move() to attack()
     public static final double regimentInRangeDistance = 100;
@@ -73,6 +74,7 @@ public class Regiment extends SimulationObject
         }
 
         // Regiment's decision
+        // Join with another friend or retreat
         if (armyUnitList.size()< 0.4* initialRegimentSize)
         {
             try {
@@ -82,21 +84,23 @@ public class Regiment extends SimulationObject
 
                 handler.safeToRemove(this);
             } catch (CantFindFriendlyRegiment e){
-                if(this.armyUnitList.size()<0.1*initialRegimentSize)
-                {
+                if(this.armyUnitList.size()<0.1*initialRegimentSize) {
                     this.inRetreat = true;
-                    for(ArmyUnit armyUnit: this.armyUnitList)
+                    for (ArmyUnit armyUnit : this.armyUnitList)
                         armyUnit.retreatOrder(this.enemyRegiment);
                 }
             }
         }
+        // Chase/pursuit
         else if (this.enemyRegiment.inRetreat){
             for (ArmyUnit armyUnit: this.armyUnitList)
                 armyUnit.chaseOrder(this.enemyRegiment);
         }
+        // Regroup
         else if (meanDistanceToRegiment() >= regimentBorderRadius){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.regroupOrder();
         }
+        // moveToAttack
         else if(this.getDistanceTo(this.enemyRegiment) > regimentInRangeDistance){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.moveToAttackOrder(enemyRegiment);
 
@@ -112,6 +116,7 @@ public class Regiment extends SimulationObject
             this.x += velX;
             this.y += velY;
         }
+        // attack
         else if (this.getDistanceTo(this.enemyRegiment) <= regimentInRangeDistance){
             for (ArmyUnit armyUnit: armyUnitList) armyUnit.attackOrder(enemyRegiment);
         }

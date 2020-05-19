@@ -2,10 +2,13 @@ package SimulationObjects;
 
 import Enums.UnitAction;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public abstract class ArmyUnit extends SimulationObject
 {
@@ -31,8 +34,11 @@ public abstract class ArmyUnit extends SimulationObject
 
     protected final void dealDMGToEnemy() {
         double DMGDealt = Math.min(Math.max(new Random().nextGaussian() * stdDMG + meanDMG, minDMG), maxDMG);
-        if (myEnemy != null) myEnemy.hp -= DMGDealt;
+        if (myEnemy != null) myEnemy.takeDamage(DMGDealt);
     }
+
+    protected final void takeDamage(double dmgDealt)
+    {this.hp = (this.hp-dmgDealt<0)?0.0:this.hp-dmgDealt;}
 
     public void attackOrder(Regiment regimentToAttack) {
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
@@ -170,7 +176,17 @@ public abstract class ArmyUnit extends SimulationObject
     }
 
     protected final boolean willOverlapWithAnother(double newX, double newY, double blockSize) {
-        long matches = myRegiment.armyUnitList.stream().filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < blockSize)).count();
+        long matches = 0;
+        List<SimulationObject> list = myRegiment.handler.simulationObjectList.stream()
+                .filter(obj -> obj.alliance == this.alliance)
+                .collect(Collectors.toList());
+
+        for(SimulationObject simulationObject: list) {
+            matches += ((Regiment) simulationObject).armyUnitList.stream()
+                    .filter(n -> this.getDistanceTo(n)<2*blockSize)
+                    .filter(n -> (Math.sqrt(Math.pow(newX - n.x, 2) + Math.pow(newY - n.y,2)) < blockSize))
+                    .count();
+        }
         return (matches > 1);
     }
 

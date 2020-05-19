@@ -45,8 +45,10 @@ public abstract class SimulationObject {
         double distanceX = this.x - simulationObject.x;
         double distanceY = this.y - simulationObject.y;
 
-        this.velX = (-1) * distanceX * this.getVelocity() / diagonalDistance;
-        this.velY = (-1) * distanceY * this.getVelocity() / diagonalDistance;
+        if(diagonalDistance!=0) {
+            this.velX = (-1) * distanceX * this.getVelocity() / diagonalDistance;
+            this.velY = (-1) * distanceY * this.getVelocity() / diagonalDistance;
+        }
     }
 
     public boolean notInTheBattlefield()

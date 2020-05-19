@@ -6,6 +6,8 @@ import SimulationObjects.Regiment;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Simulation extends Canvas implements Runnable
 {
@@ -19,13 +21,13 @@ public class Simulation extends Canvas implements Runnable
     {
         handler = new Handler();
 
-        Regiment r1 = new Regiment(300,300, Alliance.Red,"Secondary", handler);
-        r1.formationSquare(10, false);
+//        Regiment r1 = new Regiment(300,300, Alliance.Red,"Secondary", handler);
+//        r1.formationSquare(10, false);
         Regiment r3 = new Regiment(600,300, Alliance.Red, "Primary", handler);
-        r3.formationSquare(20, false );
+        r3.formationSquare(2, false );
 
-        Regiment r4 = new Regiment(600,600, Alliance.Blue, "Primary", handler);
-        r4.formationSquare(22, false );
+        Regiment r4 = new Regiment(1200,600, Alliance.Blue, "Primary", handler);
+        r4.formationSquare(2, false );
 
 
         // Side Attacking +-
@@ -38,7 +40,7 @@ public class Simulation extends Canvas implements Runnable
         r4.formationSquare(10, false );*/
 
 
-        handler.addRegiment(r1);
+//        handler.addRegiment(r1);
         handler.addRegiment(r3);
         handler.addRegiment(r4);
 

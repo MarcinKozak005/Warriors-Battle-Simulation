@@ -80,7 +80,7 @@ public class Regiment extends SimulationObject
 
                 handler.safeToRemove(this);
             } catch (CantFindFriendlyRegiment e) {
-                if (this.armyUnitList.size() < 0.1 * initialRegimentSize) {
+                if (this.armyUnitList.size() < 0.1 * initialRegimentSize && !this.enemyRegiment.inRetreat) {
                     this.inRetreat = true;
                     for (ArmyUnit armyUnit : this.armyUnitList)
                         armyUnit.retreatOrder(this.enemyRegiment);
@@ -180,7 +180,7 @@ public class Regiment extends SimulationObject
     @Override
     public void render(Graphics g){
         g.setColor(Color.YELLOW);
-        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
+//        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
 
         drawCircle(g,Color.GREEN,regimentCenterRadius);
         drawCircle(g,Color.YELLOW,regimentRegroupRadius);

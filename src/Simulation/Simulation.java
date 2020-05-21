@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Simulation extends Canvas implements Runnable
 {
@@ -59,6 +61,7 @@ public class Simulation extends Canvas implements Runnable
 //            handler.addRegiment(r3);
 //            handler.addRegiment(r4);
 //        }
+
         new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Warriors Simulation.Simulation", this);
     }
 

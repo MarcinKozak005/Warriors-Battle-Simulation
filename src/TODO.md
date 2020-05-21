@@ -1,15 +1,11 @@
 ## TODO
 1. Castowania na Regiment w Handlerze mi się nie podobają ... (dużo zmian?)
-1. Move without Collision na Regimentach OOoooooo ?????
-1. HP Zchodzi poniżej 0 w wykresie czasami
-1. Error jak regiment sie spawnował poza zasięgiem ... ?
-1. Fix double Retreat (czasami obydwa zaczynają się cofać jak jeden w trakcie odwrotu wybije drugiego ...)
-1. Małe blokowania przy gonieniu i wchodzenie w środek regimentu?
 1. LOW PRIORITY: Simulation.Simulation: Simulation.Handler jako Singleton? Czy jest sens i warto?
 1. LOW PRIORITY: Ogólne: GetMinimal? - zauważyłem że często liczymy jakieś minimum ze wszystkich obiektów- może funkcja do tego ...?
 
 
 ## POMYSŁY:
+1. Move without Collision na Regimentach OOoooooo ?????
 
 
 ## HALF-SOLVED:
@@ -27,7 +23,8 @@
     HALF_SOLVED: Nie ma czegoś takiego, ale są metody spawnujące w Regiment
 1. Cos z tym Simulation Height nie działa chyba do końca - przy ucieczce uciekają trochę za ekran na dole imo :/
     HALF_SOLVED: Jest odejmowana zahardcodowana wartość przy sprawdzaniu czy wyszedł poza krawędź. Myślę, że ma to związek z tym jak Swing/Awt liczą rozmmiar okna... Z tym paskiem chyba i to może być problem
-
+1. Error jak regiment sie spawnował poza zasięgiem ... ?
+    HALF_SOLVED: Nie widzę- pewnie coś innego
 ## SOLVED:
 
 
@@ -66,4 +63,12 @@ Nie wiem z wykresu nie do końca to widać chyba ... Na podaję kod Simulation d
     SOLVED: Związane z tym powyżej
 1. Jednostki w pułku poruszają się z np: 80% szybkości, ale w ataku już 100% ?
     SOLVED: velocityModificator
+1. HP Zchodzi poniżej 0 w wykresie czasami
+    SOLVED: Zrobione ArmyUnit#takeDamage()
+1. Ziomki co wchodza na siebie przy mergu dwóch oddziałów
+    SOLVED: Zrobione- sprawdzamy jeszcze pozostałe oddziały
+1. Fix double Retreat (czasami obydwa zaczynają się cofać jak jeden w trakcie odwrotu wybije drugiego ...)
+    SOLVED: NaN/Infinity w setDirectionTo
+1. Małe blokowania przy gonieniu i wchodzenie w środek regimentu?
+    SOLVED: Zrobione
     

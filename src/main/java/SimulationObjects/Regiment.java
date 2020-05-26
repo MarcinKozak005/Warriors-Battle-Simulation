@@ -1,5 +1,6 @@
 package SimulationObjects;
 
+
 import Enums.Alliance;
 import Exceptions.CantFindEnemyRegiment;
 import Exceptions.CantFindFriendlyRegiment;
@@ -10,7 +11,6 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class Regiment extends SimulationObject
 {

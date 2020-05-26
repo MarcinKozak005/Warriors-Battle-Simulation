@@ -1,15 +1,9 @@
 package Simulation;
 
-import Enums.Alliance;
 import Exceptions.VictoryException;
-import SimulationObjects.Regiment;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.util.Arrays;
-import java.util.LinkedList;
 
 public class Simulation extends Canvas implements Runnable
 {
@@ -24,7 +18,7 @@ public class Simulation extends Canvas implements Runnable
         Menu,
         KarksiBattleSimulation,
         FullPowerSimulation
-    };
+    }
 
     public STATE simulationState = STATE.Menu;
 
@@ -36,7 +30,7 @@ public class Simulation extends Canvas implements Runnable
         this.addMouseListener(menu);
 
 //        ta sekcja jest teraz w Menu mousePressed
-//        if (simulationState == STATE.Simulation) {
+//        if (simulationState == STATE.main.java.Simulation) {
 //
 //            Regiment r1 = new Regiment(300, 300, Alliance.Red, "Secondary", handler);
 //            r1.formationSquare(10, false);
@@ -62,7 +56,7 @@ public class Simulation extends Canvas implements Runnable
 //            handler.addRegiment(r4);
 //        }
 
-        new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Warriors Simulation.Simulation", this);
+        new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Warriors main.java.Simulation.main.java.Simulation", this);
     }
 
     public synchronized void start()

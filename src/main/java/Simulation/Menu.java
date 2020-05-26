@@ -23,10 +23,7 @@ public class Menu extends MouseAdapter {
     }
 
     private boolean isMouseOverArea(int mx, int my, int x, int y, int width, int height) {
-        if (mx > x && mx < x+width && my > y && my < y+height) {
-            return true;
-        }
-        return false;
+        return mx > x && mx < x + width && my > y && my < y + height;
     }
 
     public void mousePressed(MouseEvent e) {
@@ -98,9 +95,9 @@ public class Menu extends MouseAdapter {
 
     }
     public void render(Graphics g) {
-        Font titleFont = new Font("arial", 0, 35);
-        Font optionsFont = new Font("arial", 0, 25);
-        Font footerFont = new Font("arial", 0, 15);
+        Font titleFont = new Font("arial", Font.PLAIN, 35);
+        Font optionsFont = new Font("arial", Font.PLAIN, 25);
+        Font footerFont = new Font("arial", Font.PLAIN, 15);
 
         g.setColor(Color.yellow);
         g.setFont(titleFont);

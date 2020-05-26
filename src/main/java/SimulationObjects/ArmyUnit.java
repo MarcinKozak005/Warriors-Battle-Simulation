@@ -26,10 +26,42 @@ public abstract class ArmyUnit extends SimulationObject
         super(x, y);
     }
 
-    protected abstract void attackAction();
-    protected abstract void moveAction();
-    protected abstract void regroupAction();
-    protected abstract void retreatAction();
+    protected void attackAction() {
+        this.dealDMGToEnemy();
+    }
+
+    protected void moveAction()
+    {
+        setDirectionTo(myEnemy);
+        double newX = x + velX;
+        double newY = y + velY;
+        moveWithoutCollisions(newX,newY,myEnemy,false);
+    }
+
+    protected void regroupAction()
+    {
+        setDirectionTo(myRegiment);
+        double newX = x + velX;
+        double newY = y + velY;
+        moveWithoutCollisions(newX,newY,myRegiment,false);
+    }
+
+    protected void retreatAction()
+    {
+        if(getDistanceTo(myEnemy)<4*safeArea) {
+            setDirectionTo(myEnemy);
+            double newX = x + (-1) * velX;
+            double newY = y + (-1) * velY;
+            moveWithoutCollisions(newX,newY,myEnemy,true);
+        }
+        else
+        {
+            setDirectionToNearestEdge();
+            double newX = x + velX;
+            double newY = y + velY;
+            moveWithoutCollisions(newX,newY,myEnemy,false);
+        }
+    }
 
     protected final void dealDMGToEnemy() {
         double DMGDealt = Math.min(Math.max(new Random().nextGaussian() * stdDMG + meanDMG, minDMG), maxDMG);
@@ -301,6 +333,18 @@ public abstract class ArmyUnit extends SimulationObject
             this.myEnemy = enemy;
         }else {
             this.myEnemy = null;
+        }
+    }
+
+    public void tick()
+    {
+        if (this.hp <= 0 || this.notInTheBattlefield())
+            myRegiment.safeToRemove(this);
+        else {
+            if (this.unitAction == UnitAction.ATTACK) this.attackAction();
+            else if (this.unitAction == UnitAction.MOVE_TO_ENEMY) this.moveAction();
+            else if (this.unitAction == UnitAction.REGROUP) this.regroupAction();
+            else if (this.unitAction == UnitAction.RETREAT) this.retreatAction();
         }
     }
 }

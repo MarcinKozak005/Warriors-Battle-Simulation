@@ -3,11 +3,10 @@ package SimulationObjects;
 import Enums.Alliance;
 
 import java.awt.*;
-import java.util.Random;
 
 public class Musketeer extends ArmyUnit {
 
-    public static final double musketeerBlockSize = 5;
+    public static final double musketeerBlockSize = 7;
 
     public Musketeer(double x, double y) {
         super(x, y);

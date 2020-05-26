@@ -1,7 +1,6 @@
 package SimulationObjects;
 
 import Enums.Alliance;
-import Enums.UnitAction;
 
 import java.awt.*;
 

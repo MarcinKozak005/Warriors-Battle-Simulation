@@ -1,6 +1,8 @@
 package Simulation;
 
 import Enums.Alliance;
+import SimulationObjects.Infantry;
+import SimulationObjects.Musketeer;
 import SimulationObjects.Regiment;
 
 import java.awt.*;
@@ -30,59 +32,37 @@ public class Menu extends MouseAdapter {
         int mx = e.getX();
         int my = e.getY();
 
+        // Karksi
         if(isMouseOverArea(mx, my, BUTTON_X, 250, BUTTON_WIDTH, BUTTON_HEIGHT ))
         {
-            //opcja pierwsza
             simulation.simulationState = Simulation.STATE.KarksiBattleSimulation;
+            Regiment r1 = new Regiment(300, 300, Alliance.Red, "Musketeer", handler);
+            Regiment r3 = new Regiment(600, 300, Alliance.Red, "Infantry", handler);
+            Regiment r4 = new Regiment(600, 600, Alliance.Blue, "Infantry", handler);
 
-            Regiment r1 = new Regiment(300, 300, Alliance.Red, "Secondary", handler);
-            r1.formationSquare(10, false);
-            Regiment r3 = new Regiment(600, 300, Alliance.Red, "Primary", handler);
-            r3.formationSquare(20, false);
-
-            Regiment r4 = new Regiment(600, 600, Alliance.Blue, "Primary", handler);
-            r4.formationSquare(22, false);
-
-
-            // Side Attacking +-
-        /*Regiment r1 = new Regiment(500,500, Alliance.Red,"Main", handler);
-        r1.formationSquare(20, false);
-
-        Regiment r3 = new Regiment(500,300, Alliance.Blue, "Main", handler);
-        r3.formationSquare(17, false );
-        Regiment r4 = new Regiment(700,500, Alliance.Blue, "Left", handler);
-        r4.formationSquare(10, false );*/
-
+            r1.formationSquare(10, false, Musketeer.class);
+            r3.formationSquare(20, false, Infantry.class);
+            r4.formationSquare(22, false, Infantry.class);
 
             handler.addRegiment(r1);
             handler.addRegiment(r3);
             handler.addRegiment(r4);
 
-        } else if (isMouseOverArea(mx, my, BUTTON_X, 350, BUTTON_WIDTH, BUTTON_HEIGHT )) {
-            System.out.println("opcja 2");
-            //opcja druga
+        }
+        // Full Simulation
+        else if (isMouseOverArea(mx, my, BUTTON_X, 350, BUTTON_WIDTH, BUTTON_HEIGHT )) {
             simulation.simulationState = Simulation.STATE.FullPowerSimulation;
 
             Regiment r1 = new Regiment(300, 300, Alliance.Red, "Secondary", handler);
-            r1.formationSquare(10, false);
             Regiment r4 = new Regiment(600, 600, Alliance.Blue, "Primary", handler);
-            r4.formationSquare(22, false);
 
-
-            // Side Attacking +-
-        /*Regiment r1 = new Regiment(500,500, Alliance.Red,"Main", handler);
-        r1.formationSquare(20, false);
-
-        Regiment r3 = new Regiment(500,300, Alliance.Blue, "Main", handler);
-        r3.formationSquare(17, false );
-        Regiment r4 = new Regiment(700,500, Alliance.Blue, "Left", handler);
-        r4.formationSquare(10, false );*/
-
+            r1.formationSquare(10, false, Infantry.class);
+            r4.formationSquare(22, false, Infantry.class);
 
             handler.addRegiment(r1);
             handler.addRegiment(r4);
-        } else if (isMouseOverArea(mx, my, BUTTON_X, 450, BUTTON_WIDTH, BUTTON_HEIGHT )) {
-            System.out.println("opcja 3");
+        }
+        else if (isMouseOverArea(mx, my, BUTTON_X, 450, BUTTON_WIDTH, BUTTON_HEIGHT )) {
             System.exit(0);
         }
     }

@@ -8,9 +8,15 @@ import Exceptions.VictoryException;
 import Simulation.Handler;
 
 import java.awt.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class Regiment extends SimulationObject
 {
@@ -138,31 +144,38 @@ public class Regiment extends SimulationObject
         toRemove.add(armyUnit);
     }
 
-    /**
-     * Adds side*side number of units to the regiment in position that forms a square formation with evenly
-     * or densely distributed units depending on the value of evenlyDistributed.
-     * @param side Number of units at the side of the square
-     * @param evenlyDistributed Flag defining units distribution.
-     *                          If true distribution of units in regiment field is even (sparse distribution if side is small).
-     *                          If false distance between units is fixed and equal to unit's size.
-     */
-    public void formationSquare(int side, boolean evenlyDistributed) {
+
+    public <T extends ArmyUnit> void formationSquare(int side, boolean evenlyDistributed, Class<T> clazz){
         double baseX;
         double baseY;
         double step;
-        if (evenlyDistributed) {
-            baseX = this.x - regimentCenterRadius / Math.sqrt(2);
-            baseY = this.y - regimentCenterRadius / Math.sqrt(2);
-            step = 2 * regimentCenterRadius / (Math.sqrt(2) * (side - 1));
-        } else {
-            baseX = this.x - side*Infantry.infantryBlockSize;
-            baseY = this.y - side*Infantry.infantryBlockSize;
-            step = 2*Infantry.infantryBlockSize;
-        }
-        for (int i = 0; i < side; i++) {
-            for (int j = 0; j < side; j++) {
-                this.addArmyUnit(new Infantry(baseX + i*step, baseY + j*step));
+        try {
+            Predicate<Field> predicate = f -> {
+                int m = f.getModifiers();
+                return Modifier.isFinal(m) && Modifier.isStatic(m) && Modifier.isPublic(m);
+            };
+            double blockSize = Arrays.stream(clazz.getFields()).filter(predicate).findFirst().get().getDouble(clazz);
+
+            Constructor<T> constructor = clazz.getConstructor(double.class, double.class);
+
+            if (evenlyDistributed) {
+                baseX = this.x - regimentCenterRadius / Math.sqrt(2);
+                baseY = this.y - regimentCenterRadius / Math.sqrt(2);
+                step = 2 * regimentCenterRadius / (Math.sqrt(2) * (side - 1));
+            } else {
+                baseX = this.x - side * blockSize;
+                baseY = this.y - side * blockSize;
+                step = 2 * blockSize;
             }
+            for (int i = 0; i < side; i++) {
+                for (int j = 0; j < side; j++) {
+                    this.addArmyUnit(constructor.newInstance(baseX + i * step, baseY + j * step));
+                }
+            }
+        }
+        catch (Exception e){
+            System.err.println("FormationSquare Error: "+e);
+            System.exit(-1);
         }
     }
 
@@ -180,7 +193,7 @@ public class Regiment extends SimulationObject
     @Override
     public void render(Graphics g){
         g.setColor(Color.YELLOW);
-//        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
+        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
 
         drawCircle(g,Color.GREEN,regimentCenterRadius);
         drawCircle(g,Color.YELLOW,regimentRegroupRadius);

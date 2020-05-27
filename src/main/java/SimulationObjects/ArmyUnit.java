@@ -21,6 +21,7 @@ public abstract class ArmyUnit extends SimulationObject
     protected ArmyUnit myEnemy;
     protected UnitAction unitAction;
     protected double safeArea; // attack enemy in this area regardless of the enemy's regiment
+    boolean dead = false;
 
     public ArmyUnit(double x, double y) {
         super(x, y);
@@ -69,7 +70,10 @@ public abstract class ArmyUnit extends SimulationObject
     }
 
     protected final void takeDamage(double dmgDealt)
-    {this.hp = (this.hp-dmgDealt<0)?0.0:this.hp-dmgDealt;}
+    {
+        this.hp = (this.hp-dmgDealt<0)?0.0:this.hp-dmgDealt;
+        if(!dead){dead=true; myRegiment.dead++;}
+    }
 
     public void attackOrder(Regiment regimentToAttack) {
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
@@ -149,7 +153,7 @@ public abstract class ArmyUnit extends SimulationObject
     }
 
     public void retreatOrder(Regiment enemyRegiment) {
-        this.setVelocityModifier(0.7);
+        this.setVelocityModifier(1.0);
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
         if(enemyInSafeArea!=null)
@@ -338,8 +342,10 @@ public abstract class ArmyUnit extends SimulationObject
 
     public void tick()
     {
-        if (this.hp <= 0 || this.notInTheBattlefield())
+        if (this.hp <= 0 || this.notInTheBattlefield()) {
             myRegiment.safeToRemove(this);
+            if(this.notInTheBattlefield()) {myRegiment.refugees+=1;}
+        }
         else {
             if (this.unitAction == UnitAction.ATTACK) this.attackAction();
             else if (this.unitAction == UnitAction.MOVE_TO_ENEMY) this.moveAction();

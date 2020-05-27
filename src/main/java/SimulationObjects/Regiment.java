@@ -2,6 +2,7 @@ package SimulationObjects;
 
 
 import Enums.Alliance;
+import Enums.ArmyType;
 import Exceptions.CantFindEnemyRegiment;
 import Exceptions.CantFindFriendlyRegiment;
 import Exceptions.VictoryException;
@@ -12,6 +13,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +22,8 @@ import java.util.function.Predicate;
 
 public class Regiment extends SimulationObject
 {
+    public int refugees = 0;
+    public int dead = 0;
     public int initialRegimentSize = 0;
     public static final double regimentBlockSize = 10;
     // How far an enemy Regiment has to be, to change from move() to attack()
@@ -78,7 +82,7 @@ public class Regiment extends SimulationObject
 
         // Regiment's decision
         // Join with another friend or retreat
-        if (armyUnitList.size() < 0.4 * initialRegimentSize) {
+        if (armyUnitList.size() < 0.7 * initialRegimentSize) {
             try {
                 Regiment nearestFriendlyRegiment = handler.getNearestFriendFor(this);
                 for (ArmyUnit armyUnit : this.armyUnitList)
@@ -86,7 +90,7 @@ public class Regiment extends SimulationObject
 
                 handler.safeToRemove(this);
             } catch (CantFindFriendlyRegiment e) {
-                if (this.armyUnitList.size() < 0.1 * initialRegimentSize && !this.enemyRegiment.inRetreat) {
+                if (this.armyUnitList.size() < 0.5 * initialRegimentSize && !this.enemyRegiment.inRetreat) {
                     this.inRetreat = true;
                     for (ArmyUnit armyUnit : this.armyUnitList)
                         armyUnit.retreatOrder(this.enemyRegiment);
@@ -145,38 +149,34 @@ public class Regiment extends SimulationObject
     }
 
 
-    public <T extends ArmyUnit> void formationSquare(int side, boolean evenlyDistributed, Class<T> clazz){
+    public void formationSquare(int side, boolean evenlyDistributed, ArmyType armyType){
         double baseX;
         double baseY;
         double step;
-        try {
-            Predicate<Field> predicate = f -> {
-                int m = f.getModifiers();
-                return Modifier.isFinal(m) && Modifier.isStatic(m) && Modifier.isPublic(m);
-            };
-            double blockSize = Arrays.stream(clazz.getFields()).filter(predicate).findFirst().get().getDouble(clazz);
 
-            Constructor<T> constructor = clazz.getConstructor(double.class, double.class);
+        double blockSize;
+        if(armyType == ArmyType.INFANTRY) blockSize = Infantry.infantryBlockSize;
+        else if(armyType == ArmyType.CAVALRY) blockSize = Cavalry.cavalryBlockSize;
+        else blockSize = Musketeer.musketeerBlockSize;
 
-            if (evenlyDistributed) {
-                baseX = this.x - regimentCenterRadius / Math.sqrt(2);
-                baseY = this.y - regimentCenterRadius / Math.sqrt(2);
-                step = 2 * regimentCenterRadius / (Math.sqrt(2) * (side - 1));
-            } else {
-                baseX = this.x - side * blockSize;
-                baseY = this.y - side * blockSize;
-                step = 2 * blockSize;
-            }
-            for (int i = 0; i < side; i++) {
-                for (int j = 0; j < side; j++) {
-                    this.addArmyUnit(constructor.newInstance(baseX + i * step, baseY + j * step));
-                }
+        if (evenlyDistributed) {
+            baseX = this.x - regimentCenterRadius / Math.sqrt(2);
+            baseY = this.y - regimentCenterRadius / Math.sqrt(2);
+            step = 2 * regimentCenterRadius / (Math.sqrt(2) * (side - 1));
+        } else {
+            baseX = this.x - side * blockSize;
+            baseY = this.y - side * blockSize;
+            step = 2 * blockSize;
+        }
+        for (int i = 0; i < side; i++) {
+            for (int j = 0; j < side; j++) {
+                if(armyType == ArmyType.INFANTRY) this.addArmyUnit(new Infantry(baseX + i * step, baseY + j * step));
+                else if(armyType == ArmyType.CAVALRY) this.addArmyUnit(new Cavalry(baseX + i * step, baseY + j * step));
+                else this.addArmyUnit(new Musketeer(baseX + i * step, baseY + j * step));
+
             }
         }
-        catch (Exception e){
-            System.err.println("FormationSquare Error: "+e);
-            System.exit(-1);
-        }
+
     }
 
     private void removeDeadUnits() {
@@ -190,14 +190,19 @@ public class Regiment extends SimulationObject
         g.drawOval((int)(x-radius),(int)(y-radius),(int)radius*2,(int)radius*2);
     }
 
+    public void giveOUTData(){
+        System.out.println(this.regimentName+" refugees: "+this.refugees);
+        System.out.println(this.regimentName+ " dead: "+this.dead);
+    }
+
     @Override
     public void render(Graphics g){
-        g.setColor(Color.YELLOW);
-        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
-
-        drawCircle(g,Color.GREEN,regimentCenterRadius);
-        drawCircle(g,Color.YELLOW,regimentRegroupRadius);
-        drawCircle(g,Color.RED,regimentBorderRadius);
+//        g.setColor(Color.YELLOW);
+//        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
+//
+//        drawCircle(g,Color.GREEN,regimentCenterRadius);
+//        drawCircle(g,Color.YELLOW,regimentRegroupRadius);
+//        drawCircle(g,Color.RED,regimentBorderRadius);
 
         for (ArmyUnit armyUnit: armyUnitList) armyUnit.render(g);
     }

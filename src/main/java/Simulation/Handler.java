@@ -27,6 +27,7 @@ public class Handler {
             simulationObjectList.removeAll(toRemove);
         }catch (VictoryException v)
         {
+            for(SimulationObject r: this.simulationObjectList) ((Regiment) r).giveOUTData();
             dataCollector.exportDataToCSV();
             throw new VictoryException();
         }
@@ -79,6 +80,7 @@ public class Handler {
     }
 
     public void safeToRemove(Regiment regiment){
+        regiment.giveOUTData();
         toRemove.add(regiment);
     }
 }

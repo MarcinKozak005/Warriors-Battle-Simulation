@@ -4,6 +4,7 @@ import Exceptions.VictoryException;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ConcurrentModificationException;
 
 public class Simulation extends Canvas implements Runnable
 {
@@ -69,8 +70,11 @@ public class Simulation extends Canvas implements Runnable
                 catch (VictoryException e){ stop(); }
                 delta--;
             }
-            if(running)
-                render();
+            if(running) {
+                try {
+                    render();
+                }catch (ConcurrentModificationException ignore){}
+            }
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000)

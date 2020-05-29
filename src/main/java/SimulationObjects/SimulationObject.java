@@ -9,8 +9,8 @@ public abstract class SimulationObject {
 
     public double x; //cooridinates of the center of the Object
     public double y;
-    public double velX;
-    public double velY;
+    public double velX=0;
+    public double velY=0;
     public double maxVelocity;
     private double velocityModifier = 1;
     public Alliance alliance;
@@ -78,6 +78,7 @@ public abstract class SimulationObject {
             {this.velY = 0; this.velX = directionX*getVelocity();}
         else
             {this.velX = 0; this.velY = directionY*getVelocity();}
+
     }
 
     public void setVelocityModifier(double modifier)

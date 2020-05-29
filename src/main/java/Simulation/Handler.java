@@ -13,6 +13,10 @@ import java.util.List;
 
 public class Handler {
 
+    public int redDead = 0;
+    public int blueDead = 0;
+    public int redRefugee = 0;
+    public int blueRefugee = 0;
     public List<SimulationObject> simulationObjectList = new LinkedList<>();
     public List<Regiment> toRemove = new LinkedList<>();
     public DataCollector dataCollector = new DataCollector();
@@ -29,8 +33,18 @@ public class Handler {
         {
             for(SimulationObject r: this.simulationObjectList) ((Regiment) r).giveOUTData();
             dataCollector.exportDataToCSV();
+            printDeadData();
             throw new VictoryException();
         }
+    }
+
+    private void printDeadData() {
+        System.out.println("Red- dead: "+redDead);
+        System.out.println("Red- refugee: "+redRefugee);
+
+        System.out.println("Blue- dead: "+blueDead);
+        System.out.println("blue- refugee: "+blueRefugee);
+
     }
 
     public void render(Graphics g){
@@ -68,10 +82,8 @@ public class Handler {
         {
             if(object.alliance == regiment.alliance && regiment.getDistanceTo(object)<actualMinimum && regiment!=object){
                 Regiment tmp = (Regiment) object;
-                if(regiment.armyUnitList.size()< tmp.armyUnitList.size()) {
-                    friendlyRegiment = (Regiment) object;
-                    actualMinimum = regiment.getDistanceTo(object);
-                }
+                friendlyRegiment = (Regiment) object;
+                actualMinimum = regiment.getDistanceTo(object);
             }
         }
 

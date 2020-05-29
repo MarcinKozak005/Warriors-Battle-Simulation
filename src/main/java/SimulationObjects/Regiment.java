@@ -9,16 +9,9 @@ import Exceptions.VictoryException;
 import Simulation.Handler;
 
 import java.awt.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.sql.SQLOutput;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class Regiment extends SimulationObject
 {
@@ -82,7 +75,7 @@ public class Regiment extends SimulationObject
 
         // Regiment's decision
         // Join with another friend or retreat
-        if (armyUnitList.size() < 0.7 * initialRegimentSize) {
+        if (armyUnitList.size() < 0.9 * initialRegimentSize) {
             try {
                 Regiment nearestFriendlyRegiment = handler.getNearestFriendFor(this);
                 for (ArmyUnit armyUnit : this.armyUnitList)
@@ -90,7 +83,7 @@ public class Regiment extends SimulationObject
 
                 handler.safeToRemove(this);
             } catch (CantFindFriendlyRegiment e) {
-                if (this.armyUnitList.size() < 0.5 * initialRegimentSize && !this.enemyRegiment.inRetreat) {
+                if (this.armyUnitList.size() < 0.85 * initialRegimentSize && !this.enemyRegiment.inRetreat) {
                     this.inRetreat = true;
                     for (ArmyUnit armyUnit : this.armyUnitList)
                         armyUnit.retreatOrder(this.enemyRegiment);
@@ -155,9 +148,9 @@ public class Regiment extends SimulationObject
         double step;
 
         double blockSize;
-        if(armyType == ArmyType.INFANTRY) blockSize = Infantry.infantryBlockSize;
+        if(armyType == ArmyType.INFANTRY) blockSize = Peasant.infantryBlockSize;
         else if(armyType == ArmyType.CAVALRY) blockSize = Cavalry.cavalryBlockSize;
-        else blockSize = Musketeer.musketeerBlockSize;
+        else blockSize = Infantry.musketeerBlockSize;
 
         if (evenlyDistributed) {
             baseX = this.x - regimentCenterRadius / Math.sqrt(2);
@@ -170,9 +163,9 @@ public class Regiment extends SimulationObject
         }
         for (int i = 0; i < side; i++) {
             for (int j = 0; j < side; j++) {
-                if(armyType == ArmyType.INFANTRY) this.addArmyUnit(new Infantry(baseX + i * step, baseY + j * step));
+                if(armyType == ArmyType.INFANTRY) this.addArmyUnit(new Peasant(baseX + i * step, baseY + j * step));
                 else if(armyType == ArmyType.CAVALRY) this.addArmyUnit(new Cavalry(baseX + i * step, baseY + j * step));
-                else this.addArmyUnit(new Musketeer(baseX + i * step, baseY + j * step));
+                else this.addArmyUnit(new Infantry(baseX + i * step, baseY + j * step));
 
             }
         }
@@ -191,8 +184,16 @@ public class Regiment extends SimulationObject
     }
 
     public void giveOUTData(){
-        System.out.println(this.regimentName+" refugees: "+this.refugees);
-        System.out.println(this.regimentName+ " dead: "+this.dead);
+        switch (alliance) {
+            case Blue:
+                handler.blueDead+=this.dead;
+                handler.blueRefugee+=this.refugees;
+                break;
+            case Red:
+                handler.redDead+=this.dead;
+                handler.redRefugee+=this.refugees;
+                break;
+        }
     }
 
     @Override

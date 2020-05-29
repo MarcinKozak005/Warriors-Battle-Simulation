@@ -2,9 +2,6 @@ package Simulation;
 
 import Enums.Alliance;
 import Enums.ArmyType;
-import SimulationObjects.Cavalry;
-import SimulationObjects.Infantry;
-import SimulationObjects.Musketeer;
 import SimulationObjects.Regiment;
 
 import java.awt.*;
@@ -40,32 +37,32 @@ public class Menu extends MouseAdapter {
             simulation.simulationState = Simulation.STATE.KarksiBattleSimulation;
 
             // Sweden
-            Regiment Sc1 = new Regiment(700, 300, Alliance.Blue, "Sc1", handler);
-            Regiment Sc2 = new Regiment(700, 600, Alliance.Blue, "Sc2", handler);
-            Regiment Sm1 = new Regiment(500, 350, Alliance.Blue, "Sm1", handler);
-            Regiment Sm2 = new Regiment(500, 550, Alliance.Blue, "Sm2", handler);
-            Sc1.formationSquare(22, false, ArmyType.CAVALRY);
-            Sc2.formationSquare(22, false, ArmyType.CAVALRY);
-            Sm1.formationSquare(16, false, ArmyType.MUSKETEER);
-            Sm2.formationSquare(16, false, ArmyType.MUSKETEER);
+            Regiment Sc1 = new Regiment(300, 325, Alliance.Blue, "Sc1", handler);
+            Regiment Sc2 = new Regiment(300, 575, Alliance.Blue, "Sc2", handler);
+            Regiment Sm1 = new Regiment(50, 350, Alliance.Blue, "Sm1", handler);
+            Regiment Sm2 = new Regiment(50, 550, Alliance.Blue, "Sm2", handler);
+            Sc1.formationSquare(24, false, ArmyType.CAVALRY);
+            Sc2.formationSquare(24, false, ArmyType.CAVALRY);
+            Sm1.formationSquare(13, false, ArmyType.MUSKETEER);
+            Sm2.formationSquare(13, false, ArmyType.MUSKETEER);
             handler.addRegiment(Sc1);
             handler.addRegiment(Sc2);
             handler.addRegiment(Sm1);
             handler.addRegiment(Sm2);
 
             // CommonWealth
-            Regiment Pc1 = new Regiment(1000, 350, Alliance.Red, "Pc1", handler);
-            Regiment Pc2 = new Regiment(1000, 550, Alliance.Red, "Pc2", handler);
-            Regiment Pi1 = new Regiment(1150, 350, Alliance.Red, "Pi1", handler);
-            Regiment Pi2 = new Regiment(1150, 550, Alliance.Red, "Pi2", handler);
-            Regiment Pm1 = new Regiment(950, 200, Alliance.Red, "Pm1", handler);
-            Regiment Pm2 = new Regiment(950, 700, Alliance.Red, "Pm2", handler);
-            Pc1.formationSquare(10, false, ArmyType.CAVALRY);
-            Pc2.formationSquare(10, false, ArmyType.CAVALRY);
+            Regiment Pc1 = new Regiment(600, 350, Alliance.Red, "Pc1", handler);
+            Regiment Pc2 = new Regiment(600, 550, Alliance.Red, "Pc2", handler);
+            Regiment Pi1 = new Regiment(750, 350, Alliance.Red, "Pi1", handler);
+            Regiment Pi2 = new Regiment(750, 550, Alliance.Red, "Pi2", handler);
+            Regiment Pm1 = new Regiment(500, 200, Alliance.Red, "Pm1", handler);
+            Regiment Pm2 = new Regiment(500, 700, Alliance.Red, "Pm2", handler);
+            Pc1.formationSquare(16, false, ArmyType.CAVALRY);
+            Pc2.formationSquare(16, false, ArmyType.CAVALRY);
             Pi1.formationSquare(10, false, ArmyType.INFANTRY);
             Pi2.formationSquare(10, false, ArmyType.INFANTRY);
-            Pm1.formationSquare(20, false, ArmyType.MUSKETEER);
-            Pm2.formationSquare(20, false, ArmyType.MUSKETEER);
+            Pm1.formationSquare(15, false, ArmyType.MUSKETEER);
+            Pm2.formationSquare(15, false, ArmyType.MUSKETEER);
             handler.addRegiment(Pc1);
             handler.addRegiment(Pi1);
             handler.addRegiment(Pm1);
@@ -94,13 +91,8 @@ public class Menu extends MouseAdapter {
         }
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void tick() {}
 
-    }
-
-    public void tick() {
-
-    }
     public void render(Graphics g) {
         Font titleFont = new Font("arial", Font.PLAIN, 35);
         Font optionsFont = new Font("arial", Font.PLAIN, 25);

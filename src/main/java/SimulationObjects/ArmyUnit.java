@@ -229,7 +229,7 @@ public abstract class ArmyUnit extends SimulationObject
 
     protected final void moveWithoutCollisions(double newX, double newY, SimulationObject simulationObject, boolean retreat)
     {
-        if (!willOverlapWithAnother(newX, newY, Peasant.infantryBlockSize)) {
+        if (!willOverlapWithAnother(newX, newY, Peasant.peasantBlockSize)) {
             x = newX;
             y = newY;
         }
@@ -237,7 +237,7 @@ public abstract class ArmyUnit extends SimulationObject
             setAlternativeDirectionTo(simulationObject);
             newX = x + velX*(retreat?-1:1);
             newY = y + velY*(retreat?-1:1);
-            if (!willOverlapWithAnother(newX, newY, Peasant.infantryBlockSize)) {
+            if (!willOverlapWithAnother(newX, newY, Peasant.peasantBlockSize)) {
                 x = newX;
                 y = newY;
             }

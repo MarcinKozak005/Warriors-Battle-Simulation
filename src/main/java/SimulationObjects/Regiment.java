@@ -146,9 +146,9 @@ public class Regiment extends SimulationObject
         double step;
 
         double blockSize;
-        if(armyType == ArmyType.INFANTRY) blockSize = Peasant.infantryBlockSize;
+        if(armyType == ArmyType.INFANTRY) blockSize = Infantry.infantryBlockSize;
         else if(armyType == ArmyType.CAVALRY) blockSize = Cavalry.cavalryBlockSize;
-        else blockSize = Infantry.musketeerBlockSize;
+        else blockSize = Peasant.peasantBlockSize;
 
         if (evenlyDistributed) {
             baseX = this.x - regimentCenterRadius / Math.sqrt(2);
@@ -161,7 +161,7 @@ public class Regiment extends SimulationObject
         }
         for (int i = 0; i < side; i++) {
             for (int j = 0; j < side; j++) {
-                if(armyType == ArmyType.INFANTRY) this.addArmyUnit(new Peasant(baseX + i * step, baseY + j * step));
+                if(armyType == ArmyType.PEASANT) this.addArmyUnit(new Peasant(baseX + i * step, baseY + j * step));
                 else if(armyType == ArmyType.CAVALRY) this.addArmyUnit(new Cavalry(baseX + i * step, baseY + j * step));
                 else this.addArmyUnit(new Infantry(baseX + i * step, baseY + j * step));
 

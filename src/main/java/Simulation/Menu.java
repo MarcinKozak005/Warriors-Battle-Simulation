@@ -43,8 +43,8 @@ public class Menu extends MouseAdapter {
             Regiment Sm2 = new Regiment(50, 550, Alliance.Blue, "Sm2", handler);
             Sc1.formationSquare(24, false, ArmyType.CAVALRY);
             Sc2.formationSquare(24, false, ArmyType.CAVALRY);
-            Sm1.formationSquare(13, false, ArmyType.MUSKETEER);
-            Sm2.formationSquare(13, false, ArmyType.MUSKETEER);
+            Sm1.formationSquare(13, false, ArmyType.INFANTRY);
+            Sm2.formationSquare(13, false, ArmyType.INFANTRY);
             handler.addRegiment(Sc1);
             handler.addRegiment(Sc2);
             handler.addRegiment(Sm1);
@@ -59,10 +59,10 @@ public class Menu extends MouseAdapter {
             Regiment Pm2 = new Regiment(490, 700, Alliance.Red, "Pm2", handler);
             Pc1.formationSquare(16, false, ArmyType.CAVALRY);
             Pc2.formationSquare(16, false, ArmyType.CAVALRY);
-            Pi1.formationSquare(10, false, ArmyType.INFANTRY);
-            Pi2.formationSquare(10, false, ArmyType.INFANTRY);
-            Pm1.formationSquare(15, false, ArmyType.MUSKETEER);
-            Pm2.formationSquare(15, false, ArmyType.MUSKETEER);
+            Pi1.formationSquare(10, false, ArmyType.PEASANT);
+            Pi2.formationSquare(10, false, ArmyType.PEASANT);
+            Pm1.formationSquare(15, false, ArmyType.INFANTRY);
+            Pm2.formationSquare(15, false, ArmyType.INFANTRY);
             handler.addRegiment(Pc1);
             handler.addRegiment(Pi1);
             handler.addRegiment(Pm1);

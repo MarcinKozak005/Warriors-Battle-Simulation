@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Infantry extends ArmyUnit {
 
-    public static final double musketeerBlockSize = 3;
+    public static final double infantryBlockSize = 3;
 
     public Infantry(double x, double y) {
         super(x, y);
@@ -16,7 +16,7 @@ public class Infantry extends ArmyUnit {
         this.maxDMG = 5;
         this.meanDMG = 2;
         this.stdDMG = 2;
-        this.attackRange = musketeerBlockSize*20;
+        this.attackRange = infantryBlockSize*20;
         this.maxVelocity = 1;
         this.safeArea = this.attackRange;
     }
@@ -25,10 +25,10 @@ public class Infantry extends ArmyUnit {
     public void render(Graphics g) {
         if(this.alliance.equals(Alliance.Blue)) g.setColor(Color.BLUE);
         else g.setColor(Color.RED);
-        g.fillRect((int)(x - musketeerBlockSize /2),
-                (int) (y - musketeerBlockSize /2),
-                (int) musketeerBlockSize,
-                (int) musketeerBlockSize
+        g.fillRect((int)(x - infantryBlockSize /2),
+                (int) (y - infantryBlockSize /2),
+                (int) infantryBlockSize,
+                (int) infantryBlockSize
         );
     }
 }

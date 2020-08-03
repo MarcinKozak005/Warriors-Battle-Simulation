@@ -25,7 +25,6 @@ public class Regiment extends SimulationObject
     static final double regimentRegroupRadius = 200;
     static final double regimentBorderRadius = 300;
 
-
     public String regimentName;
     public boolean inRetreat;
     public List<ArmyUnit> armyUnitList = new LinkedList<>();
@@ -83,7 +82,7 @@ public class Regiment extends SimulationObject
 
                 handler.safeToRemove(this);
             } catch (CantFindFriendlyRegiment e) {
-                if (this.armyUnitList.size() < 0.85 * initialRegimentSize && !this.enemyRegiment.inRetreat) {
+                if (this.armyUnitList.size() < 0.70 * initialRegimentSize && !this.enemyRegiment.inRetreat) {
                     this.inRetreat = true;
                     for (ArmyUnit armyUnit : this.armyUnitList)
                         armyUnit.retreatOrder(this.enemyRegiment);
@@ -141,7 +140,6 @@ public class Regiment extends SimulationObject
         toRemove.add(armyUnit);
     }
 
-
     public void formationSquare(int side, boolean evenlyDistributed, ArmyType armyType){
         double baseX;
         double baseY;
@@ -169,7 +167,6 @@ public class Regiment extends SimulationObject
 
             }
         }
-
     }
 
     private void removeDeadUnits() {
@@ -198,6 +195,7 @@ public class Regiment extends SimulationObject
 
     @Override
     public void render(Graphics g){
+//        Code used to check Regiment's ranges, and how Units behave in different fields.
 //        g.setColor(Color.YELLOW);
 //        g.fillRect((int) (x - regimentBlockSize/2),(int) (y -regimentBlockSize/2),(int)regimentBlockSize,(int)regimentBlockSize);
 //

@@ -28,7 +28,6 @@ public class ScatterPlot {
     }
 
     private ScatterPlot(String CSVFilePath, String chartTitle) {
-//        DefaultCategoryDataset dataset = createDataset(CSVFilePath);
         dataset = new XYSeriesCollection();
         this.CSVFilePath = CSVFilePath;
         this.chartTitle = chartTitle;
@@ -51,7 +50,6 @@ public class ScatterPlot {
                 String[] values = line.split(",");
                 for (int i = 0; i < series.size(); i++)
                     series.get(i).add(Double.valueOf(values[i]), (Number) it);
-
                 it += 1;
             }
             for (XYSeries s : series)

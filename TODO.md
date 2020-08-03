@@ -1,6 +1,6 @@
 ## Final TODOs:
 - sprzątnij kod
-- Simulation VS Master
+- Simulation VS Master trzeba zrobić porownania bo na Simulation niektóre rzeczy zostały poprawione
 
 ## SOLVED:
 

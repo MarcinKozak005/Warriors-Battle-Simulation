@@ -37,8 +37,8 @@ public class Menu extends MouseAdapter {
             simulation.simulationState = Simulation.STATE.KarksiBattleSimulation;
 
             // Sweden
-            Regiment Sc1 = new Regiment(300, 325, Alliance.Blue, "Sc1", handler);
-            Regiment Sc2 = new Regiment(300, 575, Alliance.Blue, "Sc2", handler);
+            Regiment Sc1 = new Regiment(300, 300, Alliance.Blue, "Sc1", handler);
+            Regiment Sc2 = new Regiment(300, 600, Alliance.Blue, "Sc2", handler);
             Regiment Sm1 = new Regiment(50, 350, Alliance.Blue, "Sm1", handler);
             Regiment Sm2 = new Regiment(50, 550, Alliance.Blue, "Sm2", handler);
             Sc1.formationSquare(24, false, ArmyType.CAVALRY);
@@ -55,8 +55,8 @@ public class Menu extends MouseAdapter {
             Regiment Pc2 = new Regiment(600, 550, Alliance.Red, "Pc2", handler);
             Regiment Pi1 = new Regiment(750, 350, Alliance.Red, "Pi1", handler);
             Regiment Pi2 = new Regiment(750, 550, Alliance.Red, "Pi2", handler);
-            Regiment Pm1 = new Regiment(500, 200, Alliance.Red, "Pm1", handler);
-            Regiment Pm2 = new Regiment(500, 700, Alliance.Red, "Pm2", handler);
+            Regiment Pm1 = new Regiment(490, 200, Alliance.Red, "Pm1", handler);
+            Regiment Pm2 = new Regiment(490, 700, Alliance.Red, "Pm2", handler);
             Pc1.formationSquare(16, false, ArmyType.CAVALRY);
             Pc2.formationSquare(16, false, ArmyType.CAVALRY);
             Pi1.formationSquare(10, false, ArmyType.INFANTRY);
@@ -69,22 +69,6 @@ public class Menu extends MouseAdapter {
             handler.addRegiment(Pc2);
             handler.addRegiment(Pi2);
             handler.addRegiment(Pm2);
-
-
-
-        }
-        // Full Simulation
-        else if (isMouseOverArea(mx, my, BUTTON_X, 350, BUTTON_WIDTH, BUTTON_HEIGHT )) {
-            simulation.simulationState = Simulation.STATE.FullPowerSimulation;
-
-            Regiment r1 = new Regiment(300, 300, Alliance.Red, "Secondary", handler);
-            Regiment r4 = new Regiment(600, 600, Alliance.Blue, "Primary", handler);
-
-            r1.formationSquare(10, false, ArmyType.INFANTRY);
-            r4.formationSquare(22, false, ArmyType.INFANTRY);
-
-            handler.addRegiment(r1);
-            handler.addRegiment(r4);
         }
         else if (isMouseOverArea(mx, my, BUTTON_X, 450, BUTTON_WIDTH, BUTTON_HEIGHT )) {
             System.exit(0);
@@ -106,19 +90,13 @@ public class Menu extends MouseAdapter {
         g.drawRect(BUTTON_X,250, BUTTON_WIDTH, BUTTON_HEIGHT);
         g.setColor(Color.yellow);
         g.setFont(optionsFont);
-        g.drawString("Symulacja bitwy pod Karksi", BUTTON_X+40, 295);
-
-        g.setColor(Color.green);
-        g.drawRect(BUTTON_X,350, BUTTON_WIDTH, BUTTON_HEIGHT);
-        g.setColor(Color.yellow);
-        g.setFont(optionsFont);
-        g.drawString("Symulacja z pełnym obciążeniem", BUTTON_X+15 , 395);
+        g.drawString("Battle of Karksi simulation", BUTTON_X+40, 295);
 
         g.setColor(Color.RED);
         g.drawRect(BUTTON_X,450, BUTTON_WIDTH, BUTTON_HEIGHT);
         g.setColor(Color.yellow);
         g.setFont(optionsFont);
-        g.drawString("Wyjście", BUTTON_X + 160, 495);
+        g.drawString("Exit", BUTTON_X + 160, 495);
 
         g.setFont(footerFont);
         g.setColor(Color.red);

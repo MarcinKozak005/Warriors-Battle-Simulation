@@ -1,5 +1,6 @@
 package SimulationObjects;
 
+import Enums.Alliance;
 import Enums.UnitAction;
 
 import java.awt.*;
@@ -71,6 +72,7 @@ public abstract class ArmyUnit extends SimulationObject
 
     protected final void takeDamage(double dmgDealt)
     {
+        dmgDealt = (this.alliance== Alliance.Red)?0.8*dmgDealt:dmgDealt;
         this.hp = (this.hp-dmgDealt<0)?0.0:this.hp-dmgDealt;
         if(!dead){dead=true; myRegiment.dead++;}
     }

@@ -100,7 +100,6 @@ public class DataCollector {
         String hpFilePath = createCSVFilePath(hpNameExtension);
         saveDataToCSVFile(dataRegimentAverageHp,hpFilePath);
 
-
         ScatterPlot.generateScatterPlot(numberFilePath,numberNameExtension);
         ScatterPlot.generateScatterPlot(hpFilePath,hpNameExtension);
     }

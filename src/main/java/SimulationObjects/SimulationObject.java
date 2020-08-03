@@ -64,17 +64,20 @@ public abstract class SimulationObject {
         double directionX;
         double directionY;
 
-        if(Math.abs(0-this.x)<Math.abs(Simulation.SCREEN_WIDTH-this.x))
+        double minX = Math.min(Math.abs(0-this.x),Math.abs(Simulation.SCREEN_WIDTH-this.x));
+        double minY = Math.min(Math.abs(0-this.y),Math.abs(Simulation.SCREEN_HEIGHT-this.y));
+
+        if(Math.abs(0-this.x) == minX)
             directionX = -1;
         else
             directionX = 1;
 
-        if(Math.abs(0-this.y)<Math.abs(Simulation.SCREEN_HEIGHT-this.y))
+        if(Math.abs(0-this.y) == minY)
             directionY = -1;
         else
             directionY = 1;
 
-        if(Math.abs(directionX)<Math.abs(directionY))
+        if(minX < minY)
             {this.velY = 0; this.velX = directionX*getVelocity();}
         else
             {this.velX = 0; this.velY = directionY*getVelocity();}

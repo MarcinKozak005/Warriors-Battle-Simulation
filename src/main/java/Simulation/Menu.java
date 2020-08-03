@@ -1,8 +1,7 @@
 package Simulation;
 
 import Enums.Alliance;
-import SimulationObjects.Infantry;
-import SimulationObjects.Musketeer;
+import Enums.ArmyType;
 import SimulationObjects.Regiment;
 
 import java.awt.*;
@@ -32,32 +31,14 @@ public class Menu extends MouseAdapter {
         int mx = e.getX();
         int my = e.getY();
 
-        // Karksi
-        if(isMouseOverArea(mx, my, BUTTON_X, 250, BUTTON_WIDTH, BUTTON_HEIGHT ))
-        {
-            simulation.simulationState = Simulation.STATE.KarksiBattleSimulation;
-            Regiment r1 = new Regiment(300, 300, Alliance.Red, "Musketeer", handler);
-            Regiment r3 = new Regiment(600, 300, Alliance.Red, "Infantry", handler);
-            Regiment r4 = new Regiment(600, 600, Alliance.Blue, "Infantry", handler);
-
-            r1.formationSquare(10, false, Musketeer.class);
-            r3.formationSquare(20, false, Infantry.class);
-            r4.formationSquare(22, false, Infantry.class);
-
-            handler.addRegiment(r1);
-            handler.addRegiment(r3);
-            handler.addRegiment(r4);
-
-        }
-        // Full Simulation
-        else if (isMouseOverArea(mx, my, BUTTON_X, 350, BUTTON_WIDTH, BUTTON_HEIGHT )) {
+        if (isMouseOverArea(mx, my, BUTTON_X, 350, BUTTON_WIDTH, BUTTON_HEIGHT )) {
             simulation.simulationState = Simulation.STATE.FullPowerSimulation;
 
             Regiment r1 = new Regiment(300, 300, Alliance.Red, "Secondary", handler);
             Regiment r4 = new Regiment(600, 600, Alliance.Blue, "Primary", handler);
 
-            r1.formationSquare(10, false, Infantry.class);
-            r4.formationSquare(22, false, Infantry.class);
+            r1.formationSquare(10, false, ArmyType.INFANTRY);
+            r4.formationSquare(22, false, ArmyType.INFANTRY);
 
             handler.addRegiment(r1);
             handler.addRegiment(r4);
@@ -67,13 +48,8 @@ public class Menu extends MouseAdapter {
         }
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void tick() {}
 
-    }
-
-    public void tick() {
-
-    }
     public void render(Graphics g) {
         Font titleFont = new Font("arial", Font.PLAIN, 35);
         Font optionsFont = new Font("arial", Font.PLAIN, 25);
@@ -84,22 +60,16 @@ public class Menu extends MouseAdapter {
         g.drawString("Menu:", BUTTON_X + 147, 175);
 
         g.setColor(Color.green);
-        g.drawRect(BUTTON_X,250, BUTTON_WIDTH, BUTTON_HEIGHT);
-        g.setColor(Color.yellow);
-        g.setFont(optionsFont);
-        g.drawString("Symulacja bitwy pod Karksi", BUTTON_X+40, 295);
-
-        g.setColor(Color.green);
         g.drawRect(BUTTON_X,350, BUTTON_WIDTH, BUTTON_HEIGHT);
         g.setColor(Color.yellow);
         g.setFont(optionsFont);
-        g.drawString("Symulacja z pełnym obciążeniem", BUTTON_X+15 , 395);
+        g.drawString("Example Simulation", BUTTON_X+80 , 395);
 
         g.setColor(Color.RED);
         g.drawRect(BUTTON_X,450, BUTTON_WIDTH, BUTTON_HEIGHT);
         g.setColor(Color.yellow);
         g.setFont(optionsFont);
-        g.drawString("Wyjście", BUTTON_X + 160, 495);
+        g.drawString("Exit", BUTTON_X + 160, 495);
 
         g.setFont(footerFont);
         g.setColor(Color.red);

@@ -33,7 +33,8 @@ public class Handler {
     }
 
     public void render(Graphics g){
-        for(SimulationObject simulationObject: simulationObjectList){
+        for(SimulationObject simulationObject: simulationObjectList)
+        {
             simulationObject.render(g);
         }
     }
@@ -66,11 +67,8 @@ public class Handler {
         for(SimulationObject object: simulationObjectList)
         {
             if(object.alliance == regiment.alliance && regiment.getDistanceTo(object)<actualMinimum && regiment!=object){
-                Regiment tmp = (Regiment) object;
-                if(regiment.armyUnitList.size()< tmp.armyUnitList.size()) {
-                    friendlyRegiment = (Regiment) object;
-                    actualMinimum = regiment.getDistanceTo(object);
-                }
+                friendlyRegiment = (Regiment) object;
+                actualMinimum = regiment.getDistanceTo(object);
             }
         }
 

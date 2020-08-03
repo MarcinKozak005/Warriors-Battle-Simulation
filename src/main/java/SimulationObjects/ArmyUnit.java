@@ -149,7 +149,7 @@ public abstract class ArmyUnit extends SimulationObject
     }
 
     public void retreatOrder(Regiment enemyRegiment) {
-        this.setVelocityModifier(0.7);
+        this.setVelocityModifier(1.0);
         ArmyUnit enemyInSafeArea = getEnemyInSafeArea();
 
         if(enemyInSafeArea!=null)
@@ -223,7 +223,7 @@ public abstract class ArmyUnit extends SimulationObject
 
     protected final void moveWithoutCollisions(double newX, double newY, SimulationObject simulationObject, boolean retreat)
     {
-        if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
+        if (!willOverlapWithAnother(newX, newY, Peasant.peasantBlockSize)) {
             x = newX;
             y = newY;
         }
@@ -231,7 +231,7 @@ public abstract class ArmyUnit extends SimulationObject
             setAlternativeDirectionTo(simulationObject);
             newX = x + velX*(retreat?-1:1);
             newY = y + velY*(retreat?-1:1);
-            if (!willOverlapWithAnother(newX, newY, Infantry.infantryBlockSize)) {
+            if (!willOverlapWithAnother(newX, newY, Peasant.peasantBlockSize)) {
                 x = newX;
                 y = newY;
             }
@@ -248,10 +248,10 @@ public abstract class ArmyUnit extends SimulationObject
         if (new Random().nextBoolean()) {
             b = (Math.pow(distanceY, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceX * (-1);
             newDistanceX = distanceY;
-            newDistanceY = distanceY - (Double.isNaN(b)?0:b);
+            newDistanceY = distanceY - ((Double.isNaN(b) || Double.isInfinite(b))?0:b);
         } else {
             a = (Math.pow(distanceX, 2) - distanceX*distanceY - Math.pow(diagonalDistance, 2)*Math.sin(Math.PI/2))/distanceY * (-1);
-            newDistanceX = distanceX - (Double.isNaN(a)?0:a);
+            newDistanceX = distanceX - ((Double.isNaN(a) || Double.isInfinite(a))?0:a);
             newDistanceY = distanceX;
         }
 
@@ -338,8 +338,9 @@ public abstract class ArmyUnit extends SimulationObject
 
     public void tick()
     {
-        if (this.hp <= 0 || this.notInTheBattlefield())
+        if (this.hp <= 0 || this.notInTheBattlefield()) {
             myRegiment.safeToRemove(this);
+        }
         else {
             if (this.unitAction == UnitAction.ATTACK) this.attackAction();
             else if (this.unitAction == UnitAction.MOVE_TO_ENEMY) this.moveAction();

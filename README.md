@@ -4,7 +4,7 @@ Warriors-BattleSimulation is a project made for Software Studio classes at AGH-U
 
 **Topic:** *Simulation of a historical battle. Project includes agent-base units model and their formation for a chosen historical age.*
 
-**Chosen battle:** [Battle of Karksi](https://en.wikipedia.org/wiki/Battle_of_Karksi_(1600\))
+**Chosen battle:** [Battle of Karksi](https://en.wikipedia.org/wiki/Battle_of_Karksi_(1600))
 
 ## Project workflow
 Project was realized in weekly sprints. Summary of each sprint is available [here (in Polish)](https://drive.google.com/drive/folders/1XckzSlFIfL0pjTU-dsnt97U_lsboZmpH?usp=sharing).
@@ -43,11 +43,10 @@ That changes are rather small, but we wanted to keep as simulation-specific-free
 
 ## Results
 
-Charts
-![Chart_HP](https://github.com/MarcinKozak005/Warriors-BattleSimulation/tree/master/SimulationOutput/Mon_Aug_03_22-32-49_CEST_2020(HP).jpeg)
-![Chart_NUMBER](https://github.com/MarcinKozak005/Warriors-BattleSimulation/tree/master/SimulationOutput/Mon_Aug_03_22-32-49_CEST_2020(Number).jpeg)
+## [YouTube movie with final Karksi simulation](https://www.youtube.com/watch?v=9onQhgWORYE)
 
-[YouTube movie with final Karksi simulation](https://www.youtube.com/watch?v=9onQhgWORYE)
+![Number_chart](SimulationOutput/Mon_Aug_03_22-32-49_CEST_2020(Number).jpeg)
+![HP_chart](SimulationOutput/Mon_Aug_03_22-32-49_CEST_2020(HP).jpeg)
 
 
 ## External Libraries and Sources

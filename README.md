@@ -1,6 +1,6 @@
-# Warriors-BattleSimulation
+# Warriors-Battle-Simulation
 
-Warriors-BattleSimulation is a project made for Software Studio classes at AGH-University of Science and Technology.
+Warriors-Battle-Simulation is a project made for Software Studio classes at AGH-University of Science and Technology.
 
 **Topic:** *Simulation of a historical battle. Project includes agent-base units model and their formation for a chosen historical age.*
 
